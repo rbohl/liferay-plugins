@@ -15,7 +15,7 @@
  * Liferay Social Office. If not, see http://www.gnu.org/licenses/agpl-3.0.html.
  */
 
-package com.liferay.privatemessaging.notifications;
+package com.liferay.so.announcements.notifications;
 
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -33,9 +33,9 @@ import com.liferay.portal.service.UserNotificationEventLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.PortletURLFactoryUtil;
-import com.liferay.portlet.messageboards.model.MBMessage;
-import com.liferay.portlet.messageboards.service.MBMessageLocalServiceUtil;
-import com.liferay.privatemessaging.util.PortletKeys;
+import com.liferay.portlet.announcements.model.AnnouncementsEntry;
+import com.liferay.portlet.announcements.service.AnnouncementsEntryLocalServiceUtil;
+import com.liferay.so.announcements.util.PortletKeys;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
@@ -44,11 +44,11 @@ import javax.portlet.WindowState;
 /**
  * @author Jonathan Lee
  */
-public class PrivateMessagingUserNotificationHandler
+public class SOAnnouncementsUserNotificationHandler
 	extends BaseUserNotificationHandler {
 
-	public PrivateMessagingUserNotificationHandler() {
-		setPortletId(PortletKeys.PRIVATE_MESSAGING);
+	public SOAnnouncementsUserNotificationHandler() {
+		setPortletId(PortletKeys.SO_ANNOUNCEMENTS);
 	}
 
 	@Override
@@ -60,12 +60,13 @@ public class PrivateMessagingUserNotificationHandler
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
 			userNotificationEvent.getPayload());
 
-		long mbMessageId = jsonObject.getLong("classPK");
+		long announcementEntryId = jsonObject.getLong("classPK");
 
-		MBMessage mbMessage = MBMessageLocalServiceUtil.getMBMessage(
-			mbMessageId);
+		AnnouncementsEntry announcementEntry =
+			AnnouncementsEntryLocalServiceUtil.fetchAnnouncementsEntry(
+				announcementEntryId);
 
-		if (mbMessage == null) {
+		if (announcementEntry == null) {
 			UserNotificationEventLocalServiceUtil.deleteUserNotificationEvent(
 				userNotificationEvent.getUserNotificationEventId());
 
@@ -77,11 +78,13 @@ public class PrivateMessagingUserNotificationHandler
 		sb.append("<div class=\"title\">");
 		sb.append(
 			serviceContext.translate(
-				"x-sent-you-a-message",
+				"x-sent-a-new-announcement",
 				PortalUtil.getUserName(
-					mbMessage.getUserId(), StringPool.BLANK)));
+					announcementEntry.getUserId(), StringPool.BLANK)));
 		sb.append("</div><div class=\"body\">");
-		sb.append(HtmlUtil.escape(StringUtil.shorten(mbMessage.getBody())));
+		sb.append(
+			HtmlUtil.escape(
+				StringUtil.shorten(announcementEntry.getContent())));
 		sb.append("</div>");
 
 		return sb.toString();
@@ -96,12 +99,13 @@ public class PrivateMessagingUserNotificationHandler
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
 			userNotificationEvent.getPayload());
 
-		long mbMessageId = jsonObject.getLong("classPK");
+		long announcementEntryId = jsonObject.getLong("classPK");
 
-		MBMessage mbMessage = MBMessageLocalServiceUtil.getMBMessage(
-			mbMessageId);
+		AnnouncementsEntry announcementEntry =
+			AnnouncementsEntryLocalServiceUtil.fetchAnnouncementsEntry(
+				announcementEntryId);
 
-		if (mbMessage == null) {
+		if (announcementEntry == null) {
 			UserNotificationEventLocalServiceUtil.deleteUserNotificationEvent(
 				userNotificationEvent.getUserNotificationEventId());
 
@@ -115,29 +119,24 @@ public class PrivateMessagingUserNotificationHandler
 		Group group = user.getGroup();
 
 		long portletPlid = PortalUtil.getPlidFromPortletId(
-			group.getGroupId(), true, PortletKeys.PRIVATE_MESSAGING);
+			group.getGroupId(), true, PortletKeys.SO_ANNOUNCEMENTS);
 
 		PortletURL portletURL = null;
 
 		if (portletPlid != 0) {
 			portletURL = PortletURLFactoryUtil.create(
 				serviceContext.getLiferayPortletRequest(),
-				PortletKeys.PRIVATE_MESSAGING, portletPlid,
+				PortletKeys.SO_ANNOUNCEMENTS, portletPlid,
 				PortletRequest.RENDER_PHASE);
-
-			portletURL.setParameter(
-				"mbThreadId", String.valueOf(mbMessage.getThreadId()));
 		}
 		else {
 			LiferayPortletResponse liferayPortletResponse =
 				serviceContext.getLiferayPortletResponse();
 
 			portletURL = liferayPortletResponse.createRenderURL(
-				PortletKeys.PRIVATE_MESSAGING);
+				PortletKeys.SO_ANNOUNCEMENTS);
 
 			portletURL.setParameter("mvcPath", "/view.jsp");
-			portletURL.setParameter(
-				"mbThreadId", String.valueOf(mbMessage.getThreadId()));
 			portletURL.setWindowState(WindowState.MAXIMIZED);
 		}
 
