@@ -12,41 +12,13 @@
  * details.
  */
 
-package com.liferay.chat.video;
+package com.liferay.stocks.util;
 
 /**
- * @author Philippe Proulx
+ * @author Shinn Lok
  */
-public class WebRTCConnection {
+public class PortletKeys extends com.liferay.portal.util.PortletKeys {
 
-	public WebRTCConnection(WebRTCClient webRTCClient) {
-		_webRTCClient = webRTCClient;
-	}
-
-	public State getState() {
-		return _state;
-	}
-
-	public WebRTCClient getWebRTCClient() {
-		return _webRTCClient;
-	}
-
-	public void setState(State state) {
-		_state = state;
-
-		if (state == State.INITIATED) {
-		}
-		else {
-		}
-	}
-
-	public enum State {
-
-		CONNECTED, INITIATED, DISCONNECTED
-
-	}
-
-	private State _state = State.DISCONNECTED;
-	private WebRTCClient _webRTCClient;
+	public static final String STOCKS = "1_WAR_stocksportlet";
 
 }

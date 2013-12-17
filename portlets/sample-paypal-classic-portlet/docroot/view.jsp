@@ -1,3 +1,4 @@
+<%--
 /**
  * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
  *
@@ -11,42 +12,10 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
+--%>
 
-package com.liferay.chat.video;
+<%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 
-/**
- * @author Philippe Proulx
- */
-public class WebRTCConnection {
+<portlet:defineObjects />
 
-	public WebRTCConnection(WebRTCClient webRTCClient) {
-		_webRTCClient = webRTCClient;
-	}
-
-	public State getState() {
-		return _state;
-	}
-
-	public WebRTCClient getWebRTCClient() {
-		return _webRTCClient;
-	}
-
-	public void setState(State state) {
-		_state = state;
-
-		if (state == State.INITIATED) {
-		}
-		else {
-		}
-	}
-
-	public enum State {
-
-		CONNECTED, INITIATED, DISCONNECTED
-
-	}
-
-	private State _state = State.DISCONNECTED;
-	private WebRTCClient _webRTCClient;
-
-}
+This is the <b>Sample PayPal Classic</b> portlet.
