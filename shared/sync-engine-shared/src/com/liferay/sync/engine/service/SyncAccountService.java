@@ -14,6 +14,7 @@
 
 package com.liferay.sync.engine.service;
 
+import com.liferay.sync.engine.model.ModelListener;
 import com.liferay.sync.engine.model.SyncAccount;
 import com.liferay.sync.engine.model.SyncFile;
 import com.liferay.sync.engine.service.persistence.SyncAccountPersistence;
@@ -55,9 +56,7 @@ public class SyncAccountService {
 
 		// Sync file
 
-		if (Files.notExists(Paths.get(filePathName))) {
-			Files.createDirectory(Paths.get(filePathName));
-		}
+		Files.createDirectories(Paths.get(filePathName));
 
 		SyncFileService.addSyncFile(
 			null, null, filePathName, FileUtil.getFileKey(filePathName),
@@ -119,6 +118,12 @@ public class SyncAccountService {
 		}
 
 		return _syncAccountPersistence;
+	}
+
+	public static void registerModelListener(
+		ModelListener<SyncAccount> modelListener) {
+
+		_syncAccountPersistence.registerModelListener(modelListener);
 	}
 
 	public static SyncAccount update(SyncAccount syncAccount) {
