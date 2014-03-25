@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -54,14 +55,12 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
@@ -85,6 +84,7 @@ import java.io.File;
 import java.io.InputStream;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -504,7 +504,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 			kbArticles = ListUtil.sort(kbArticles, orderByComparator);
 		}
 
-		return new UnmodifiableList<KBArticle>(kbArticles);
+		return Collections.unmodifiableList(kbArticles);
 	}
 
 	public List<KBArticle> getKBArticles(
@@ -542,7 +542,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 			kbArticles = KnowledgeBaseUtil.sort(resourcePrimKeys, kbArticles);
 		}
 
-		return new UnmodifiableList<KBArticle>(kbArticles);
+		return Collections.unmodifiableList(kbArticles);
 	}
 
 	public List<KBArticle> getKBArticleVersions(
@@ -1129,14 +1129,15 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 			InputStream inputStream = null;
 
 			try {
-				inputStream = DLStoreUtil.getFileAsStream(
+				byte[] bytes = DLStoreUtil.getFileAsBytes(
 					serviceContext.getCompanyId(), CompanyConstants.SYSTEM,
 					fileName);
 
-				String shortFileName = FileUtil.getShortFileName(fileName);
+				inputStream = new UnsyncByteArrayInputStream(bytes);
 
-				String mimeType = MimeTypesUtil.getContentType(
-					inputStream, fileName);
+				String mimeType = KnowledgeBaseUtil.getMimeType(
+					bytes, fileName);
+				String shortFileName = FileUtil.getShortFileName(fileName);
 
 				PortletFileRepositoryUtil.addPortletFileEntry(
 					serviceContext.getScopeGroupId(), userId,
