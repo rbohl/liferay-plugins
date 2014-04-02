@@ -21,12 +21,12 @@ import com.liferay.portal.kernel.sanitizer.Sanitizer;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.StreamUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portlet.messageboards.model.MBMessage;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -67,7 +67,9 @@ public class EmailToMBMessageFilterSanitizerImpl implements Sanitizer {
 		long classPK, String contentType, String[] modes, String s,
 		Map<String, Object> options) {
 
-		if (!className.equals(MBMessage.class.getName())) {
+		if (Validator.isNull(className) ||
+			!className.equals(MBMessage.class.getName())) {
+
 			return s;
 		}
 

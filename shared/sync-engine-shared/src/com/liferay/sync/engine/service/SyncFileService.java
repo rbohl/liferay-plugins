@@ -28,6 +28,7 @@ import com.liferay.sync.engine.documentlibrary.event.UpdateFileEntryEvent;
 import com.liferay.sync.engine.documentlibrary.event.UpdateFolderEvent;
 import com.liferay.sync.engine.model.ModelListener;
 import com.liferay.sync.engine.model.SyncFile;
+import com.liferay.sync.engine.model.SyncSite;
 import com.liferay.sync.engine.service.persistence.SyncFilePersistence;
 import com.liferay.sync.engine.util.FilePathNameUtil;
 import com.liferay.sync.engine.util.FileUtil;
@@ -85,6 +86,18 @@ public class SyncFileService {
 		parameters.put("folderId", folderId);
 		parameters.put("mimeType", mimeType);
 		parameters.put("repositoryId", repositoryId);
+
+		SyncSite syncSite = SyncSiteService.fetchSyncSite(
+			repositoryId, syncAccountId);
+
+		if (syncSite.getType() != SyncSite.TYPE_SYSTEM) {
+			parameters.put("serviceContext.addGroupPermissions", true);
+		}
+
+		if (syncSite.getType() == SyncSite.TYPE_OPEN) {
+			parameters.put("serviceContext.addGuestPermissions", true);
+		}
+
 		parameters.put("sourceFileName", name);
 		parameters.put("syncFile", syncFile);
 		parameters.put("title", name);
@@ -120,6 +133,18 @@ public class SyncFileService {
 		parameters.put("name", name);
 		parameters.put("parentFolderId", parentFolderId);
 		parameters.put("repositoryId", repositoryId);
+
+		SyncSite syncSite = SyncSiteService.fetchSyncSite(
+			repositoryId, syncAccountId);
+
+		if (syncSite.getType() != SyncSite.TYPE_SYSTEM) {
+			parameters.put("serviceContext.addGroupPermissions", true);
+		}
+
+		if (syncSite.getType() == SyncSite.TYPE_OPEN) {
+			parameters.put("serviceContext.addGuestPermissions", true);
+		}
+
 		parameters.put("syncFile", syncFile);
 
 		AddFolderEvent addFolderEvent = new AddFolderEvent(
@@ -144,6 +169,7 @@ public class SyncFileService {
 		syncFile.setDescription(description);
 		syncFile.setFileKey(fileKey);
 		syncFile.setFilePathName(filePathName);
+		syncFile.setLocalSyncTime(System.currentTimeMillis());
 		syncFile.setMimeType(mimeType);
 		syncFile.setName(name);
 		syncFile.setParentFolderId(parentFolderId);
@@ -296,15 +322,14 @@ public class SyncFileService {
 			// Sync files
 
 			List<SyncFile> childSyncFiles = _syncFilePersistence.queryForEq(
-				"parentFolderId", syncFile.getSyncFileId());
+				"parentFolderId", syncFile.getTypePK());
 
 			for (SyncFile childSyncFile : childSyncFiles) {
 				if (childSyncFile.isFolder()) {
 					deleteSyncFile(childSyncFile);
 				}
 				else {
-					_syncFilePersistence.deleteById(
-						childSyncFile.getSyncFileId());
+					_syncFilePersistence.delete(childSyncFile);
 				}
 			}
 		}
@@ -365,6 +390,21 @@ public class SyncFileService {
 	public static List<SyncFile> findSyncFiles(long syncAccountId) {
 		try {
 			return _syncFilePersistence.findBySyncAccountId(syncAccountId);
+		}
+		catch (SQLException sqle) {
+			if (_logger.isDebugEnabled()) {
+				_logger.debug(sqle.getMessage(), sqle);
+			}
+
+			return Collections.emptyList();
+		}
+	}
+
+	public static List<SyncFile> findSyncFiles(
+		long localSyncTime, long syncAccountId) {
+
+		try {
+			return _syncFilePersistence.findByL_S(localSyncTime, syncAccountId);
 		}
 		catch (SQLException sqle) {
 			if (_logger.isDebugEnabled()) {
@@ -612,6 +652,7 @@ public class SyncFileService {
 				filePath);
 
 			syncFile.setFilePathName(targetFilePathName);
+			syncFile.setLocalSyncTime(System.currentTimeMillis());
 			syncFile.setName(String.valueOf(filePath.getFileName()));
 			syncFile.setParentFolderId(parentFolderId);
 
