@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -22,9 +22,8 @@ import com.liferay.sync.engine.service.SyncFileService;
 
 import java.io.FileNotFoundException;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.conn.HttpHostConnectException;
@@ -60,32 +59,37 @@ public class BaseHandler implements Handler<Void> {
 			if (syncFile.getVersion() == null) {
 				SyncFileService.deleteSyncFile(syncFile);
 			}
-
-			return;
 		}
 		else if (e instanceof HttpHostConnectException) {
+			syncAccount.setState(SyncAccount.STATE_DISCONNECTED);
 			syncAccount.setUiEvent(SyncAccount.UI_EVENT_CONNECTION_EXCEPTION);
+
+			SyncAccountService.update(syncAccount);
+
+			retryServerConnection();
 		}
 		else if (e instanceof HttpResponseException) {
+			syncAccount.setState(SyncAccount.STATE_DISCONNECTED);
+
 			HttpResponseException hre = (HttpResponseException)e;
 
 			int statusCode = hre.getStatusCode();
 
-			if (statusCode == HttpServletResponse.SC_UNAUTHORIZED) {
+			if (statusCode == HttpStatus.SC_UNAUTHORIZED) {
 				syncAccount.setUiEvent(
 					SyncAccount.UI_EVENT_AUTHENTICATION_EXCEPTION);
+
+				SyncAccountService.update(syncAccount);
 			}
 			else {
 				syncAccount.setUiEvent(
 					SyncAccount.UI_EVENT_CONNECTION_EXCEPTION);
+
+				SyncAccountService.update(syncAccount);
+
+				retryServerConnection();
 			}
 		}
-
-		syncAccount.setState(SyncAccount.STATE_DISCONNECTED);
-
-		SyncAccountService.update(syncAccount);
-
-		retryServerConnection();
 	}
 
 	@Override
@@ -93,7 +97,7 @@ public class BaseHandler implements Handler<Void> {
 		try {
 			StatusLine statusLine = httpResponse.getStatusLine();
 
-			if (statusLine.getStatusCode() != HttpServletResponse.SC_OK) {
+			if (statusLine.getStatusCode() != HttpStatus.SC_OK) {
 				_logger.error("Status code {}", statusLine.getStatusCode());
 
 				throw new HttpResponseException(
@@ -146,8 +150,6 @@ public class BaseHandler implements Handler<Void> {
 						"Attempting to reconnect to {}. Retry #{}.",
 						syncAccount.getUrl(), retryContext.getRetryCount() + 1);
 				}
-
-				SyncAccountService.synchronizeSyncAccount(getSyncAccountId());
 
 				syncAccount = SyncAccountService.synchronizeSyncAccount(
 					getSyncAccountId());

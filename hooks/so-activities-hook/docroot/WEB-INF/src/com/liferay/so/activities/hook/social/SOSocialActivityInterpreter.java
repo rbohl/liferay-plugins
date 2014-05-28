@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -45,6 +45,7 @@ import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 import com.liferay.portlet.social.model.SocialActivitySet;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
+import com.liferay.portlet.social.service.SocialActivitySetLocalServiceUtil;
 import com.liferay.portlet.trash.util.TrashUtil;
 import com.liferay.so.activities.util.PortletPropsValues;
 
@@ -166,6 +167,26 @@ public abstract class SOSocialActivityInterpreter
 		return sb.toString();
 	}
 
+	protected long getDisplayDate(SocialActivity activity) throws Exception {
+		long activitySetId = activity.getActivitySetId();
+
+		if (activitySetId > 0) {
+			SocialActivitySet socialActivitySet =
+				SocialActivitySetLocalServiceUtil.fetchSocialActivitySet(
+					activitySetId);
+
+			if ((socialActivitySet != null) &&
+				(socialActivitySet.getActivityCount() == 1) &&
+				(socialActivitySet.getModifiedDate() >
+					socialActivitySet.getCreateDate())) {
+
+				return socialActivitySet.getModifiedDate();
+			}
+		}
+
+		return activity.getCreateDate();
+	}
+
 	protected Format getFormatDateTime(Locale locale, TimeZone timezone) {
 		return FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"EEEE, MMMMM dd, yyyy 'at' h:mm a", locale, timezone);
@@ -252,24 +273,7 @@ public abstract class SOSocialActivityInterpreter
 		StringBundler sb = new StringBundler(8);
 
 		sb.append("<div class=\"activity-header\">");
-		sb.append("<div class=\"activity-time\" title=\"");
-
-		Format dateFormatDate = getFormatDateTime(
-			serviceContext.getLocale(), serviceContext.getTimeZone());
-
-		Date activityDate = new Date(displayDate);
-
-		sb.append(dateFormatDate.format(activityDate));
-
-		sb.append("\">");
-
-		String relativeTimeDescription = Time.getRelativeTimeDescription(
-			displayDate, serviceContext.getLocale(),
-			serviceContext.getTimeZone());
-
-		sb.append(relativeTimeDescription);
-
-		sb.append("</div><div class=\"activity-user-name\">");
+		sb.append("<div class=\"activity-user-name\">");
 
 		String userName = getUserName(userId, serviceContext);
 
@@ -306,6 +310,23 @@ public abstract class SOSocialActivityInterpreter
 			sb.append(userName);
 		}
 
+		sb.append("</div><div class=\"activity-time\" title=\"");
+
+		Format dateFormatDate = getFormatDateTime(
+			serviceContext.getLocale(), serviceContext.getTimeZone());
+
+		Date activityDate = new Date(displayDate);
+
+		sb.append(dateFormatDate.format(activityDate));
+
+		sb.append("\">");
+
+		String relativeTimeDescription = Time.getRelativeTimeDescription(
+			displayDate, serviceContext.getLocale(),
+			serviceContext.getTimeZone());
+
+		sb.append(relativeTimeDescription);
+
 		sb.append("</div></div>");
 
 		return sb.toString();
@@ -321,7 +342,7 @@ public abstract class SOSocialActivityInterpreter
 		sb.append(
 			getTitle(
 				0, activity.getGroupId(), activity.getUserId(),
-				activity.getCreateDate(), serviceContext));
+				getDisplayDate(activity), serviceContext));
 		sb.append("<div class=\"activity-action\">");
 
 		String titlePattern = getTitlePattern(null, activity);

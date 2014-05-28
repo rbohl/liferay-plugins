@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -32,6 +32,8 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.SortFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -44,6 +46,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UniqueList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.model.ModelHintsUtil;
 import com.liferay.portal.util.PortalUtil;
 
 import java.io.InputStream;
@@ -51,6 +54,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * @author Peter Shin
@@ -245,6 +249,27 @@ public class KnowledgeBaseUtil {
 		};
 	}
 
+	public static String getUrlTitle(long id, String title) {
+		if (title == null) {
+			return String.valueOf(id);
+		}
+
+		title = StringUtil.toLowerCase(title.trim());
+
+		if (Validator.isNull(title) || Validator.isNumber(title) ||
+			title.equals("rss")) {
+
+			title = String.valueOf(id);
+		}
+		else {
+			title = FriendlyURLNormalizerUtil.normalize(
+				title, _friendlyURLPattern);
+		}
+
+		return ModelHintsUtil.trimString(
+			KBArticle.class.getName(), "urlTitle", title);
+	}
+
 	public static String[] parseKeywords(String values) {
 		List<String> keywords = new UniqueList<String>();
 
@@ -293,7 +318,27 @@ public class KnowledgeBaseUtil {
 		return kbArticles;
 	}
 
+	public static String trimLeadingSlash(String s) {
+		if (Validator.isNull(s)) {
+			return s;
+		}
+
+		int x = 0;
+
+		for (char c : s.toCharArray()) {
+			if ((c != CharPool.BACK_SLASH) && (c != CharPool.FORWARD_SLASH)) {
+				break;
+			}
+
+			x = x + 1;
+		}
+
+		return s.substring(x, s.length());
+	}
+
 	private static final int _SQL_DATA_MAX_PARAMETERS = GetterUtil.getInteger(
 		PropsUtil.get(PropsKeys.SQL_DATA_MAX_PARAMETERS));
+
+	private static Pattern _friendlyURLPattern = Pattern.compile("[^a-z0-9_-]");
 
 }

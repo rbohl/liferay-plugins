@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -78,6 +78,7 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
+import javax.portlet.WindowState;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -424,6 +425,7 @@ public class AdminPortlet extends MVCPortlet {
 		long parentResourcePrimKey = ParamUtil.getLong(
 			actionRequest, "parentResourcePrimKey");
 		String title = ParamUtil.getString(actionRequest, "title");
+		String urlTitle = ParamUtil.getString(actionRequest, "urlTitle");
 		String content = ParamUtil.getString(actionRequest, "content");
 		String description = ParamUtil.getString(actionRequest, "description");
 		String[] sections = actionRequest.getParameterValues("sections");
@@ -438,8 +440,8 @@ public class AdminPortlet extends MVCPortlet {
 
 		if (cmd.equals(Constants.ADD)) {
 			kbArticle = KBArticleServiceUtil.addKBArticle(
-				portletId, parentResourcePrimKey, title, content, description,
-				sections, dirName, serviceContext);
+				portletId, parentResourcePrimKey, title, urlTitle, content,
+				description, sections, dirName, serviceContext);
 		}
 		else if (cmd.equals(Constants.UPDATE)) {
 			kbArticle = KBArticleServiceUtil.updateKBArticle(
@@ -453,17 +455,26 @@ public class AdminPortlet extends MVCPortlet {
 
 		if (workflowAction == WorkflowConstants.ACTION_SAVE_DRAFT) {
 			String namespace = actionResponse.getNamespace();
-			String redirect = getRedirect(actionRequest, actionResponse);
 
 			String editURL = PortalUtil.getLayoutFullURL(themeDisplay);
 
 			editURL = HttpUtil.setParameter(
 				editURL, "p_p_id", PortletKeys.KNOWLEDGE_BASE_ADMIN);
+
+			WindowState windowState = actionResponse.getWindowState();
+
+			editURL = HttpUtil.setParameter(
+				editURL, "p_p_state", windowState.toString());
+
 			editURL = HttpUtil.setParameter(
 				editURL, namespace + "mvcPath",
 				templatePath + "edit_article.jsp");
+
+			String redirect = getRedirect(actionRequest, actionResponse);
+
 			editURL = HttpUtil.setParameter(
 				editURL, namespace + "redirect", redirect);
+
 			editURL = HttpUtil.setParameter(
 				editURL, namespace + "resourcePrimKey",
 				kbArticle.getResourcePrimKey());

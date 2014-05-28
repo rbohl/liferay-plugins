@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -40,6 +40,8 @@ public class SyncSite extends StateAwareModel {
 
 	public static final int TYPE_SYSTEM = 4;
 
+	public static final int UI_EVENT_SYNC_SITE_FOLDER_MISSING = 1;
+
 	public boolean getActive() {
 		return active;
 	}
@@ -65,7 +67,15 @@ public class SyncSite extends StateAwareModel {
 	}
 
 	public String getName() {
-		return name;
+		if ((type == 0) && !site) {
+			return friendlyURL.substring(1);
+		}
+
+		return name.replace(" LFR_ORGANIZATION", " (Org)");
+	}
+
+	public long getParentGroupId() {
+		return parentGroupId;
 	}
 
 	public long getRemoteSyncTime() {
@@ -128,6 +138,10 @@ public class SyncSite extends StateAwareModel {
 		this.name = name;
 	}
 
+	public void setParentGroupId(long parentGroupId) {
+		this.parentGroupId = parentGroupId;
+	}
+
 	public void setRemoteSyncTime(long remoteSyncTime) {
 		this.remoteSyncTime = remoteSyncTime;
 	}
@@ -172,6 +186,9 @@ public class SyncSite extends StateAwareModel {
 
 	@DatabaseField(useGetSet = true)
 	protected String name;
+
+	@DatabaseField(useGetSet = true)
+	protected long parentGroupId;
 
 	@DatabaseField(useGetSet = true)
 	protected long remoteSyncTime;

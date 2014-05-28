@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -36,10 +36,6 @@ public class SyncEngineUtil {
 
 	public static final int SYNC_ENGINE_STATE_STOPPING = 4;
 
-	public static void addSyncEngineListener(SyncEngineListener listener) {
-		_syncEngineListeners.add(listener);
-	}
-
 	public static void fireSyncEngineStateChanged(final int syncEngineState) {
 		for (final SyncEngineListener syncEngineListener :
 				_syncEngineListeners) {
@@ -56,6 +52,18 @@ public class SyncEngineUtil {
 				}
 			);
 		}
+	}
+
+	public static void registerSyncEngineListener(
+		SyncEngineListener syncEngineListener) {
+
+		_syncEngineListeners.add(syncEngineListener);
+	}
+
+	public static void unregisterSyncEngineListener(
+		SyncEngineListener syncEngineListener) {
+
+		_syncEngineListeners.remove(syncEngineListener);
 	}
 
 	private static ExecutorService _executorService =

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -53,8 +53,12 @@ import org.slf4j.LoggerFactory;
  */
 public class SyncEngine {
 
-	public static void cancelSyncAccountTasks(long syncAccountId)
+	public synchronized static void cancelSyncAccountTasks(long syncAccountId)
 		throws Exception {
+
+		if (!_running) {
+			return;
+		}
 
 		Object[] syncAccountTasks = _syncAccountTasks.get(syncAccountId);
 
@@ -72,8 +76,16 @@ public class SyncEngine {
 		watcher.close();
 	}
 
-	public static void scheduleSyncAccountTasks(long syncAccountId)
+	public synchronized static boolean isRunning() {
+		return _running;
+	}
+
+	public synchronized static void scheduleSyncAccountTasks(long syncAccountId)
 		throws Exception {
+
+		if (!_running) {
+			return;
+		}
 
 		SyncSiteService.synchronizeSyncSites(syncAccountId);
 
@@ -120,7 +132,7 @@ public class SyncEngine {
 
 		ScheduledFuture<?> scheduledFuture =
 			_eventScheduledExecutorService.scheduleAtFixedRate(
-				runnable, 0, syncAccount.getInterval(), TimeUnit.SECONDS);
+				runnable, 0, syncAccount.getPollInterval(), TimeUnit.SECONDS);
 
 		Path filePath = Paths.get(syncAccount.getFilePathName());
 
@@ -135,7 +147,11 @@ public class SyncEngine {
 			syncAccountId, new Object[] {scheduledFuture, watcher});
 	}
 
-	public static void start() {
+	public synchronized static void start() {
+		if (_running) {
+			return;
+		}
+
 		try {
 			doStart();
 		}
@@ -144,7 +160,11 @@ public class SyncEngine {
 		}
 	}
 
-	public static void stop() {
+	public synchronized static void stop() {
+		if (!_running) {
+			return;
+		}
+
 		try {
 			doStop();
 		}
@@ -154,22 +174,34 @@ public class SyncEngine {
 	}
 
 	protected static void doStart() throws Exception {
+		_running = true;
+
 		SyncEngineUtil.fireSyncEngineStateChanged(
 			SyncEngineUtil.SYNC_ENGINE_STATE_STARTING);
 
 		LoggerUtil.initLogger();
 
-		_logger.info("Starting " + PropsValues.SYNC_PRODUCT_NAME);
+		_logger.info("Starting {}", PropsValues.SYNC_PRODUCT_NAME);
 
 		UpgradeUtil.upgrade();
 
-		SyncAccountService.registerModelListener(
-			new SyncAccountModelListener());
-		SyncFileService.registerModelListener(new SyncFileModelListener());
-		SyncSiteService.registerModelListener(new SyncSiteModelListener());
+		_syncAccountModelListener = new SyncAccountModelListener();
+
+		SyncAccountService.registerModelListener(_syncAccountModelListener);
+
+		_syncFileModelListener = new SyncFileModelListener();
+
+		SyncFileService.registerModelListener(_syncFileModelListener);
+
+		_syncSiteModelListener = new SyncSiteModelListener();
+
+		SyncSiteService.registerModelListener(_syncSiteModelListener);
 
 		SyncWatchEventProcessor syncWatchEventProcessor =
 			new SyncWatchEventProcessor();
+
+		_syncWatchEventProcessorExecutorService =
+			Executors.newSingleThreadScheduledExecutor();
 
 		_syncWatchEventProcessorExecutorService.scheduleAtFixedRate(
 			syncWatchEventProcessor, 0, 3, TimeUnit.SECONDS);
@@ -195,30 +227,36 @@ public class SyncEngine {
 		SyncEngineUtil.fireSyncEngineStateChanged(
 			SyncEngineUtil.SYNC_ENGINE_STATE_STOPPING);
 
+		_logger.info("Stopping {}", PropsValues.SYNC_PRODUCT_NAME);
+
 		for (long syncAccountId : _syncAccountTasks.keySet()) {
 			cancelSyncAccountTasks(syncAccountId);
 		}
 
 		_syncWatchEventProcessorExecutorService.shutdown();
 
-		SyncAccountService.unregisterModelListener(
-			new SyncAccountModelListener());
-		SyncFileService.unregisterModelListener(new SyncFileModelListener());
-		SyncSiteService.unregisterModelListener(new SyncSiteModelListener());
+		SyncAccountService.unregisterModelListener(_syncAccountModelListener);
+		SyncFileService.unregisterModelListener(_syncFileModelListener);
+		SyncSiteService.unregisterModelListener(_syncSiteModelListener);
 
 		SyncEngineUtil.fireSyncEngineStateChanged(
 			SyncEngineUtil.SYNC_ENGINE_STATE_STOPPED);
+
+		_running = false;
 	}
 
 	private static Logger _logger = LoggerFactory.getLogger(SyncEngine.class);
 
 	private static ScheduledExecutorService _eventScheduledExecutorService =
 		Executors.newScheduledThreadPool(5);
+	private static boolean _running;
+	private static SyncAccountModelListener _syncAccountModelListener;
 	private static Map<Long, Object[]> _syncAccountTasks =
 		new HashMap<Long, Object[]>();
+	private static SyncFileModelListener _syncFileModelListener;
+	private static SyncSiteModelListener _syncSiteModelListener;
 	private static ScheduledExecutorService
-		_syncWatchEventProcessorExecutorService =
-			Executors.newSingleThreadScheduledExecutor();
+		_syncWatchEventProcessorExecutorService;
 	private static ExecutorService _watcherExecutorService =
 		Executors.newCachedThreadPool();
 

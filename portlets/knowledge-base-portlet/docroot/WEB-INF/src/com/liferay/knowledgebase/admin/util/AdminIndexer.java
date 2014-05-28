@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -63,6 +63,10 @@ public class AdminIndexer extends BaseIndexer {
 	public static final String PORTLET_ID = PortletKeys.KNOWLEDGE_BASE_ADMIN;
 
 	public AdminIndexer() {
+		setDefaultSelectedFieldNames(
+			Field.COMPANY_ID, Field.CONTENT, Field.CREATE_DATE,
+			Field.DESCRIPTION, Field.ENTRY_CLASS_NAME, Field.ENTRY_CLASS_PK,
+			Field.MODIFIED_DATE, Field.TITLE, Field.UID, Field.USER_NAME);
 		setFilterSearch(true);
 		setPermissionAware(true);
 	}
@@ -199,7 +203,7 @@ public class AdminIndexer extends BaseIndexer {
 		// See KBArticlePermission#contains
 
 		List<KBArticle> kbArticles =
-			KBArticleLocalServiceUtil.getKBArticleAndAllDescendants(
+			KBArticleLocalServiceUtil.getKBArticleAndAllDescendantKBArticles(
 				kbArticle.getResourcePrimKey(),
 				WorkflowConstants.STATUS_APPROVED, null);
 

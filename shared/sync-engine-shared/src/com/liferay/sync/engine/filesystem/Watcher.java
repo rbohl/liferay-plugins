@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -14,9 +14,14 @@
 
 package com.liferay.sync.engine.filesystem;
 
+import com.liferay.sync.engine.model.SyncAccount;
 import com.liferay.sync.engine.model.SyncFile;
+import com.liferay.sync.engine.model.SyncSite;
 import com.liferay.sync.engine.model.SyncWatchEvent;
+import com.liferay.sync.engine.service.SyncAccountService;
 import com.liferay.sync.engine.service.SyncFileService;
+import com.liferay.sync.engine.service.SyncSiteService;
+import com.liferay.sync.engine.util.FilePathNameUtil;
 
 import java.io.IOException;
 
@@ -27,6 +32,7 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +44,7 @@ import name.pachler.nio.file.StandardWatchEventKind;
 import name.pachler.nio.file.WatchEvent;
 import name.pachler.nio.file.WatchKey;
 import name.pachler.nio.file.WatchService;
+import name.pachler.nio.file.ext.ExtendedWatchEventKind;
 import name.pachler.nio.file.impl.PathImpl;
 
 import org.slf4j.Logger;
@@ -63,20 +70,33 @@ public class Watcher implements Runnable {
 		register(filePath, recursive);
 	}
 
-	public void close() throws IOException {
-		_watchService.close();
+	public void close() {
+		try {
+			_watchService.close();
+		}
+		catch (Exception e) {
+			_watchService = null;
+		}
 	}
 
 	@Override
 	public void run() {
 		while (true) {
+			if (_watchService == null) {
+				break;
+			}
+
 			WatchKey watchKey = null;
 
 			try {
 				watchKey = _watchService.take();
 			}
 			catch (Exception e) {
-				return;
+				if (e instanceof ConcurrentModificationException) {
+					continue;
+				}
+
+				break;
 			}
 
 			Path parentFilePath = _filePaths.get(watchKey);
@@ -92,6 +112,10 @@ public class Watcher implements Runnable {
 					i);
 
 				PathImpl pathImpl = (PathImpl)watchEvent.context();
+
+				if (pathImpl == null) {
+					continue;
+				}
 
 				Path childFilePath = parentFilePath.resolve(
 					pathImpl.toString());
@@ -122,8 +146,7 @@ public class Watcher implements Runnable {
 					_logger.trace("Unregistered file path {}", filePath);
 				}
 
-				fireWatchEventListener(
-					SyncWatchEvent.EVENT_TYPE_DELETE, filePath);
+				processMissingFilePath(filePath);
 
 				if (_filePaths.isEmpty()) {
 					break;
@@ -132,22 +155,8 @@ public class Watcher implements Runnable {
 		}
 	}
 
-	protected void fireWatchEventListener(
-		Path filePath, WatchEvent<Path> watchEvent) {
-
-		WatchEvent.Kind<?> kind = watchEvent.kind();
-
-		fireWatchEventListener(kind.name(), filePath);
-	}
-
-	protected void fireWatchEventListener(String eventType, Path filePath) {
-		_watchEventListener.watchEvent(eventType, filePath);
-	}
-
-	protected void register(Path filePath, boolean recursive)
+	protected void doRegister(Path filePath, boolean recursive)
 		throws IOException {
-
-		long startTime = System.currentTimeMillis();
 
 		if (recursive) {
 			Files.walkFileTree(
@@ -160,7 +169,7 @@ public class Watcher implements Runnable {
 							BasicFileAttributes basicFileAttributes)
 						throws IOException {
 
-						register(filePath, false);
+						doRegister(filePath, false);
 
 						return FileVisitResult.CONTINUE;
 					}
@@ -186,7 +195,8 @@ public class Watcher implements Runnable {
 				filePath.toString());
 
 			WatchKey watchKey = jpathwatchFilePath.register(
-				_watchService, StandardWatchEventKind.ENTRY_CREATE,
+				_watchService, ExtendedWatchEventKind.KEY_INVALID,
+				StandardWatchEventKind.ENTRY_CREATE,
 				StandardWatchEventKind.ENTRY_DELETE,
 				StandardWatchEventKind.ENTRY_MODIFY);
 
@@ -198,9 +208,76 @@ public class Watcher implements Runnable {
 				_logger.trace("Registered file path {}", filePath);
 			}
 		}
+	}
+
+	protected void fireWatchEventListener(
+		Path filePath, WatchEvent<Path> watchEvent) {
+
+		WatchEvent.Kind<?> kind = watchEvent.kind();
+
+		fireWatchEventListener(kind.name(), filePath);
+	}
+
+	protected void fireWatchEventListener(String eventType, Path filePath) {
+		SyncFile syncFile = SyncFileService.fetchSyncFile(
+			FilePathNameUtil.getFilePathName(filePath),
+			_watchEventListener.getSyncAccountId());
+
+		if (syncFile != null) {
+			syncFile.setLocalSyncTime(System.currentTimeMillis());
+
+			SyncFileService.update(syncFile);
+		}
+
+		_watchEventListener.watchEvent(eventType, filePath);
+	}
+
+	protected void processMissingFilePath(Path filePath) {
+		SyncAccount syncAccount = SyncAccountService.fetchSyncAccount(
+			_watchEventListener.getSyncAccountId());
+
+		String filePathName = FilePathNameUtil.getFilePathName(filePath);
+
+		if (filePathName.equals(syncAccount.getFilePathName())) {
+			syncAccount.setActive(false);
+			syncAccount.setUiEvent(
+				SyncAccount.UI_EVENT_SYNC_ACCOUNT_FOLDER_MISSING);
+
+			SyncAccountService.update(syncAccount);
+		}
+		else {
+			SyncSite syncSite = SyncSiteService.fetchSyncSite(
+				syncAccount.getFilePathName(), syncAccount.getSyncAccountId());
+
+			if (syncSite != null) {
+				syncSite.setActive(false);
+				syncSite.setUiEvent(SyncSite.UI_EVENT_SYNC_SITE_FOLDER_MISSING);
+
+				SyncSiteService.update(syncSite);
+			}
+			else {
+				fireWatchEventListener(
+					SyncWatchEvent.EVENT_TYPE_DELETE, filePath);
+			}
+		}
+	}
+
+	protected void register(Path filePath, boolean recursive)
+		throws IOException {
+
+		if (Files.notExists(filePath)) {
+			processMissingFilePath(filePath);
+
+			return;
+		}
+
+		long startTime = System.currentTimeMillis();
+
+		doRegister(filePath, recursive);
 
 		List<SyncFile> syncFiles = SyncFileService.findSyncFiles(
-			startTime, _watchEventListener.getSyncAccountId());
+			FilePathNameUtil.getFilePathName(filePath), startTime,
+			_watchEventListener.getSyncAccountId());
 
 		for (SyncFile syncFile : syncFiles) {
 			fireWatchEventListener(

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -25,18 +25,27 @@ public class PropsValues {
 	public static String SYNC_DATABASE_NAME = PropsUtil.get(
 		PropsKeys.SYNC_DATABASE_NAME);
 
+	public static String[] SYNC_FILE_BLACKLIST_CHARS = PropsUtil.getArray(
+		PropsKeys.SYNC_FILE_BLACKLIST_CHARS);
+
+	public static String[] SYNC_FILE_BLACKLIST_CHARS_LAST = PropsUtil.getArray(
+		PropsKeys.SYNC_FILE_BLACKLIST_CHARS_LAST);
+
+	public static String[] SYNC_FILE_BLACKLIST_NAMES = PropsUtil.getArray(
+		PropsKeys.SYNC_FILE_BLACKLIST_NAMES);
+
+	public static boolean SYNC_FILE_IGNORE_HIDDEN = Boolean.valueOf(
+		PropsUtil.get(PropsKeys.SYNC_FILE_IGNORE_HIDDEN));
+
+	public static String[] SYNC_FILE_IGNORE_NAMES = PropsUtil.getArray(
+		PropsKeys.SYNC_FILE_IGNORE_NAMES);
+
 	public static String[] SYNC_FILE_PATCHING_IGNORE_FILE_EXTENSIONS =
-		PropsUtil.getArray(PropsKeys.SYNC_FILE_PATCHING_IGNORE_FILE_EXTENSIONS);
+		PropsUtil.getArray(PropsKeys.SYNC_FILE_PATCHING_IGNORE_EXTENSIONS);
 
 	public static long SYNC_FILE_PATCHING_SIZE_RATIO_THRESHOLD =
 		Long.valueOf(
 			PropsUtil.get(PropsKeys.SYNC_FILE_PATCHING_SIZE_RATIO_THRESHOLD));
-
-	public static String[] SYNC_IGNORE_FILE_NAMES = PropsUtil.getArray(
-		PropsKeys.SYNC_IGNORE_FILE_NAMES);
-
-	public static boolean SYNC_IGNORE_HIDDEN_FILES = Boolean.valueOf(
-		PropsUtil.get(PropsKeys.SYNC_IGNORE_HIDDEN_FILES));
 
 	public static String SYNC_LOGGER_CONFIGURATION_FILE = PropsUtil.get(
 		PropsKeys.SYNC_LOGGER_CONFIGURATION_FILE);

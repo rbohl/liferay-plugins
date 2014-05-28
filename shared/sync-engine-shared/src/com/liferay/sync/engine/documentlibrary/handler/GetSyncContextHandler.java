@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -21,6 +21,8 @@ import com.liferay.sync.engine.documentlibrary.event.Event;
 import com.liferay.sync.engine.documentlibrary.model.SyncContext;
 import com.liferay.sync.engine.model.SyncAccount;
 import com.liferay.sync.engine.service.SyncAccountService;
+
+import java.util.Map;
 
 /**
  * @author Shinn Lok
@@ -44,6 +46,14 @@ public class GetSyncContextHandler extends BaseJSONHandler {
 
 		SyncAccount syncAccount = SyncAccountService.fetchSyncAccount(
 			getSyncAccountId());
+
+		Map<String, String> portletPreferencesMap =
+			syncContext.getPortletPreferencesMap();
+
+		int pollInterval = Integer.valueOf(
+			portletPreferencesMap.get("sync.client.poll.interval"));
+
+		syncAccount.setPollInterval(pollInterval);
 
 		syncAccount.setSocialOfficeInstalled(
 			syncContext.isSocialOfficeInstalled());

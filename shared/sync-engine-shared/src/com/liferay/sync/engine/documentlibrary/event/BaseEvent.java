@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -14,11 +14,17 @@
 
 package com.liferay.sync.engine.documentlibrary.event;
 
+import com.liferay.sync.engine.SyncEngine;
 import com.liferay.sync.engine.documentlibrary.handler.Handler;
+import com.liferay.sync.engine.model.SyncAccount;
+import com.liferay.sync.engine.service.SyncAccountService;
 import com.liferay.sync.engine.session.Session;
 import com.liferay.sync.engine.session.SessionManager;
 
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Shinn Lok
@@ -36,7 +42,11 @@ public abstract class BaseEvent implements Event {
 	public <T> T executeGet(String urlPath) throws Exception {
 		Session session = SessionManager.getSession(_syncAccountId);
 
-		return session.executeGet(urlPath, (Handler<? extends T>)_handler);
+		SyncAccount syncAccount = SyncAccountService.fetchSyncAccount(
+			getSyncAccountId());
+
+		return session.executeGet(
+			syncAccount.getUrl() + urlPath, (Handler<? extends T>)_handler);
 	}
 
 	public <T> T executePost(String urlPath, Map<String, Object> parameters)
@@ -44,8 +54,12 @@ public abstract class BaseEvent implements Event {
 
 		Session session = SessionManager.getSession(_syncAccountId);
 
+		SyncAccount syncAccount = SyncAccountService.fetchSyncAccount(
+			getSyncAccountId());
+
 		return session.executePost(
-			urlPath, parameters, (Handler<? extends T>)_handler);
+			syncAccount.getUrl() + "/api/jsonws" + urlPath, parameters,
+			(Handler<? extends T>)_handler);
 	}
 
 	@Override
@@ -65,9 +79,19 @@ public abstract class BaseEvent implements Event {
 
 	@Override
 	public void run() {
+		if (!SyncEngine.isRunning()) {
+			return;
+		}
+
 		_handler = getHandler();
 
 		try {
+			if (_logger.isTraceEnabled()) {
+				Class<?> clazz = this.getClass();
+
+				_logger.trace("Processing {}", clazz.getSimpleName());
+			}
+
 			processRequest();
 		}
 		catch (Exception e) {
@@ -80,6 +104,8 @@ public abstract class BaseEvent implements Event {
 	protected void processRequest() throws Exception {
 		executePost(_urlPath, _parameters);
 	}
+
+	private static Logger _logger = LoggerFactory.getLogger(BaseEvent.class);
 
 	private Handler<?> _handler;
 	private Map<String, Object> _parameters;

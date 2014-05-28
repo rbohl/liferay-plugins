@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -45,12 +45,14 @@ import org.apache.http.util.EntityUtils;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.runner.RunWith;
 
 import org.mockito.Mockito;
 
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +61,8 @@ import org.slf4j.LoggerFactory;
  * @author Shinn Lok
  */
 @PowerMockIgnore("javax.crypto.*")
-@PrepareForTest({EntityUtils.class, HttpClientBuilder.class})
+@PrepareForTest({EntityUtils.class, HttpClientBuilder.class, SyncEngine.class})
+@RunWith(PowerMockRunner.class)
 public abstract class BaseTestCase {
 
 	@Before
@@ -76,13 +79,21 @@ public abstract class BaseTestCase {
 			System.getProperty("user.home") + "/liferay-sync-test");
 
 		syncAccount = SyncAccountService.addSyncAccount(
-			filePathName, 10, "test@liferay.com", "test", "test", false,
-			"http://localhost:8080/api/jsonws");
+			filePathName, "test@liferay.com", "test", "test", null, false,
+			"http://localhost:8080");
 
 		syncAccount.setActive(true);
 		syncAccount.setState(SyncAccount.STATE_CONNECTED);
 
 		SyncAccountService.update(syncAccount);
+
+		PowerMockito.mockStatic(SyncEngine.class);
+
+		Mockito.when(
+			SyncEngine.isRunning()
+		).thenReturn(
+			true
+		);
 	}
 
 	@After

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -92,8 +92,6 @@ public class SyncAuthVerifier extends BaseAutoLogin implements AuthVerifier {
 				Method method = ReflectionUtil.getDeclaredMethod(
 					clazz, "doLogin", HttpServletRequest.class,
 					HttpServletResponse.class);
-
-				method.setAccessible(true);
 
 				String[] credentials = (String[])method.invoke(
 					object, request, response);

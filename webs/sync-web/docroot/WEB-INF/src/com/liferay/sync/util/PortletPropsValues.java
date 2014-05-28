@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -24,6 +24,9 @@ public class PortletPropsValues {
 
 	public static final String SYNC_AUTH_VERIFIER_PIPELINE = PortletProps.get(
 		PortletPropsKeys.SYNC_AUTH_VERIFIER_PIPELINE);
+
+	public static final int SYNC_CLIENT_POLL_INTERVAL = GetterUtil.getInteger(
+		PortletProps.get(PortletPropsKeys.SYNC_CLIENT_POLL_INTERVAL));
 
 	public static final int SYNC_FILE_DIFF_CACHE_DELETE_INTERVAL =
 		GetterUtil.getInteger(

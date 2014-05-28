@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -116,6 +116,18 @@ public class SyncDLObjectServiceWrapper implements SyncDLObjectService,
 			com.liferay.portal.kernel.exception.SystemException {
 		return _syncDLObjectService.checkOutFileEntry(fileEntryId, owner,
 			expirationTime, serviceContext);
+	}
+
+	/**
+	* @deprecated As of 7.0.0, with no direct replacement
+	*/
+	@Deprecated
+	@Override
+	public com.liferay.sync.model.SyncDLObjectUpdate getAllSyncDLObjects(
+		long repositoryId, long folderId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _syncDLObjectService.getAllSyncDLObjects(repositoryId, folderId);
 	}
 
 	@Override

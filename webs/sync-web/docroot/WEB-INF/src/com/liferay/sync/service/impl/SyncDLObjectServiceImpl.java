@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -14,6 +14,7 @@
 
 package com.liferay.sync.service.impl;
 
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.deploy.DeployManagerUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -22,9 +23,12 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Group;
+import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portlet.documentlibrary.DuplicateFileException;
 import com.liferay.portlet.documentlibrary.DuplicateFolderNameException;
@@ -35,13 +39,18 @@ import com.liferay.sync.model.SyncContext;
 import com.liferay.sync.model.SyncDLObject;
 import com.liferay.sync.model.SyncDLObjectUpdate;
 import com.liferay.sync.service.base.SyncDLObjectServiceBaseImpl;
+import com.liferay.sync.util.PortletPropsKeys;
 import com.liferay.sync.util.PortletPropsValues;
 import com.liferay.sync.util.SyncUtil;
 
 import java.io.File;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.portlet.PortletPreferences;
 
 /**
  * @author Michael Young
@@ -169,6 +178,24 @@ public class SyncDLObjectServiceImpl extends SyncDLObjectServiceBaseImpl {
 			fileEntry, SyncConstants.EVENT_CHECK_OUT);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
+	@Override
+	public SyncDLObjectUpdate getAllSyncDLObjects(
+			long repositoryId, long folderId)
+		throws PortalException, SystemException {
+
+		long lastAccessTime = System.currentTimeMillis();
+
+		List<SyncDLObject> syncDLObjects = new ArrayList<SyncDLObject>();
+
+		getAllSyncDLObjects(repositoryId, folderId, syncDLObjects);
+
+		return new SyncDLObjectUpdate(syncDLObjects, lastAccessTime);
+	}
+
 	@Override
 	public SyncDLObject getFileEntrySyncDLObject(
 			long groupId, long folderId, String title)
@@ -266,6 +293,8 @@ public class SyncDLObjectServiceImpl extends SyncDLObjectServiceBaseImpl {
 
 		PluginPackage soPortletPluginPackage =
 			DeployManagerUtil.getInstalledPluginPackage("so-portlet");
+
+		syncContext.setPortletPreferencesMap(getPortletPreferencesMap());
 
 		if (soPortletPluginPackage != null) {
 			syncContext.setSocialOfficeInstalled(true);
@@ -439,6 +468,67 @@ public class SyncDLObjectServiceImpl extends SyncDLObjectServiceBaseImpl {
 			folderId, name, description, serviceContext);
 
 		return SyncUtil.toSyncDLObject(folder, SyncConstants.EVENT_UPDATE);
+	}
+
+	protected void getAllSyncDLObjects(
+			long repositoryId, long folderId, List<SyncDLObject> syncDLObjects)
+		throws PortalException, SystemException {
+
+		List<Object> foldersAndFileEntriesAndFileShortcuts =
+			dlAppService.getFoldersAndFileEntriesAndFileShortcuts(
+				repositoryId, folderId, WorkflowConstants.STATUS_ANY, false,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+		for (Object folderAndFileEntryAndFileShortcut :
+				foldersAndFileEntriesAndFileShortcuts) {
+
+			if (folderAndFileEntryAndFileShortcut instanceof FileEntry) {
+				FileEntry fileEntry =
+					(FileEntry)folderAndFileEntryAndFileShortcut;
+
+				syncDLObjects.add(
+					SyncUtil.toSyncDLObject(
+						fileEntry, SyncConstants.EVENT_GET));
+			}
+			else if (folderAndFileEntryAndFileShortcut instanceof Folder) {
+				Folder folder = (Folder)folderAndFileEntryAndFileShortcut;
+
+				if (!SyncUtil.isSupportedFolder(folder)) {
+					continue;
+				}
+
+				syncDLObjects.add(
+					SyncUtil.toSyncDLObject(folder, SyncConstants.EVENT_GET));
+
+				getAllSyncDLObjects(
+					repositoryId, folder.getFolderId(), syncDLObjects);
+			}
+		}
+	}
+
+	protected Map<String, String> getPortletPreferencesMap()
+		throws PortalException, SystemException {
+
+		Map<String, String> portletPreferencesMap =
+			new HashMap<String, String>();
+
+		User user = getUser();
+
+		long companyId = user.getCompanyId();
+
+		PortletPreferences portletPreferences = PrefsPropsUtil.getPreferences(
+			companyId);
+
+		int pollInterval = PrefsPropsUtil.getInteger(
+			portletPreferences, companyId,
+			PortletPropsKeys.SYNC_CLIENT_POLL_INTERVAL,
+			PortletPropsValues.SYNC_CLIENT_POLL_INTERVAL);
+
+		portletPreferencesMap.put(
+			PortletPropsKeys.SYNC_CLIENT_POLL_INTERVAL,
+			String.valueOf(pollInterval));
+
+		return portletPreferencesMap;
 	}
 
 	protected void validateChecksum(File file, String checksum)

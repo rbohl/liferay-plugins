@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -130,9 +130,15 @@ public class SyncWatchEventProcessor implements Runnable {
 			FilePathNameUtil.getFilePathName(parentTargetFilePath),
 			syncWatchEvent.getSyncAccountId());
 
-		SyncFile syncFile = SyncFileService.fetchSyncFileByFileKey(
-			FileUtil.getFileKey(targetFilePath),
+		SyncFile syncFile = SyncFileService.fetchSyncFile(
+			FilePathNameUtil.getFilePathName(targetFilePath),
 			syncWatchEvent.getSyncAccountId());
+
+		if (syncFile == null) {
+			syncFile = SyncFileService.fetchSyncFileByFileKey(
+				FileUtil.getFileKey(targetFilePath),
+				syncWatchEvent.getSyncAccountId());
+		}
 
 		if (syncFile == null) {
 			SyncFileService.addFileSyncFile(
@@ -148,31 +154,36 @@ public class SyncWatchEventProcessor implements Runnable {
 				SyncWatchEvent.EVENT_TYPE_DELETE, syncFile.getFilePathName(),
 				syncWatchEvent.getTimestamp());
 
-		Path sourceFilePath = null;
+		if (relatedSyncWatchEvent == null) {
+			return;
+		}
 
-		if (relatedSyncWatchEvent != null) {
-			sourceFilePath = Paths.get(relatedSyncWatchEvent.getFilePathName());
-		}
-		else {
-			sourceFilePath = Paths.get(syncFile.getFilePathName());
-		}
+		Path sourceFilePath = Paths.get(
+			relatedSyncWatchEvent.getFilePathName());
 
 		if (parentTargetFilePath.equals(sourceFilePath.getParent())) {
 			SyncFileService.updateFileSyncFile(
-				targetFilePath, syncWatchEvent.getSyncAccountId(), syncFile);
+				targetFilePath, syncWatchEvent.getSyncAccountId(), syncFile,
+				false);
 		}
 		else {
 			SyncFileService.moveFileSyncFile(
 				targetFilePath, parentSyncFile.getTypePK(),
 				syncWatchEvent.getSyncAccountId(), syncFile);
+
+			Path sourceFileNameFilePath = sourceFilePath.getFileName();
+
+			if (!sourceFileNameFilePath.equals(targetFilePath.getFileName())) {
+				SyncFileService.updateFileSyncFile(
+					targetFilePath, syncWatchEvent.getSyncAccountId(), syncFile,
+					false);
+			}
 		}
 
 		SyncAccount syncAccount = SyncAccountService.fetchSyncAccount(
 			syncWatchEvent.getSyncAccountId());
 
-		if ((relatedSyncWatchEvent != null) &&
-			(syncAccount.getState() != SyncAccount.STATE_DISCONNECTED)) {
-
+		if (syncAccount.getState() != SyncAccount.STATE_DISCONNECTED) {
 			_processedSyncWatchEventIds.add(
 				relatedSyncWatchEvent.getSyncWatchEventId());
 		}
@@ -205,14 +216,12 @@ public class SyncWatchEventProcessor implements Runnable {
 				SyncWatchEvent.EVENT_TYPE_DELETE, syncFile.getFilePathName(),
 				syncWatchEvent.getTimestamp());
 
-		Path sourceFilePath = null;
+		if (relatedSyncWatchEvent == null) {
+			return;
+		}
 
-		if (relatedSyncWatchEvent != null) {
-			sourceFilePath = Paths.get(relatedSyncWatchEvent.getFilePathName());
-		}
-		else {
-			sourceFilePath = Paths.get(syncFile.getFilePathName());
-		}
+		Path sourceFilePath = Paths.get(
+			relatedSyncWatchEvent.getFilePathName());
 
 		if (parentTargetFilePath.equals(sourceFilePath.getParent())) {
 			SyncFileService.updateFolderSyncFile(
@@ -222,14 +231,20 @@ public class SyncWatchEventProcessor implements Runnable {
 			SyncFileService.moveFolderSyncFile(
 				targetFilePath, parentSyncFile.getTypePK(),
 				syncWatchEvent.getSyncAccountId(), syncFile);
+
+			Path sourceFileNameFilePath = sourceFilePath.getFileName();
+
+			if (!sourceFileNameFilePath.equals(targetFilePath.getFileName())) {
+				SyncFileService.updateFolderSyncFile(
+					targetFilePath, syncWatchEvent.getSyncAccountId(),
+					syncFile);
+			}
 		}
 
 		SyncAccount syncAccount = SyncAccountService.fetchSyncAccount(
 			syncWatchEvent.getSyncAccountId());
 
-		if ((relatedSyncWatchEvent != null) &&
-			(syncAccount.getState() != SyncAccount.STATE_DISCONNECTED)) {
-
+		if (syncAccount.getState() != SyncAccount.STATE_DISCONNECTED) {
 			_processedSyncWatchEventIds.add(
 				relatedSyncWatchEvent.getSyncWatchEventId());
 		}
@@ -284,7 +299,7 @@ public class SyncWatchEventProcessor implements Runnable {
 		}
 
 		SyncFileService.updateFileSyncFile(
-			filePath, syncWatchEvent.getSyncAccountId(), syncFile);
+			filePath, syncWatchEvent.getSyncAccountId(), syncFile, false);
 	}
 
 	private static Logger _logger = LoggerFactory.getLogger(

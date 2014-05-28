@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -37,11 +37,12 @@ import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.model.Company;
 import com.liferay.portal.model.CompanyConstants;
 import com.liferay.portal.model.Lock;
 import com.liferay.portal.model.RepositoryEntry;
@@ -1144,13 +1145,11 @@ public class ExtRepositoryAdapter extends BaseRepositoryImpl {
 		String login = PrincipalThreadLocal.getName();
 
 		if (Validator.isNull(login)) {
-			return login;
+			return PropsUtil.get(PropsKeys.DL_REPOSITORY_GUEST_USERNAME);
 		}
 
 		try {
-			Company company = companyLocalService.getCompany(getCompanyId());
-
-			String authType = company.getAuthType();
+			String authType = getAuthType();
 
 			if (!authType.equals(CompanyConstants.AUTH_TYPE_ID)) {
 				User user = userLocalService.getUser(GetterUtil.getLong(login));
@@ -1188,6 +1187,12 @@ public class ExtRepositoryAdapter extends BaseRepositoryImpl {
 	}
 
 	private String _getPassword() {
+		String login = PrincipalThreadLocal.getName();
+
+		if (Validator.isNull(login)) {
+			return PropsUtil.get(PropsKeys.DL_REPOSITORY_GUEST_PASSWORD);
+		}
+
 		return PrincipalThreadLocal.getPassword();
 	}
 
@@ -1228,7 +1233,7 @@ public class ExtRepositoryAdapter extends BaseRepositoryImpl {
 	private ExtRepositoryFileVersionAdapter _toExtRepositoryFileVersionAdapter(
 			ExtRepositoryFileEntryAdapter extRepositoryFileEntryAdapter,
 			ExtRepositoryFileVersion extRepositoryFileVersion)
-		throws SystemException {
+		throws PortalException, SystemException {
 
 		ExtRepositoryAdapterCache extRepositoryAdapterCache =
 			ExtRepositoryAdapterCache.getInstance();
@@ -1261,7 +1266,7 @@ public class ExtRepositoryAdapter extends BaseRepositoryImpl {
 			_toExtRepositoryFileVersionAdapters(
 				ExtRepositoryFileEntryAdapter extRepositoryFileEntryAdapter,
 				List<ExtRepositoryFileVersion> extRepositoryFileVersions)
-		throws SystemException {
+		throws PortalException, SystemException {
 
 		List<ExtRepositoryFileVersionAdapter> extRepositoryFileVersionAdapters =
 			new ArrayList<ExtRepositoryFileVersionAdapter>();

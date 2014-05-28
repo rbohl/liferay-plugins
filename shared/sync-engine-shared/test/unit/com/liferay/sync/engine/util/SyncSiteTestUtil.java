@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -39,7 +39,9 @@ public class SyncSiteTestUtil {
 
 		syncSite.setCompanyId(companyId);
 		syncSite.setFilePathName(filePathName);
+		syncSite.setFriendlyURL(filePathName);
 		syncSite.setGroupId(groupId);
+		syncSite.setName(filePathName);
 		syncSite.setSyncAccountId(syncAccountId);
 
 		SyncSitePersistence syncSitePersistence =
@@ -54,7 +56,7 @@ public class SyncSiteTestUtil {
 		SyncFileService.addSyncFile(
 			null, null, filePathName, FileUtil.getFileKey(filePathName),
 			filePathName, null, filePathName, 0, groupId,
-			syncSite.getSyncAccountId(), SyncFile.TYPE_FOLDER);
+			syncSite.getSyncAccountId(), SyncFile.TYPE_SYSTEM);
 
 		return syncSite;
 	}

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -85,8 +85,8 @@ public class KBArticleServiceImpl extends KBArticleServiceBaseImpl {
 
 	public KBArticle addKBArticle(
 			String portletId, long parentResourcePrimKey, String title,
-			String content, String description, String[] sections,
-			String dirName, ServiceContext serviceContext)
+			String urlTitle, String content, String description,
+			String[] sections, String dirName, ServiceContext serviceContext)
 		throws PortalException, SystemException {
 
 		if (portletId.equals(PortletKeys.KNOWLEDGE_BASE_ADMIN)) {
@@ -101,8 +101,8 @@ public class KBArticleServiceImpl extends KBArticleServiceBaseImpl {
 		}
 
 		return kbArticleLocalService.addKBArticle(
-			getUserId(), parentResourcePrimKey, title, content, description,
-			sections, dirName, serviceContext);
+			getUserId(), parentResourcePrimKey, title, urlTitle, content,
+			description, sections, dirName, serviceContext);
 	}
 
 	public void deleteAttachment(
@@ -222,7 +222,7 @@ public class KBArticleServiceImpl extends KBArticleServiceBaseImpl {
 		return kbArticleLocalService.getKBArticle(resourcePrimKey, version);
 	}
 
-	public List<KBArticle> getKBArticleAndAllDescendants(
+	public List<KBArticle> getKBArticleAndAllDescendantKBArticles(
 			long groupId, long resourcePrimKey, int status,
 			OrderByComparator orderByComparator)
 		throws SystemException {
@@ -266,6 +266,20 @@ public class KBArticleServiceImpl extends KBArticleServiceBaseImpl {
 		return Collections.unmodifiableList(kbArticles);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by
+	 *             {@link #getKBArticleAndAllDescendantKBArticles(long, long,
+	 *             int, com.liferay.portal.kernel.util.OrderByComparator)}
+	 */
+	public List<KBArticle> getKBArticleAndAllDescendants(
+			long groupId, long resourcePrimKey, int status,
+			OrderByComparator orderByComparator)
+		throws SystemException {
+
+		return getKBArticleAndAllDescendantKBArticles(
+			groupId, resourcePrimKey, status, orderByComparator);
+	}
+
 	public String getKBArticleRSS(
 			long resourcePrimKey, int status, int rssDelta,
 			String rssDisplayStyle, String rssFormat, ThemeDisplay themeDisplay)
@@ -281,13 +295,34 @@ public class KBArticleServiceImpl extends KBArticleServiceBaseImpl {
 			themeDisplay.getPlid(), resourcePrimKey, status,
 			themeDisplay.getPortalURL(), false);
 
-		List<KBArticle> kbArticles = getKBArticleAndAllDescendants(
+		List<KBArticle> kbArticles = getKBArticleAndAllDescendantKBArticles(
 			kbArticle.getGroupId(), resourcePrimKey, status,
 			new KBArticleModifiedDateComparator());
 
 		return exportToRSS(
 			rssDisplayStyle, rssFormat, name, description, feedURL,
 			ListUtil.subList(kbArticles, 0, rssDelta), themeDisplay);
+	}
+
+	public List<KBArticle> getKBArticles(
+			long groupId, long parentResourcePrimKey, int status, int start,
+			int end, OrderByComparator orderByComparator)
+		throws SystemException {
+
+		if (status == WorkflowConstants.STATUS_ANY) {
+			return kbArticlePersistence.filterFindByG_P_L(
+				groupId, parentResourcePrimKey, true, start, end,
+				orderByComparator);
+		}
+		else if (status == WorkflowConstants.STATUS_APPROVED) {
+			return kbArticlePersistence.filterFindByG_P_M(
+				groupId, parentResourcePrimKey, true, start, end,
+				orderByComparator);
+		}
+
+		return kbArticlePersistence.filterFindByG_P_S(
+			groupId, parentResourcePrimKey, status, start, end,
+			orderByComparator);
 	}
 
 	public List<KBArticle> getKBArticles(
@@ -336,6 +371,23 @@ public class KBArticleServiceImpl extends KBArticleServiceBaseImpl {
 		return getKBArticles(
 			groupId, resourcePrimKeys, status, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, orderByComparator);
+	}
+
+	public int getKBArticlesCount(
+			long groupId, long parentResourcePrimKey, int status)
+		throws SystemException {
+
+		if (status == WorkflowConstants.STATUS_ANY) {
+			return kbArticlePersistence.filterCountByG_P_L(
+				groupId, parentResourcePrimKey, true);
+		}
+		else if (status == WorkflowConstants.STATUS_APPROVED) {
+			return kbArticlePersistence.filterCountByG_P_M(
+				groupId, parentResourcePrimKey, true);
+		}
+
+		return kbArticlePersistence.filterCountByG_P_S(
+			groupId, parentResourcePrimKey, status);
 	}
 
 	public int getKBArticlesCount(
@@ -527,42 +579,30 @@ public class KBArticleServiceImpl extends KBArticleServiceBaseImpl {
 			status);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #getKBArticles(long, long,
+	 *             int, int, int,
+	 *             com.liferay.portal.kernel.util.OrderByComparator)}
+	 */
 	public List<KBArticle> getSiblingKBArticles(
 			long groupId, long parentResourcePrimKey, int status, int start,
 			int end, OrderByComparator orderByComparator)
 		throws SystemException {
 
-		if (status == WorkflowConstants.STATUS_ANY) {
-			return kbArticlePersistence.filterFindByG_P_L(
-				groupId, parentResourcePrimKey, true, start, end,
-				orderByComparator);
-		}
-		else if (status == WorkflowConstants.STATUS_APPROVED) {
-			return kbArticlePersistence.filterFindByG_P_M(
-				groupId, parentResourcePrimKey, true, start, end,
-				orderByComparator);
-		}
-
-		return kbArticlePersistence.filterFindByG_P_S(
+		return getKBArticles(
 			groupId, parentResourcePrimKey, status, start, end,
 			orderByComparator);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #getKBArticlesCount(long,
+	 *             long, int)}
+	 */
 	public int getSiblingKBArticlesCount(
 			long groupId, long parentResourcePrimKey, int status)
 		throws SystemException {
 
-		if (status == WorkflowConstants.STATUS_ANY) {
-			return kbArticlePersistence.filterCountByG_P_L(
-				groupId, parentResourcePrimKey, true);
-		}
-		else if (status == WorkflowConstants.STATUS_APPROVED) {
-			return kbArticlePersistence.filterCountByG_P_M(
-				groupId, parentResourcePrimKey, true);
-		}
-
-		return kbArticlePersistence.filterCountByG_P_S(
-			groupId, parentResourcePrimKey, status);
+		return getKBArticlesCount(groupId, parentResourcePrimKey, status);
 	}
 
 	public void moveKBArticle(

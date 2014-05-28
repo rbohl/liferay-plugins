@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -65,7 +65,7 @@ public class GetSyncDLObjectUpdateEvent extends BaseEvent {
 				SyncFileService.addSyncFile(
 					null, null, filePathName, FileUtil.getFileKey(filePathName),
 					filePathName, null, filePathName, 0, syncSite.getGroupId(),
-					syncSite.getSyncAccountId(), SyncFile.TYPE_FOLDER);
+					syncSite.getSyncAccountId(), SyncFile.TYPE_SYSTEM);
 			}
 		}
 
