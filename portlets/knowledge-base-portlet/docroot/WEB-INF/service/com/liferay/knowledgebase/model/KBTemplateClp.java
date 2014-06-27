@@ -19,7 +19,6 @@ import com.liferay.knowledgebase.service.KBTemplateLocalServiceUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -281,7 +280,7 @@ public class KBTemplateClp extends BaseModelImpl<KBTemplate>
 	}
 
 	@Override
-	public String getUserUuid() throws SystemException {
+	public String getUserUuid() {
 		try {
 			User user = UserLocalServiceUtil.getUserById(getUserId());
 
@@ -467,7 +466,7 @@ public class KBTemplateClp extends BaseModelImpl<KBTemplate>
 	}
 
 	@Override
-	public void persist() throws SystemException {
+	public void persist() {
 		if (this.isNew()) {
 			KBTemplateLocalServiceUtil.addKBTemplate(this);
 		}
@@ -536,6 +535,10 @@ public class KBTemplateClp extends BaseModelImpl<KBTemplate>
 		else {
 			return false;
 		}
+	}
+
+	public Class<?> getClpSerializerClass() {
+		return _clpSerializerClass;
 	}
 
 	@Override
@@ -647,6 +650,7 @@ public class KBTemplateClp extends BaseModelImpl<KBTemplate>
 	private String _title;
 	private String _content;
 	private BaseModel<?> _kbTemplateRemoteModel;
+	private Class<?> _clpSerializerClass = com.liferay.knowledgebase.service.ClpSerializer.class;
 	private boolean _entityCacheEnabled;
 	private boolean _finderCacheEnabled;
 }

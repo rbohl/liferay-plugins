@@ -20,18 +20,18 @@
 String filter = ParamUtil.getString(request, "filter");
 boolean fullView = ParamUtil.getBoolean(request, "fullView", true);
 int start = ParamUtil.getInteger(request, "start", 0);
-int end = ParamUtil.getInteger(request, "end", delta);
+int end = ParamUtil.getInteger(request, "end", fullView ? fullViewDelta : dockbarViewDelta);
 
 List<UserNotificationEvent> userNotificationEvents = null;
 int userNotificationEventsCount = 0;
 
 if (filter.equals("unread")) {
-	userNotificationEvents = UserNotificationEventLocalServiceUtil.getArchivedUserNotificationEvents(themeDisplay.getUserId(), false, start, end);
-	userNotificationEventsCount = UserNotificationEventLocalServiceUtil.getArchivedUserNotificationEventsCount(themeDisplay.getUserId(), false);
+	userNotificationEvents = UserNotificationEventLocalServiceUtil.getArchivedUserNotificationEvents(themeDisplay.getUserId(), UserNotificationDeliveryConstants.TYPE_WEBSITE, false, start, end);
+	userNotificationEventsCount = UserNotificationEventLocalServiceUtil.getArchivedUserNotificationEventsCount(themeDisplay.getUserId(), UserNotificationDeliveryConstants.TYPE_WEBSITE, false);
 }
 else {
-	userNotificationEvents = UserNotificationEventLocalServiceUtil.getUserNotificationEvents(themeDisplay.getUserId(), start, end);
-	userNotificationEventsCount = UserNotificationEventLocalServiceUtil.getUserNotificationEventsCount(themeDisplay.getUserId());
+	userNotificationEvents = UserNotificationEventLocalServiceUtil.getUserNotificationEvents(themeDisplay.getUserId(), UserNotificationDeliveryConstants.TYPE_WEBSITE, start, end);
+	userNotificationEventsCount = UserNotificationEventLocalServiceUtil.getUserNotificationEventsCount(themeDisplay.getUserId(), UserNotificationDeliveryConstants.TYPE_WEBSITE);
 }
 %>
 
@@ -48,7 +48,7 @@ else {
 			</c:choose>
 		</li>
 	</c:when>
-	<c:when test="<%= (userNotificationEventsCount > delta) && fullView %>">
+	<c:when test="<%= (userNotificationEventsCount > fullViewDelta) && fullView %>">
 		<li class="clearfix message top">
 			<span class="left-nav <%= start == 0 ? "disabled" : "previous" %>"><a href="javascript:;"><liferay-ui:message key="previous" /></a></span>
 			<span><liferay-ui:message arguments="<%= new Object[] {(start + 1), end <= userNotificationEventsCount ? end : userNotificationEventsCount, userNotificationEventsCount} %>" key="showing-x-x-of-x-results" translateArguments="<%= false %>" /></span>
@@ -107,7 +107,7 @@ for (UserNotificationEvent userNotificationEvent : userNotificationEvents) {
 
 		<div class="sender">
 			<span class="user-thumbnail">
-				<img alt="<%= userFullName %>" src="<%= userPortaitURL %>" />
+				<img alt="<%= HtmlUtil.escapeAttribute(userFullName) %>" src="<%= userPortaitURL %>" />
 			</span>
 		</div>
 
@@ -182,7 +182,7 @@ for (UserNotificationEvent userNotificationEvent : userNotificationEvents) {
 			baseRenderURL: '<%= PortletURLFactoryUtil.create(request, portletDisplay.getId(), themeDisplay.getPlid(), PortletRequest.RENDER_PHASE) %>',
 			baseResourceURL: '<%= PortletURLFactoryUtil.create(request, portletDisplay.getId(), themeDisplay.getPlid(), PortletRequest.RESOURCE_PHASE) %>',
 			currentPageNotificationEventsCount: <%= userNotificationEventIds.size() %>,
-			delta: <%= delta %>,
+			delta: <%= fullViewDelta %>,
 			end: <%= end %>,
 			filter: '<%= HtmlUtil.escape(filter) %>',
 			start: <%= start %>,

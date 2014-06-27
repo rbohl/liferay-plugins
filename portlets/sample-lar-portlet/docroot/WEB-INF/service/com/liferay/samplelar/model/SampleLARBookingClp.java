@@ -16,7 +16,6 @@ package com.liferay.samplelar.model;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
@@ -274,7 +273,7 @@ public class SampleLARBookingClp extends BaseModelImpl<SampleLARBooking>
 	}
 
 	@Override
-	public String getUserUuid() throws SystemException {
+	public String getUserUuid() {
 		try {
 			User user = UserLocalServiceUtil.getUserById(getUserId());
 
@@ -438,7 +437,7 @@ public class SampleLARBookingClp extends BaseModelImpl<SampleLARBooking>
 	}
 
 	@Override
-	public void persist() throws SystemException {
+	public void persist() {
 		if (this.isNew()) {
 			SampleLARBookingLocalServiceUtil.addSampleLARBooking(this);
 		}
@@ -504,6 +503,10 @@ public class SampleLARBookingClp extends BaseModelImpl<SampleLARBooking>
 		else {
 			return false;
 		}
+	}
+
+	public Class<?> getClpSerializerClass() {
+		return _clpSerializerClass;
 	}
 
 	@Override
@@ -608,6 +611,7 @@ public class SampleLARBookingClp extends BaseModelImpl<SampleLARBooking>
 	private Date _modifiedDate;
 	private String _bookingNumber;
 	private BaseModel<?> _sampleLARBookingRemoteModel;
+	private Class<?> _clpSerializerClass = com.liferay.samplelar.service.ClpSerializer.class;
 	private boolean _entityCacheEnabled;
 	private boolean _finderCacheEnabled;
 }

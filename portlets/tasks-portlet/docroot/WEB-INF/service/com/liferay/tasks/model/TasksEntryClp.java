@@ -16,7 +16,6 @@ package com.liferay.tasks.model;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
@@ -284,7 +283,7 @@ public class TasksEntryClp extends BaseModelImpl<TasksEntry>
 	}
 
 	@Override
-	public String getUserUuid() throws SystemException {
+	public String getUserUuid() {
 		try {
 			User user = UserLocalServiceUtil.getUserById(getUserId());
 
@@ -438,7 +437,7 @@ public class TasksEntryClp extends BaseModelImpl<TasksEntry>
 	}
 
 	@Override
-	public String getAssigneeUserUuid() throws SystemException {
+	public String getAssigneeUserUuid() {
 		try {
 			User user = UserLocalServiceUtil.getUserById(getAssigneeUserId());
 
@@ -477,7 +476,7 @@ public class TasksEntryClp extends BaseModelImpl<TasksEntry>
 	}
 
 	@Override
-	public String getResolverUserUuid() throws SystemException {
+	public String getResolverUserUuid() {
 		try {
 			User user = UserLocalServiceUtil.getUserById(getResolverUserId());
 
@@ -687,7 +686,7 @@ public class TasksEntryClp extends BaseModelImpl<TasksEntry>
 	}
 
 	@Override
-	public void persist() throws SystemException {
+	public void persist() {
 		if (this.isNew()) {
 			TasksEntryLocalServiceUtil.addTasksEntry(this);
 		}
@@ -777,6 +776,10 @@ public class TasksEntryClp extends BaseModelImpl<TasksEntry>
 		else {
 			return false;
 		}
+	}
+
+	public Class<?> getClpSerializerClass() {
+		return _clpSerializerClass;
 	}
 
 	@Override
@@ -916,6 +919,7 @@ public class TasksEntryClp extends BaseModelImpl<TasksEntry>
 	private Date _finishDate;
 	private int _status;
 	private BaseModel<?> _tasksEntryRemoteModel;
+	private Class<?> _clpSerializerClass = com.liferay.tasks.service.ClpSerializer.class;
 	private boolean _entityCacheEnabled;
 	private boolean _finderCacheEnabled;
 }

@@ -16,14 +16,20 @@ package com.liferay.amazontools;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.autoscaling.AmazonAutoScalingClient;
 import com.amazonaws.services.ec2.AmazonEC2Client;
 import com.amazonaws.services.ec2.model.DescribeImagesRequest;
 import com.amazonaws.services.ec2.model.DescribeImagesResult;
 import com.amazonaws.services.ec2.model.Filter;
 import com.amazonaws.services.ec2.model.Image;
 
+import com.liferay.jsonwebserviceclient.JSONWebServiceClient;
+import com.liferay.jsonwebserviceclient.JSONWebServiceClientImpl;
+
 import java.io.FileInputStream;
 import java.io.InputStream;
+
+import java.security.KeyStore;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -41,10 +47,28 @@ public class BaseAMITool {
 	public BaseAMITool(String propertiesFileName) throws Exception {
 		properties = getProperties(propertiesFileName);
 
+		amazonAutoScalingClient = getAmazonAutoScalingClient(
+			properties.getProperty("access.key"),
+			properties.getProperty("secret.key"),
+			properties.getProperty("autoscaling.endpoint"));
 		amazonEC2Client = getAmazonEC2Client(
 			properties.getProperty("access.key"),
 			properties.getProperty("secret.key"),
 			properties.getProperty("ec2.endpoint"));
+	}
+
+	protected AmazonAutoScalingClient getAmazonAutoScalingClient(
+		String accessKey, String secretKey, String endpoint) {
+
+		AWSCredentials awsCredentials = new BasicAWSCredentials(
+			accessKey, secretKey);
+
+		AmazonAutoScalingClient amazonAutoScalingClient =
+			new AmazonAutoScalingClient(awsCredentials);
+
+		amazonAutoScalingClient.setEndpoint(endpoint);
+
+		return amazonAutoScalingClient;
 	}
 
 	protected AmazonEC2Client getAmazonEC2Client(
@@ -107,6 +131,55 @@ public class BaseAMITool {
 		return image.getImageId();
 	}
 
+	protected JSONWebServiceClient getJSONWebServiceClient(
+		String hostName, int hostPort, String keyStorePath,
+		String keyStorePassword, String login, String password) {
+
+		JSONWebServiceClientImpl jsonWebServiceClientImpl =
+			new JSONWebServiceClientImpl();
+
+		jsonWebServiceClientImpl.setHostName(hostName);
+		jsonWebServiceClientImpl.setHostPort(hostPort);
+		jsonWebServiceClientImpl.setLogin(login);
+		jsonWebServiceClientImpl.setPassword(password);
+
+		if ((keyStorePath != null) && (keyStorePassword != null)) {
+			KeyStore keyStore = getKeyStore(keyStorePath, keyStorePassword);
+
+			jsonWebServiceClientImpl.setKeyStore(keyStore);
+
+			jsonWebServiceClientImpl.setProtocol("https");
+		}
+
+		jsonWebServiceClientImpl.afterPropertiesSet();
+
+		return jsonWebServiceClientImpl;
+	}
+
+	protected KeyStore getKeyStore(String keyStorePath, String password) {
+		InputStream inputStream = null;
+
+		try {
+			KeyStore keyStore = KeyStore.getInstance("JKS");
+
+			inputStream = new FileInputStream(keyStorePath);
+
+			keyStore.load(inputStream, password.toCharArray());
+
+			return keyStore;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		finally {
+			try {
+				inputStream.close();
+			}
+			catch (Exception e) {
+			}
+		}
+	}
+
 	protected Properties getProperties(String propertiesFileName)
 		throws Exception {
 
@@ -141,6 +214,7 @@ public class BaseAMITool {
 		}
 	}
 
+	protected AmazonAutoScalingClient amazonAutoScalingClient;
 	protected AmazonEC2Client amazonEC2Client;
 	protected Properties properties;
 

@@ -44,6 +44,7 @@ page import="com.liferay.portal.model.LayoutConstants" %><%@
 page import="com.liferay.portal.model.Portlet" %><%@
 page import="com.liferay.portal.model.User" %><%@
 page import="com.liferay.portal.model.UserNotificationDelivery" %><%@
+page import="com.liferay.portal.model.UserNotificationDeliveryConstants" %><%@
 page import="com.liferay.portal.model.UserNotificationEvent" %><%@
 page import="com.liferay.portal.service.GroupLocalServiceUtil" %><%@
 page import="com.liferay.portal.service.LayoutLocalServiceUtil" %><%@
@@ -68,7 +69,8 @@ page import="java.util.Map" %>
 <liferay-theme:defineObjects />
 
 <%
-int delta = 10;
+int dockbarViewDelta = 5;
+int fullViewDelta = 10;
 
 Format simpleDateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("EEEE, MMMMM dd, yyyy 'at' h:mm a", themeDisplay.getLocale(), themeDisplay.getTimeZone());
 %>

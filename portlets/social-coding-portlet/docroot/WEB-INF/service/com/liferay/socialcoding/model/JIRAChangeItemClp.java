@@ -15,7 +15,6 @@
 package com.liferay.socialcoding.model;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -350,7 +349,7 @@ public class JIRAChangeItemClp extends BaseModelImpl<JIRAChangeItem>
 	}
 
 	@Override
-	public void persist() throws SystemException {
+	public void persist() {
 		if (this.isNew()) {
 			JIRAChangeItemLocalServiceUtil.addJIRAChangeItem(this);
 		}
@@ -416,6 +415,10 @@ public class JIRAChangeItemClp extends BaseModelImpl<JIRAChangeItem>
 		else {
 			return false;
 		}
+	}
+
+	public Class<?> getClpSerializerClass() {
+		return _clpSerializerClass;
 	}
 
 	@Override
@@ -506,6 +509,7 @@ public class JIRAChangeItemClp extends BaseModelImpl<JIRAChangeItem>
 	private String _newValue;
 	private String _newString;
 	private BaseModel<?> _jiraChangeItemRemoteModel;
+	private Class<?> _clpSerializerClass = com.liferay.socialcoding.service.ClpSerializer.class;
 	private boolean _entityCacheEnabled;
 	private boolean _finderCacheEnabled;
 }

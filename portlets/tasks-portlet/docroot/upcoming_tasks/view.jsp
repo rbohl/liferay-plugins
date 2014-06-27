@@ -29,14 +29,13 @@
 			String taskHREF = null;
 
 			if (TasksEntryPermission.contains(permissionChecker, tasksEntry, ActionKeys.UPDATE)) {
-				PortletURL portletURL = renderResponse.createRenderURL();
+				LiferayPortletURL liferayPortletURL = liferayPortletResponse.createLiferayPortletURL(PortletKeys.TASKS, PortletRequest.RENDER_PHASE);
 
-				portletURL.setWindowState(LiferayWindowState.EXCLUSIVE);
+				liferayPortletURL.setParameter("mvcPath", "/tasks/view_task.jsp");
+				liferayPortletURL.setParameter("tasksEntryId", String.valueOf(tasksEntry.getTasksEntryId()));
+				liferayPortletURL.setWindowState(LiferayWindowState.POP_UP);
 
-				portletURL.setParameter("mvcPath", "/tasks/view_task.jsp");
-				portletURL.setParameter("tasksEntryId", String.valueOf(tasksEntry.getTasksEntryId()));
-
-				taskHREF = portletURL.toString();
+				taskHREF = liferayPortletURL.toString();
 			}
 
 			String cssClass = "tasks-title";
@@ -55,10 +54,18 @@
 			<li class="<%= cssClass %>">
 				<c:choose>
 					<c:when test="<%= Validator.isNotNull(taskHREF) %>">
-						<a href="javascript:;" onClick="Liferay.Tasks.openTask('<%= taskHREF %>');"><%= HtmlUtil.escape(tasksEntry.getTitle()) %></a>
+						<a href="javascript:;" onClick="Liferay.Tasks.openTask('<%= taskHREF %>');">
+							<i class="icon-circle"></i>
+
+							<%= HtmlUtil.escape(tasksEntry.getTitle()) %>
+						</a>
 					</c:when>
 					<c:otherwise>
-						<span><%= HtmlUtil.escape(tasksEntry.getTitle()) %></span>
+						<span>
+							<i class="icon-circle"></i>
+
+							<%= HtmlUtil.escape(tasksEntry.getTitle()) %>
+						</span>
 					</c:otherwise>
 				</c:choose>
 			</li>

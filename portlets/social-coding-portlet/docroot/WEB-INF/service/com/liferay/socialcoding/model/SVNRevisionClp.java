@@ -15,7 +15,6 @@
 package com.liferay.socialcoding.model;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -375,7 +374,7 @@ public class SVNRevisionClp extends BaseModelImpl<SVNRevision>
 	}
 
 	@Override
-	public void persist() throws SystemException {
+	public void persist() {
 		if (this.isNew()) {
 			SVNRevisionLocalServiceUtil.addSVNRevision(this);
 		}
@@ -447,6 +446,10 @@ public class SVNRevisionClp extends BaseModelImpl<SVNRevision>
 		else {
 			return false;
 		}
+	}
+
+	public Class<?> getClpSerializerClass() {
+		return _clpSerializerClass;
 	}
 
 	@Override
@@ -530,6 +533,7 @@ public class SVNRevisionClp extends BaseModelImpl<SVNRevision>
 	private long _revisionNumber;
 	private String _comments;
 	private BaseModel<?> _svnRevisionRemoteModel;
+	private Class<?> _clpSerializerClass = com.liferay.socialcoding.service.ClpSerializer.class;
 	private boolean _entityCacheEnabled;
 	private boolean _finderCacheEnabled;
 }

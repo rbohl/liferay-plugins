@@ -76,7 +76,7 @@ String dirName = ParamUtil.getString(request, "dirName");
 	<aui:fieldset>
 		<aui:input name="title" />
 
-		<aui:input disabled="<%= kbArticle != null %>" name="urlTitle" />
+		<aui:input disabled="<%= kbArticle != null %>" label="friendly-url" name="urlTitle" />
 
 		<aui:field-wrapper label="content">
 			<liferay-ui:input-editor width="100%" />
@@ -105,7 +105,7 @@ String dirName = ParamUtil.getString(request, "dirName");
 				Map<String, String> sectionsMap = new TreeMap<String, String>();
 
 				for (String section : PortletPropsValues.ADMIN_KB_ARTICLE_SECTIONS) {
-					sectionsMap.put(LanguageUtil.get(pageContext, section), section);
+					sectionsMap.put(LanguageUtil.get(request, section), section);
 				}
 
 				for (Map.Entry<String, String> entry : sectionsMap.entrySet()) {

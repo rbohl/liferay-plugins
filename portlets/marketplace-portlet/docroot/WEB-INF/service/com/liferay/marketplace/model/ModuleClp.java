@@ -18,7 +18,6 @@ import com.liferay.marketplace.service.ClpSerializer;
 import com.liferay.marketplace.service.ModuleLocalServiceUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -256,7 +255,7 @@ public class ModuleClp extends BaseModelImpl<Module> implements Module {
 	}
 
 	@Override
-	public void persist() throws SystemException {
+	public void persist() {
 		if (this.isNew()) {
 			ModuleLocalServiceUtil.addModule(this);
 		}
@@ -318,6 +317,10 @@ public class ModuleClp extends BaseModelImpl<Module> implements Module {
 		else {
 			return false;
 		}
+	}
+
+	public Class<?> getClpSerializerClass() {
+		return _clpSerializerClass;
 	}
 
 	@Override
@@ -387,6 +390,7 @@ public class ModuleClp extends BaseModelImpl<Module> implements Module {
 	private long _appId;
 	private String _contextName;
 	private BaseModel<?> _moduleRemoteModel;
+	private Class<?> _clpSerializerClass = com.liferay.marketplace.service.ClpSerializer.class;
 	private boolean _entityCacheEnabled;
 	private boolean _finderCacheEnabled;
 }

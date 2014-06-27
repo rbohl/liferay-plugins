@@ -44,11 +44,9 @@ public class EntryLocalServiceUtil {
 	*
 	* @param entry the entry
 	* @return the entry that was added
-	* @throws SystemException if a system exception occurred
 	*/
 	public static com.liferay.contacts.model.Entry addEntry(
-		com.liferay.contacts.model.Entry entry)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.contacts.model.Entry entry) {
 		return getService().addEntry(entry);
 	}
 
@@ -68,11 +66,9 @@ public class EntryLocalServiceUtil {
 	* @param entryId the primary key of the entry
 	* @return the entry that was removed
 	* @throws PortalException if a entry with the primary key could not be found
-	* @throws SystemException if a system exception occurred
 	*/
 	public static com.liferay.contacts.model.Entry deleteEntry(long entryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteEntry(entryId);
 	}
 
@@ -81,11 +77,9 @@ public class EntryLocalServiceUtil {
 	*
 	* @param entry the entry
 	* @return the entry that was removed
-	* @throws SystemException if a system exception occurred
 	*/
 	public static com.liferay.contacts.model.Entry deleteEntry(
-		com.liferay.contacts.model.Entry entry)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.contacts.model.Entry entry) {
 		return getService().deleteEntry(entry);
 	}
 
@@ -98,12 +92,10 @@ public class EntryLocalServiceUtil {
 	*
 	* @param dynamicQuery the dynamic query
 	* @return the matching rows
-	* @throws SystemException if a system exception occurred
 	*/
 	@SuppressWarnings("rawtypes")
 	public static java.util.List dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -118,12 +110,11 @@ public class EntryLocalServiceUtil {
 	* @param start the lower bound of the range of model instances
 	* @param end the upper bound of the range of model instances (not inclusive)
 	* @return the range of matching rows
-	* @throws SystemException if a system exception occurred
 	*/
 	@SuppressWarnings("rawtypes")
 	public static java.util.List dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) throws com.liferay.portal.kernel.exception.SystemException {
+		int end) {
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
 
@@ -139,14 +130,12 @@ public class EntryLocalServiceUtil {
 	* @param end the upper bound of the range of model instances (not inclusive)
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of matching rows
-	* @throws SystemException if a system exception occurred
 	*/
 	@SuppressWarnings("rawtypes")
 	public static java.util.List dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
 		int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
 		return getService()
 				   .dynamicQuery(dynamicQuery, start, end, orderByComparator);
 	}
@@ -156,11 +145,9 @@ public class EntryLocalServiceUtil {
 	*
 	* @param dynamicQuery the dynamic query
 	* @return the number of rows that match the dynamic query
-	* @throws SystemException if a system exception occurred
 	*/
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -170,17 +157,14 @@ public class EntryLocalServiceUtil {
 	* @param dynamicQuery the dynamic query
 	* @param projection the projection to apply to the query
 	* @return the number of rows that match the dynamic query
-	* @throws SystemException if a system exception occurred
 	*/
 	public static long dynamicQueryCount(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.contacts.model.Entry fetchEntry(long entryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static com.liferay.contacts.model.Entry fetchEntry(long entryId) {
 		return getService().fetchEntry(entryId);
 	}
 
@@ -190,23 +174,28 @@ public class EntryLocalServiceUtil {
 	* @param entryId the primary key of the entry
 	* @return the entry
 	* @throws PortalException if a entry with the primary key could not be found
-	* @throws SystemException if a system exception occurred
 	*/
 	public static com.liferay.contacts.model.Entry getEntry(long entryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getEntry(entryId);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return getService().getActionableDynamicQuery();
+	}
+
+	/**
+	* @throws PortalException
+	*/
+	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deletePersistedModel(persistedModel);
 	}
 
 	public static com.liferay.portal.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
@@ -220,11 +209,9 @@ public class EntryLocalServiceUtil {
 	* @param start the lower bound of the range of entries
 	* @param end the upper bound of the range of entries (not inclusive)
 	* @return the range of entries
-	* @throws SystemException if a system exception occurred
 	*/
 	public static java.util.List<com.liferay.contacts.model.Entry> getEntries(
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end) {
 		return getService().getEntries(start, end);
 	}
 
@@ -232,10 +219,8 @@ public class EntryLocalServiceUtil {
 	* Returns the number of entries.
 	*
 	* @return the number of entries
-	* @throws SystemException if a system exception occurred
 	*/
-	public static int getEntriesCount()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static int getEntriesCount() {
 		return getService().getEntriesCount();
 	}
 
@@ -244,11 +229,9 @@ public class EntryLocalServiceUtil {
 	*
 	* @param entry the entry
 	* @return the entry that was updated
-	* @throws SystemException if a system exception occurred
 	*/
 	public static com.liferay.contacts.model.Entry updateEntry(
-		com.liferay.contacts.model.Entry entry)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.contacts.model.Entry entry) {
 		return getService().updateEntry(entry);
 	}
 
@@ -279,44 +262,38 @@ public class EntryLocalServiceUtil {
 	public static com.liferay.contacts.model.Entry addEntry(long userId,
 		java.lang.String fullName, java.lang.String emailAddress,
 		java.lang.String comments)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().addEntry(userId, fullName, emailAddress, comments);
 	}
 
 	public static java.util.List<com.liferay.contacts.model.Entry> getEntries(
-		long userId, int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long userId, int start, int end) {
 		return getService().getEntries(userId, start, end);
 	}
 
-	public static int getEntriesCount(long userId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static int getEntriesCount(long userId) {
 		return getService().getEntriesCount(userId);
 	}
 
 	public static java.util.List<com.liferay.contacts.model.Entry> search(
-		long userId, java.lang.String keywords, int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long userId, java.lang.String keywords, int start, int end) {
 		return getService().search(userId, keywords, start, end);
 	}
 
-	public static int searchCount(long userId, java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static int searchCount(long userId, java.lang.String keywords) {
 		return getService().searchCount(userId, keywords);
 	}
 
 	public static java.util.List<com.liferay.portal.model.BaseModel<?>> searchUsersAndContacts(
 		long companyId, long userId, java.lang.String keywords, int start,
-		int end) throws com.liferay.portal.kernel.exception.SystemException {
+		int end) {
 		return getService()
 				   .searchUsersAndContacts(companyId, userId, keywords, start,
 			end);
 	}
 
 	public static int searchUsersAndContactsCount(long companyId, long userId,
-		java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.lang.String keywords) {
 		return getService()
 				   .searchUsersAndContactsCount(companyId, userId, keywords);
 	}
@@ -324,8 +301,7 @@ public class EntryLocalServiceUtil {
 	public static com.liferay.contacts.model.Entry updateEntry(long entryId,
 		java.lang.String fullName, java.lang.String emailAddress,
 		java.lang.String comments)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateEntry(entryId, fullName, emailAddress, comments);
 	}

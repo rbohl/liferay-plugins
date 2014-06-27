@@ -68,7 +68,7 @@ AUI.add(
 
 				if (milliseconds > 0) {
 					AArray.some(
-						[ Time.WEEK, Time.DAY, Time.HOUR, Time.MINUTE ],
+						[Time.WEEK, Time.DAY, Time.HOUR, Time.MINUTE],
 						function(item, index) {
 							value = milliseconds / item;
 							desc = Time.TIME_DESC[index];
@@ -468,7 +468,7 @@ AUI.add(
 			invokeResourceURL: function(resourceId, parameters, callback) {
 				var instance = this;
 
-				var url = Liferay.PortletURL.createResourceURL()
+				var url = Liferay.PortletURL.createResourceURL();
 
 				url.setParameters(parameters);
 				url.setPortletId('1_WAR_calendarportlet');
@@ -1378,7 +1378,7 @@ AUI.add(
 					_getCalendarBookingDuration: function(schedulerEvent) {
 						var instance = this;
 
-						var duration = schedulerEvent.getSecondsDuration()*Time.SECOND;
+						var duration = schedulerEvent.getSecondsDuration() * Time.SECOND;
 
 						return duration;
 					},
@@ -1592,8 +1592,8 @@ AUI.add(
 						else {
 							Liferay.CalendarMessageUtil.confirm(
 								TPL_MESSAGE_UPDATE_ALL_INVITED,
-								Liferay.Language.get('continue'),
-								Liferay.Language.get('dont-change-the-event'),
+								Liferay.Language.get('save-changes'),
+								Liferay.Language.get('do-not-change-the-event'),
 								function() {
 									showNextQuestion();
 								},
@@ -1667,8 +1667,8 @@ AUI.add(
 
 							Liferay.CalendarMessageUtil.confirm(
 								content,
-								Liferay.Language.get('continue'),
-								Liferay.Language.get('dont-change-the-event'),
+								Liferay.Language.get('save-changes'),
+								Liferay.Language.get('do-not-change-the-event'),
 								function() {
 									showNextQuestion();
 								},
@@ -2011,8 +2011,21 @@ AUI.add(
 
 						data.date = date.getTime();
 
-						data.endTime = CalendarUtil.toUTC(data.endTime).getTime();
-						data.startTime = CalendarUtil.toUTC(data.startTime).getTime();
+						var endTime = new Date(data.endTime);
+
+						data.endTimeDay = endTime.getDate();
+						data.endTimeHour = endTime.getHours();
+						data.endTimeMinute = endTime.getMinutes();
+						data.endTimeMonth = endTime.getMonth();
+						data.endTimeYear = endTime.getFullYear();
+
+						var startTime = new Date(data.startTime);
+
+						data.startTimeDay = startTime.getDate();
+						data.startTimeHour = startTime.getHours();
+						data.startTimeMinute = startTime.getMinutes();
+						data.startTimeMonth = startTime.getMonth();
+						data.startTimeYear = startTime.getFullYear();
 
 						data.titleCurrentValue = encodeURIComponent(data.content);
 

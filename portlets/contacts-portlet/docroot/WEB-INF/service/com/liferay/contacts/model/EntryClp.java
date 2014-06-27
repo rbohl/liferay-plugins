@@ -19,7 +19,6 @@ import com.liferay.contacts.service.EntryLocalServiceUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -254,7 +253,7 @@ public class EntryClp extends BaseModelImpl<Entry> implements Entry {
 	}
 
 	@Override
-	public String getUserUuid() throws SystemException {
+	public String getUserUuid() {
 		try {
 			User user = UserLocalServiceUtil.getUserById(getUserId());
 
@@ -457,7 +456,7 @@ public class EntryClp extends BaseModelImpl<Entry> implements Entry {
 	}
 
 	@Override
-	public void persist() throws SystemException {
+	public void persist() {
 		if (this.isNew()) {
 			EntryLocalServiceUtil.addEntry(this);
 		}
@@ -523,6 +522,10 @@ public class EntryClp extends BaseModelImpl<Entry> implements Entry {
 		else {
 			return false;
 		}
+	}
+
+	public Class<?> getClpSerializerClass() {
+		return _clpSerializerClass;
 	}
 
 	@Override
@@ -634,6 +637,7 @@ public class EntryClp extends BaseModelImpl<Entry> implements Entry {
 	private String _emailAddress;
 	private String _comments;
 	private BaseModel<?> _entryRemoteModel;
+	private Class<?> _clpSerializerClass = com.liferay.contacts.service.ClpSerializer.class;
 	private boolean _entityCacheEnabled;
 	private boolean _finderCacheEnabled;
 }

@@ -16,7 +16,6 @@ package com.liferay.so.model;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
@@ -270,7 +269,7 @@ public class MemberRequestClp extends BaseModelImpl<MemberRequest>
 	}
 
 	@Override
-	public String getUserUuid() throws SystemException {
+	public String getUserUuid() {
 		try {
 			User user = UserLocalServiceUtil.getUserById(getUserId());
 
@@ -401,7 +400,7 @@ public class MemberRequestClp extends BaseModelImpl<MemberRequest>
 	}
 
 	@Override
-	public String getReceiverUserUuid() throws SystemException {
+	public String getReceiverUserUuid() {
 		try {
 			User user = UserLocalServiceUtil.getUserById(getReceiverUserId());
 
@@ -536,7 +535,7 @@ public class MemberRequestClp extends BaseModelImpl<MemberRequest>
 	}
 
 	@Override
-	public void persist() throws SystemException {
+	public void persist() {
 		if (this.isNew()) {
 			MemberRequestLocalServiceUtil.addMemberRequest(this);
 		}
@@ -607,6 +606,10 @@ public class MemberRequestClp extends BaseModelImpl<MemberRequest>
 		else {
 			return false;
 		}
+	}
+
+	public Class<?> getClpSerializerClass() {
+		return _clpSerializerClass;
 	}
 
 	@Override
@@ -732,6 +735,7 @@ public class MemberRequestClp extends BaseModelImpl<MemberRequest>
 	private long _invitedTeamId;
 	private int _status;
 	private BaseModel<?> _memberRequestRemoteModel;
+	private Class<?> _clpSerializerClass = com.liferay.so.service.ClpSerializer.class;
 	private boolean _entityCacheEnabled;
 	private boolean _finderCacheEnabled;
 }
