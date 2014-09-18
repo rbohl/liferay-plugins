@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -40,12 +39,10 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -155,7 +152,7 @@ public class OAuthTokenPersistenceImpl extends BasePersistenceImpl<OAuthToken>
 	 */
 	@Override
 	public List<OAuthToken> findByG_S(String gadgetKey, String serviceName,
-		int start, int end, OrderByComparator orderByComparator) {
+		int start, int end, OrderByComparator<OAuthToken> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -300,7 +297,8 @@ public class OAuthTokenPersistenceImpl extends BasePersistenceImpl<OAuthToken>
 	 */
 	@Override
 	public OAuthToken findByG_S_First(String gadgetKey, String serviceName,
-		OrderByComparator orderByComparator) throws NoSuchOAuthTokenException {
+		OrderByComparator<OAuthToken> orderByComparator)
+		throws NoSuchOAuthTokenException {
 		OAuthToken oAuthToken = fetchByG_S_First(gadgetKey, serviceName,
 				orderByComparator);
 
@@ -333,7 +331,7 @@ public class OAuthTokenPersistenceImpl extends BasePersistenceImpl<OAuthToken>
 	 */
 	@Override
 	public OAuthToken fetchByG_S_First(String gadgetKey, String serviceName,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<OAuthToken> orderByComparator) {
 		List<OAuthToken> list = findByG_S(gadgetKey, serviceName, 0, 1,
 				orderByComparator);
 
@@ -355,7 +353,8 @@ public class OAuthTokenPersistenceImpl extends BasePersistenceImpl<OAuthToken>
 	 */
 	@Override
 	public OAuthToken findByG_S_Last(String gadgetKey, String serviceName,
-		OrderByComparator orderByComparator) throws NoSuchOAuthTokenException {
+		OrderByComparator<OAuthToken> orderByComparator)
+		throws NoSuchOAuthTokenException {
 		OAuthToken oAuthToken = fetchByG_S_Last(gadgetKey, serviceName,
 				orderByComparator);
 
@@ -388,7 +387,7 @@ public class OAuthTokenPersistenceImpl extends BasePersistenceImpl<OAuthToken>
 	 */
 	@Override
 	public OAuthToken fetchByG_S_Last(String gadgetKey, String serviceName,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<OAuthToken> orderByComparator) {
 		int count = countByG_S(gadgetKey, serviceName);
 
 		if (count == 0) {
@@ -418,7 +417,8 @@ public class OAuthTokenPersistenceImpl extends BasePersistenceImpl<OAuthToken>
 	@Override
 	public OAuthToken[] findByG_S_PrevAndNext(long oAuthTokenId,
 		String gadgetKey, String serviceName,
-		OrderByComparator orderByComparator) throws NoSuchOAuthTokenException {
+		OrderByComparator<OAuthToken> orderByComparator)
+		throws NoSuchOAuthTokenException {
 		OAuthToken oAuthToken = findByPrimaryKey(oAuthTokenId);
 
 		Session session = null;
@@ -448,7 +448,7 @@ public class OAuthTokenPersistenceImpl extends BasePersistenceImpl<OAuthToken>
 
 	protected OAuthToken getByG_S_PrevAndNext(Session session,
 		OAuthToken oAuthToken, String gadgetKey, String serviceName,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<OAuthToken> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -1672,7 +1672,7 @@ public class OAuthTokenPersistenceImpl extends BasePersistenceImpl<OAuthToken>
 	 */
 	@Override
 	public List<OAuthToken> findAll(int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<OAuthToken> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1803,25 +1803,6 @@ public class OAuthTokenPersistenceImpl extends BasePersistenceImpl<OAuthToken>
 	 * Initializes the o auth token persistence.
 	 */
 	public void afterPropertiesSet() {
-		String[] listenerClassNames = StringUtil.split(GetterUtil.getString(
-					com.liferay.util.service.ServiceProps.get(
-						"value.object.listener.com.liferay.opensocial.model.OAuthToken")));
-
-		if (listenerClassNames.length > 0) {
-			try {
-				List<ModelListener<OAuthToken>> listenersList = new ArrayList<ModelListener<OAuthToken>>();
-
-				for (String listenerClassName : listenerClassNames) {
-					listenersList.add((ModelListener<OAuthToken>)InstanceFactory.newInstance(
-							getClassLoader(), listenerClassName));
-				}
-
-				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
-			}
-			catch (Exception e) {
-				_log.error(e);
-			}
-		}
 	}
 
 	public void destroy() {

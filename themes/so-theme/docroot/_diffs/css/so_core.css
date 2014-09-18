@@ -22,7 +22,6 @@
 
 	.site-title {
 		display: inline-block;
-		float: left;
 
 		&, a {
 			color: $red;
@@ -45,6 +44,10 @@
 		}
 	}
 
+	.member-link {
+		margin: 0 1em;
+	}
+
 	.avatar {
 		display: inline-block;
 		margin: -0.6em 0.3em -0.6em -0.8em;
@@ -59,15 +62,17 @@
 	#toggleDockbar {
 		display: block;
 		float: right;
-		height: 52px;
-		margin: -0.75em -1.4em -0.85em 1em;
+		margin-left: 2em;
 		overflow: visible;
-		width: 52px;
+		padding: 4px;
 
-		img {
-			height: 16px;
-			padding: 1.35em;
-			width: 16px;
+		&:focus, &:hover {
+			text-decoration: none;
+		}
+
+		i {
+			color: #252D31;
+			font-size: 24px;
 		}
 	}
 }
@@ -75,6 +80,10 @@
 #page-search {
 	float: right;
 	position: relative;
+
+	.form-group {
+		margin-bottom: 0;
+	}
 
 	input[type="text"] {
 		color: $defaultBorderColor;
@@ -88,8 +97,8 @@
 		color: $defaultTextColor;
 	}
 
-	input[type="image"], select {
-		display: none;
+	.taglib-icon {
+		@include hidden-accessible;
 	}
 }
 
@@ -310,6 +319,27 @@ a {
 	}
 }
 
+.aui .opens-new-window-accessible {
+	display: inline-block;
+	font-size: 0;
+	margin-left: 2px;
+	overflow: hidden;
+	vertical-align: middle;
+
+	&:before {
+		@include font-awesome("\f08e");
+
+		font-size: 12px;
+	}
+}
+
+.ie7.aui .opens-new-window-accessible {
+	background: url(/html/themes/classic/images/common/open_window.png) no-repeat 0 50%;
+	height: 16px;
+	text-indent: -9999px;
+	width: 11px;
+}
+
 /* ---------- Dockbar ---------- */
 
 html.aui {
@@ -330,10 +360,11 @@ html.aui {
 		@include transition-duration(0.2s);
 		@include transition-property(margin-left);
 
-		.navbar-inner .nav-add-controls {
+		.container-fluid .nav-add-controls .dockbar-item .dropdown-menu {
 			background: $controlBgColor;
 			bottom: 0;
 			margin-left: -64px;
+			padding: 0;
 			top: 0;
 
 			@include transition-duration(0.2s);
@@ -344,7 +375,7 @@ html.aui {
 			}
 		}
 
-		&.navbar-static-top .collapse, .navbar-inner .container {
+		&.navbar-static-top .collapse, .container-fluid .container {
 			.nav-account-controls {
 				top: 0;
 
@@ -421,7 +452,7 @@ html.aui {
 	@include transition-duration(0.2s);
 	@include transition-property(border-left);
 
-	.dockbar .navbar-inner .nav-add-controls {
+	.dockbar .container-fluid .nav-add-controls .dockbar-item .dropdown-menu {
 		background: $controlBgColor;
 		border-right: 1px solid $defaultBorderColor;
 		bottom: 0;
@@ -495,14 +526,13 @@ html.aui {
 
 /* ---------- Layout ---------- */
 
-.aui .row-fluid {
-	.span4 {
-		margin-left: 0;
-		width: 34%;
-	}
+.aui .row {
+	margin-left: 0;
+	margin-right: 0;
 
-	.span8 {
-		width: 66%;
+	.col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+		padding-left: 0;
+		padding-right: 0;
 	}
 }
 
@@ -847,17 +877,15 @@ html.aui {
 		padding: 0;
 	}
 
-	.abstract, .entry-categories, .entry-tags {
-		display: none;
+	.abstract img {
+		margin-right: 10px;
 	}
 
-	.comments {
-		display: inline;
-		margin: 0.5em 0;
-	}
-
-	.comments a {
-		white-space: nowrap;
+	.entry-tags {
+		border-left-width: 0;
+		margin-bottom: 0.5em;
+		padding-left: 0;
+		padding-right: 0;
 	}
 }
 
@@ -945,17 +973,7 @@ html.aui {
 			}
 
 			a {
-				background-color: #EEE;
-
-				@include border-radius(4px);
-
-				display: inline-block;
-				padding: 4px 6px;
-
-				&:hover {
-					background-color: #DDD;
-					text-decoration: none;
-				}
+				@include tag(true);
 			}
 		}
 	}
@@ -1258,17 +1276,6 @@ html.aui {
 
 	.tags {
 		margin-bottom: 0.5em;
-
-		.tag {
-			background-color: #EEE;
-			background-position-x: 7px;
-			
-			@include border-radius(4px);
-
-			color: #2571AD;
-			display: inline-block;
-			padding: 7px 7px 7px 27px;
-		}
 	}
 
 	/* ---------- Thread ---------- */
@@ -1280,8 +1287,10 @@ html.aui {
 	.thread-message-view {
 		position: relative;
 
-		td, tr {
-			display: block;
+		> tbody > {
+			tr, tr > td {
+				display: block;
+			}
 		}
 	}
 
@@ -1368,6 +1377,7 @@ html.aui {
 		.user-profile-image {
 			height: 55px;
 			max-width: 55px;
+			overflow: hidden;
 
 			.avatar {
 				width: 55px;
@@ -1747,6 +1757,10 @@ html.aui {
 	}
 }
 
+.taglib-asset-tags-summary .tag {
+	@include tag(false);
+}
+
 /* ---------- Top links component ---------- */
 
 .taglib-header {
@@ -1791,7 +1805,7 @@ html.aui {
 				display: none;
 			}
 
-			.navbar-inner .nav-collapse.open .nav-add-controls {
+			.container-fluid .nav-collapse.open .nav-add-controls .dockbar-item .dropdown-menu {
 				bottom: auto;
 				top: auto;
 			}

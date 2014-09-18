@@ -14,6 +14,8 @@
 
 package com.liferay.calendar.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.transaction.Isolation;
@@ -33,6 +35,7 @@ import com.liferay.portal.service.InvokableLocalService;
  * @see com.liferay.calendar.service.impl.CalendarImporterLocalServiceImpl
  * @generated
  */
+@ProviderType
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface CalendarImporterLocalService extends BaseLocalService,
@@ -50,22 +53,22 @@ public interface CalendarImporterLocalService extends BaseLocalService,
 	*/
 	public java.lang.String getBeanIdentifier();
 
-	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	public void setBeanIdentifier(java.lang.String beanIdentifier);
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
 	public void importCalEvent(
 		com.liferay.portlet.calendar.model.CalEvent calEvent)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public void importCalEvents()
 		throws com.liferay.portal.kernel.exception.PortalException;
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Sets the Spring bean ID for this bean.
+	*
+	* @param beanIdentifier the Spring bean ID for this bean
+	*/
+	public void setBeanIdentifier(java.lang.String beanIdentifier);
 }

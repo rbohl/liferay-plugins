@@ -14,6 +14,8 @@
 
 package com.liferay.socialcoding.service.persistence;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.service.persistence.BasePersistence;
 
 import com.liferay.socialcoding.model.SVNRepository;
@@ -30,6 +32,7 @@ import com.liferay.socialcoding.model.SVNRepository;
  * @see SVNRepositoryUtil
  * @generated
  */
+@ProviderType
 public interface SVNRepositoryPersistence extends BasePersistence<SVNRepository> {
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -183,7 +186,7 @@ public interface SVNRepositoryPersistence extends BasePersistence<SVNRepository>
 	*/
 	public java.util.List<com.liferay.socialcoding.model.SVNRepository> findAll(
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.SVNRepository> orderByComparator);
 
 	/**
 	* Removes all the s v n repositories from the database.

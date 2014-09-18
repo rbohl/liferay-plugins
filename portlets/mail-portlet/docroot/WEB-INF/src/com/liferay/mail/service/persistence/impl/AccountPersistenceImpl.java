@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -41,12 +40,10 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -152,7 +149,7 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 */
 	@Override
 	public List<Account> findByUserId(long userId, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Account> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -258,7 +255,8 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 */
 	@Override
 	public Account findByUserId_First(long userId,
-		OrderByComparator orderByComparator) throws NoSuchAccountException {
+		OrderByComparator<Account> orderByComparator)
+		throws NoSuchAccountException {
 		Account account = fetchByUserId_First(userId, orderByComparator);
 
 		if (account != null) {
@@ -286,7 +284,7 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 */
 	@Override
 	public Account fetchByUserId_First(long userId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Account> orderByComparator) {
 		List<Account> list = findByUserId(userId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -306,7 +304,8 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 */
 	@Override
 	public Account findByUserId_Last(long userId,
-		OrderByComparator orderByComparator) throws NoSuchAccountException {
+		OrderByComparator<Account> orderByComparator)
+		throws NoSuchAccountException {
 		Account account = fetchByUserId_Last(userId, orderByComparator);
 
 		if (account != null) {
@@ -334,7 +333,7 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 */
 	@Override
 	public Account fetchByUserId_Last(long userId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Account> orderByComparator) {
 		int count = countByUserId(userId);
 
 		if (count == 0) {
@@ -362,7 +361,8 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 */
 	@Override
 	public Account[] findByUserId_PrevAndNext(long accountId, long userId,
-		OrderByComparator orderByComparator) throws NoSuchAccountException {
+		OrderByComparator<Account> orderByComparator)
+		throws NoSuchAccountException {
 		Account account = findByPrimaryKey(accountId);
 
 		Session session = null;
@@ -391,7 +391,8 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	}
 
 	protected Account getByUserId_PrevAndNext(Session session, Account account,
-		long userId, OrderByComparator orderByComparator, boolean previous) {
+		long userId, OrderByComparator<Account> orderByComparator,
+		boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -1390,7 +1391,7 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 */
 	@Override
 	public List<Account> findAll(int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Account> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1526,25 +1527,6 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 * Initializes the account persistence.
 	 */
 	public void afterPropertiesSet() {
-		String[] listenerClassNames = StringUtil.split(GetterUtil.getString(
-					com.liferay.util.service.ServiceProps.get(
-						"value.object.listener.com.liferay.mail.model.Account")));
-
-		if (listenerClassNames.length > 0) {
-			try {
-				List<ModelListener<Account>> listenersList = new ArrayList<ModelListener<Account>>();
-
-				for (String listenerClassName : listenerClassNames) {
-					listenersList.add((ModelListener<Account>)InstanceFactory.newInstance(
-							getClassLoader(), listenerClassName));
-				}
-
-				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
-			}
-			catch (Exception e) {
-				_log.error(e);
-			}
-		}
 	}
 
 	public void destroy() {

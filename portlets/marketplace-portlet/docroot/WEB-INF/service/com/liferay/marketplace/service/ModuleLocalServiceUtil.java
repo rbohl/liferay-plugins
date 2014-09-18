@@ -14,6 +14,8 @@
 
 package com.liferay.marketplace.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 import com.liferay.portal.service.InvokableLocalService;
@@ -32,6 +34,7 @@ import com.liferay.portal.service.InvokableLocalService;
  * @see com.liferay.marketplace.service.impl.ModuleLocalServiceImpl
  * @generated
  */
+@ProviderType
 public class ModuleLocalServiceUtil {
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -50,6 +53,13 @@ public class ModuleLocalServiceUtil {
 		return getService().addModule(module);
 	}
 
+	public static com.liferay.marketplace.model.Module addModule(long userId,
+		long appId, java.lang.String bundleSymbolicName,
+		java.lang.String contextName) {
+		return getService()
+				   .addModule(userId, appId, bundleSymbolicName, contextName);
+	}
+
 	/**
 	* Creates a new module with the primary key. Does not add the module to the database.
 	*
@@ -59,6 +69,17 @@ public class ModuleLocalServiceUtil {
 	public static com.liferay.marketplace.model.Module createModule(
 		long moduleId) {
 		return getService().createModule(moduleId);
+	}
+
+	/**
+	* Deletes the module from the database. Also notifies the appropriate model listeners.
+	*
+	* @param module the module
+	* @return the module that was removed
+	*/
+	public static com.liferay.marketplace.model.Module deleteModule(
+		com.liferay.marketplace.model.Module module) {
+		return getService().deleteModule(module);
 	}
 
 	/**
@@ -75,14 +96,12 @@ public class ModuleLocalServiceUtil {
 	}
 
 	/**
-	* Deletes the module from the database. Also notifies the appropriate model listeners.
-	*
-	* @param module the module
-	* @return the module that was removed
+	* @throws PortalException
 	*/
-	public static com.liferay.marketplace.model.Module deleteModule(
-		com.liferay.marketplace.model.Module module) {
-		return getService().deleteModule(module);
+	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deletePersistedModel(persistedModel);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
@@ -95,8 +114,7 @@ public class ModuleLocalServiceUtil {
 	* @param dynamicQuery the dynamic query
 	* @return the matching rows
 	*/
-	@SuppressWarnings("rawtypes")
-	public static java.util.List dynamicQuery(
+	public static <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
@@ -113,8 +131,7 @@ public class ModuleLocalServiceUtil {
 	* @param end the upper bound of the range of model instances (not inclusive)
 	* @return the range of matching rows
 	*/
-	@SuppressWarnings("rawtypes")
-	public static java.util.List dynamicQuery(
+	public static <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
 		int end) {
 		return getService().dynamicQuery(dynamicQuery, start, end);
@@ -133,11 +150,10 @@ public class ModuleLocalServiceUtil {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of matching rows
 	*/
-	@SuppressWarnings("rawtypes")
-	public static java.util.List dynamicQuery(
+	public static <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
 		int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
 		return getService()
 				   .dynamicQuery(dynamicQuery, start, end, orderByComparator);
 	}
@@ -166,9 +182,27 @@ public class ModuleLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
+	public static com.liferay.marketplace.model.Module fetchModule(long appId,
+		java.lang.String bundleSymbolicName, java.lang.String contextName) {
+		return getService().fetchModule(appId, bundleSymbolicName, contextName);
+	}
+
 	public static com.liferay.marketplace.model.Module fetchModule(
 		long moduleId) {
 		return getService().fetchModule(moduleId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the Spring bean ID for this bean.
+	*
+	* @return the Spring bean ID for this bean
+	*/
+	public static java.lang.String getBeanIdentifier() {
+		return getService().getBeanIdentifier();
 	}
 
 	/**
@@ -183,23 +217,9 @@ public class ModuleLocalServiceUtil {
 		return getService().getModule(moduleId);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
-	}
-
-	/**
-	* @throws PortalException
-	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deletePersistedModel(persistedModel);
-	}
-
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
+	public static java.util.List<com.liferay.marketplace.model.Module> getModules(
+		long appId) {
+		return getService().getModules(appId);
 	}
 
 	/**
@@ -227,24 +247,16 @@ public class ModuleLocalServiceUtil {
 		return getService().getModulesCount();
 	}
 
-	/**
-	* Updates the module in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param module the module
-	* @return the module that was updated
-	*/
-	public static com.liferay.marketplace.model.Module updateModule(
-		com.liferay.marketplace.model.Module module) {
-		return getService().updateModule(module);
+	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	/**
-	* Returns the Spring bean ID for this bean.
-	*
-	* @return the Spring bean ID for this bean
-	*/
-	public static java.lang.String getBeanIdentifier() {
-		return getService().getBeanIdentifier();
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	/**
@@ -256,27 +268,15 @@ public class ModuleLocalServiceUtil {
 		getService().setBeanIdentifier(beanIdentifier);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
-	public static com.liferay.marketplace.model.Module addModule(long userId,
-		long appId, java.lang.String contextName)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getService().addModule(userId, appId, contextName);
-	}
-
-	public static com.liferay.marketplace.model.Module fetchModule(long appId,
-		java.lang.String contextName)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getService().fetchModule(appId, contextName);
-	}
-
-	public static java.util.List<com.liferay.marketplace.model.Module> getModules(
-		long appId) throws com.liferay.portal.kernel.exception.SystemException {
-		return getService().getModules(appId);
+	/**
+	* Updates the module in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param module the module
+	* @return the module that was updated
+	*/
+	public static com.liferay.marketplace.model.Module updateModule(
+		com.liferay.marketplace.model.Module module) {
+		return getService().updateModule(module);
 	}
 
 	public static void clearService() {

@@ -23,10 +23,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.model.CompanyConstants;
 import com.liferay.portal.portletfilerepository.PortletFileRepositoryUtil;
-import com.liferay.portlet.documentlibrary.NoSuchDirectoryException;
-import com.liferay.portlet.documentlibrary.store.DLStoreUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,29 +54,14 @@ public class KBArticleImpl extends KBArticleBaseImpl {
 		return ancestorResourcePrimaryKeys;
 	}
 
-	public String getAttachmentsDirName() {
-		return KBArticleConstants.DIR_NAME_PREFIX + getClassPK();
-	}
-
+	@Override
 	public List<FileEntry> getAttachmentsFileEntries() throws PortalException {
 		return PortletFileRepositoryUtil.getPortletFileEntries(
 			getGroupId(), getAttachmentsFolderId(),
 			WorkflowConstants.STATUS_APPROVED);
 	}
 
-	public String[] getAttachmentsFileNames() throws PortalException {
-		try {
-			return DLStoreUtil.getFileNames(
-				getCompanyId(), CompanyConstants.SYSTEM,
-				getAttachmentsDirName());
-		}
-		catch (NoSuchDirectoryException nsde) {
-			_log.error("No directory found for " + nsde.getMessage());
-		}
-
-		return new String[0];
-	}
-
+	@Override
 	public long getAttachmentsFolderId() throws PortalException {
 		if (_attachmentsFolderId > 0) {
 			return _attachmentsFolderId;
@@ -91,6 +73,7 @@ public class KBArticleImpl extends KBArticleBaseImpl {
 		return _attachmentsFolderId;
 	}
 
+	@Override
 	public long getClassPK() {
 		if (isApproved()) {
 			return getResourcePrimKey();
@@ -111,6 +94,7 @@ public class KBArticleImpl extends KBArticleBaseImpl {
 			parentResourcePrimKey, WorkflowConstants.STATUS_APPROVED);
 	}
 
+	@Override
 	public boolean isFirstVersion() {
 		if (getVersion() == KBArticleConstants.DEFAULT_VERSION) {
 			return true;
@@ -124,6 +108,7 @@ public class KBArticleImpl extends KBArticleBaseImpl {
 		return isMain();
 	}
 
+	@Override
 	public boolean isRoot() {
 		if (getParentResourcePrimKey() ==
 				KBArticleConstants.DEFAULT_PARENT_RESOURCE_PRIM_KEY) {

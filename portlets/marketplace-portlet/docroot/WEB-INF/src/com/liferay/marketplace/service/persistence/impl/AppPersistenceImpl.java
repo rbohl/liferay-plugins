@@ -14,6 +14,8 @@
 
 package com.liferay.marketplace.service.persistence.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.marketplace.NoSuchAppException;
 import com.liferay.marketplace.model.App;
 import com.liferay.marketplace.model.impl.AppImpl;
@@ -31,7 +33,6 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -42,12 +43,10 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -68,6 +67,7 @@ import java.util.Set;
  * @see AppUtil
  * @generated
  */
+@ProviderType
 public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	implements AppPersistence {
 	/*
@@ -151,7 +151,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 */
 	@Override
 	public List<App> findByUuid(String uuid, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<App> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -269,8 +269,8 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 * @throws com.liferay.marketplace.NoSuchAppException if a matching app could not be found
 	 */
 	@Override
-	public App findByUuid_First(String uuid, OrderByComparator orderByComparator)
-		throws NoSuchAppException {
+	public App findByUuid_First(String uuid,
+		OrderByComparator<App> orderByComparator) throws NoSuchAppException {
 		App app = fetchByUuid_First(uuid, orderByComparator);
 
 		if (app != null) {
@@ -298,7 +298,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 */
 	@Override
 	public App fetchByUuid_First(String uuid,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<App> orderByComparator) {
 		List<App> list = findByUuid(uuid, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -317,8 +317,8 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 * @throws com.liferay.marketplace.NoSuchAppException if a matching app could not be found
 	 */
 	@Override
-	public App findByUuid_Last(String uuid, OrderByComparator orderByComparator)
-		throws NoSuchAppException {
+	public App findByUuid_Last(String uuid,
+		OrderByComparator<App> orderByComparator) throws NoSuchAppException {
 		App app = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (app != null) {
@@ -345,7 +345,8 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 * @return the last matching app, or <code>null</code> if a matching app could not be found
 	 */
 	@Override
-	public App fetchByUuid_Last(String uuid, OrderByComparator orderByComparator) {
+	public App fetchByUuid_Last(String uuid,
+		OrderByComparator<App> orderByComparator) {
 		int count = countByUuid(uuid);
 
 		if (count == 0) {
@@ -372,7 +373,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 */
 	@Override
 	public App[] findByUuid_PrevAndNext(long appId, String uuid,
-		OrderByComparator orderByComparator) throws NoSuchAppException {
+		OrderByComparator<App> orderByComparator) throws NoSuchAppException {
 		App app = findByPrimaryKey(appId);
 
 		Session session = null;
@@ -401,7 +402,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	}
 
 	protected App getByUuid_PrevAndNext(Session session, App app, String uuid,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<App> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -669,7 +670,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 */
 	@Override
 	public List<App> findByUuid_C(String uuid, long companyId, int start,
-		int end, OrderByComparator orderByComparator) {
+		int end, OrderByComparator<App> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -798,7 +799,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 */
 	@Override
 	public App findByUuid_C_First(String uuid, long companyId,
-		OrderByComparator orderByComparator) throws NoSuchAppException {
+		OrderByComparator<App> orderByComparator) throws NoSuchAppException {
 		App app = fetchByUuid_C_First(uuid, companyId, orderByComparator);
 
 		if (app != null) {
@@ -830,7 +831,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 */
 	@Override
 	public App fetchByUuid_C_First(String uuid, long companyId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<App> orderByComparator) {
 		List<App> list = findByUuid_C(uuid, companyId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -851,7 +852,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 */
 	@Override
 	public App findByUuid_C_Last(String uuid, long companyId,
-		OrderByComparator orderByComparator) throws NoSuchAppException {
+		OrderByComparator<App> orderByComparator) throws NoSuchAppException {
 		App app = fetchByUuid_C_Last(uuid, companyId, orderByComparator);
 
 		if (app != null) {
@@ -883,7 +884,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 */
 	@Override
 	public App fetchByUuid_C_Last(String uuid, long companyId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<App> orderByComparator) {
 		int count = countByUuid_C(uuid, companyId);
 
 		if (count == 0) {
@@ -912,7 +913,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 */
 	@Override
 	public App[] findByUuid_C_PrevAndNext(long appId, String uuid,
-		long companyId, OrderByComparator orderByComparator)
+		long companyId, OrderByComparator<App> orderByComparator)
 		throws NoSuchAppException {
 		App app = findByPrimaryKey(appId);
 
@@ -942,7 +943,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	}
 
 	protected App getByUuid_C_PrevAndNext(Session session, App app,
-		String uuid, long companyId, OrderByComparator orderByComparator,
+		String uuid, long companyId, OrderByComparator<App> orderByComparator,
 		boolean previous) {
 		StringBundler query = null;
 
@@ -1218,7 +1219,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 */
 	@Override
 	public List<App> findByCompanyId(long companyId, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<App> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1323,7 +1324,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 */
 	@Override
 	public App findByCompanyId_First(long companyId,
-		OrderByComparator orderByComparator) throws NoSuchAppException {
+		OrderByComparator<App> orderByComparator) throws NoSuchAppException {
 		App app = fetchByCompanyId_First(companyId, orderByComparator);
 
 		if (app != null) {
@@ -1351,7 +1352,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 */
 	@Override
 	public App fetchByCompanyId_First(long companyId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<App> orderByComparator) {
 		List<App> list = findByCompanyId(companyId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -1371,7 +1372,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 */
 	@Override
 	public App findByCompanyId_Last(long companyId,
-		OrderByComparator orderByComparator) throws NoSuchAppException {
+		OrderByComparator<App> orderByComparator) throws NoSuchAppException {
 		App app = fetchByCompanyId_Last(companyId, orderByComparator);
 
 		if (app != null) {
@@ -1399,7 +1400,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 */
 	@Override
 	public App fetchByCompanyId_Last(long companyId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<App> orderByComparator) {
 		int count = countByCompanyId(companyId);
 
 		if (count == 0) {
@@ -1427,7 +1428,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 */
 	@Override
 	public App[] findByCompanyId_PrevAndNext(long appId, long companyId,
-		OrderByComparator orderByComparator) throws NoSuchAppException {
+		OrderByComparator<App> orderByComparator) throws NoSuchAppException {
 		App app = findByPrimaryKey(appId);
 
 		Session session = null;
@@ -1456,7 +1457,8 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	}
 
 	protected App getByCompanyId_PrevAndNext(Session session, App app,
-		long companyId, OrderByComparator orderByComparator, boolean previous) {
+		long companyId, OrderByComparator<App> orderByComparator,
+		boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -1898,7 +1900,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 */
 	@Override
 	public List<App> findByCategory(String category, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<App> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -2017,7 +2019,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 */
 	@Override
 	public App findByCategory_First(String category,
-		OrderByComparator orderByComparator) throws NoSuchAppException {
+		OrderByComparator<App> orderByComparator) throws NoSuchAppException {
 		App app = fetchByCategory_First(category, orderByComparator);
 
 		if (app != null) {
@@ -2045,7 +2047,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 */
 	@Override
 	public App fetchByCategory_First(String category,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<App> orderByComparator) {
 		List<App> list = findByCategory(category, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -2065,7 +2067,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 */
 	@Override
 	public App findByCategory_Last(String category,
-		OrderByComparator orderByComparator) throws NoSuchAppException {
+		OrderByComparator<App> orderByComparator) throws NoSuchAppException {
 		App app = fetchByCategory_Last(category, orderByComparator);
 
 		if (app != null) {
@@ -2093,7 +2095,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 */
 	@Override
 	public App fetchByCategory_Last(String category,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<App> orderByComparator) {
 		int count = countByCategory(category);
 
 		if (count == 0) {
@@ -2121,7 +2123,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 */
 	@Override
 	public App[] findByCategory_PrevAndNext(long appId, String category,
-		OrderByComparator orderByComparator) throws NoSuchAppException {
+		OrderByComparator<App> orderByComparator) throws NoSuchAppException {
 		App app = findByPrimaryKey(appId);
 
 		Session session = null;
@@ -2150,7 +2152,8 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	}
 
 	protected App getByCategory_PrevAndNext(Session session, App app,
-		String category, OrderByComparator orderByComparator, boolean previous) {
+		String category, OrderByComparator<App> orderByComparator,
+		boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -2953,7 +2956,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 */
 	@Override
 	public List<App> findAll(int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<App> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -3088,25 +3091,6 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 * Initializes the app persistence.
 	 */
 	public void afterPropertiesSet() {
-		String[] listenerClassNames = StringUtil.split(GetterUtil.getString(
-					com.liferay.util.service.ServiceProps.get(
-						"value.object.listener.com.liferay.marketplace.model.App")));
-
-		if (listenerClassNames.length > 0) {
-			try {
-				List<ModelListener<App>> listenersList = new ArrayList<ModelListener<App>>();
-
-				for (String listenerClassName : listenerClassNames) {
-					listenersList.add((ModelListener<App>)InstanceFactory.newInstance(
-							getClassLoader(), listenerClassName));
-				}
-
-				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
-			}
-			catch (Exception e) {
-				_log.error(e);
-			}
-		}
 	}
 
 	public void destroy() {
@@ -3126,11 +3110,11 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No App exists with the key {";
 	private static final boolean _HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE = GetterUtil.getBoolean(PropsUtil.get(
 				PropsKeys.HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE));
-	private static Log _log = LogFactoryUtil.getLog(AppPersistenceImpl.class);
-	private static Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
+	private static final Log _log = LogFactoryUtil.getLog(AppPersistenceImpl.class);
+	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
 				"uuid"
 			});
-	private static App _nullApp = new AppImpl() {
+	private static final App _nullApp = new AppImpl() {
 			@Override
 			public Object clone() {
 				return this;
@@ -3142,7 +3126,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 			}
 		};
 
-	private static CacheModel<App> _nullAppCacheModel = new CacheModel<App>() {
+	private static final CacheModel<App> _nullAppCacheModel = new CacheModel<App>() {
 			@Override
 			public App toEntityModel() {
 				return _nullApp;

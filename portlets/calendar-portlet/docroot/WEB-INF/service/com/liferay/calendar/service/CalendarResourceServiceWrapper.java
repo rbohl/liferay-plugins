@@ -14,6 +14,8 @@
 
 package com.liferay.calendar.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
@@ -23,39 +25,12 @@ import com.liferay.portal.service.ServiceWrapper;
  * @see CalendarResourceService
  * @generated
  */
+@ProviderType
 public class CalendarResourceServiceWrapper implements CalendarResourceService,
 	ServiceWrapper<CalendarResourceService> {
 	public CalendarResourceServiceWrapper(
 		CalendarResourceService calendarResourceService) {
 		_calendarResourceService = calendarResourceService;
-	}
-
-	/**
-	* Returns the Spring bean ID for this bean.
-	*
-	* @return the Spring bean ID for this bean
-	*/
-	@Override
-	public java.lang.String getBeanIdentifier() {
-		return _calendarResourceService.getBeanIdentifier();
-	}
-
-	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	@Override
-	public void setBeanIdentifier(java.lang.String beanIdentifier) {
-		_calendarResourceService.setBeanIdentifier(beanIdentifier);
-	}
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _calendarResourceService.invokeMethod(name, parameterTypes,
-			arguments);
 	}
 
 	@Override
@@ -86,6 +61,16 @@ public class CalendarResourceServiceWrapper implements CalendarResourceService,
 			classPK);
 	}
 
+	/**
+	* Returns the Spring bean ID for this bean.
+	*
+	* @return the Spring bean ID for this bean
+	*/
+	@Override
+	public java.lang.String getBeanIdentifier() {
+		return _calendarResourceService.getBeanIdentifier();
+	}
+
 	@Override
 	public com.liferay.calendar.model.CalendarResource getCalendarResource(
 		long calendarResourceId)
@@ -94,14 +79,11 @@ public class CalendarResourceServiceWrapper implements CalendarResourceService,
 	}
 
 	@Override
-	public java.util.List<com.liferay.calendar.model.CalendarResource> search(
-		long companyId, long[] groupIds, long[] classNameIds,
-		java.lang.String keywords, boolean active, boolean andOperator,
-		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
-		return _calendarResourceService.search(companyId, groupIds,
-			classNameIds, keywords, active, andOperator, start, end,
-			orderByComparator);
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _calendarResourceService.invokeMethod(name, parameterTypes,
+			arguments);
 	}
 
 	@Override
@@ -110,10 +92,29 @@ public class CalendarResourceServiceWrapper implements CalendarResourceService,
 		java.lang.String code, java.lang.String name,
 		java.lang.String description, boolean active, boolean andOperator,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.calendar.model.CalendarResource> orderByComparator) {
 		return _calendarResourceService.search(companyId, groupIds,
 			classNameIds, code, name, description, active, andOperator, start,
 			end, orderByComparator);
+	}
+
+	@Override
+	public java.util.List<com.liferay.calendar.model.CalendarResource> search(
+		long companyId, long[] groupIds, long[] classNameIds,
+		java.lang.String keywords, boolean active, boolean andOperator,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.calendar.model.CalendarResource> orderByComparator) {
+		return _calendarResourceService.search(companyId, groupIds,
+			classNameIds, keywords, active, andOperator, start, end,
+			orderByComparator);
+	}
+
+	@Override
+	public int searchCount(long companyId, long[] groupIds,
+		long[] classNameIds, java.lang.String code, java.lang.String name,
+		java.lang.String description, boolean active, boolean andOperator) {
+		return _calendarResourceService.searchCount(companyId, groupIds,
+			classNameIds, code, name, description, active, andOperator);
 	}
 
 	@Override
@@ -123,12 +124,14 @@ public class CalendarResourceServiceWrapper implements CalendarResourceService,
 			classNameIds, keywords, active);
 	}
 
+	/**
+	* Sets the Spring bean ID for this bean.
+	*
+	* @param beanIdentifier the Spring bean ID for this bean
+	*/
 	@Override
-	public int searchCount(long companyId, long[] groupIds,
-		long[] classNameIds, java.lang.String code, java.lang.String name,
-		java.lang.String description, boolean active, boolean andOperator) {
-		return _calendarResourceService.searchCount(companyId, groupIds,
-			classNameIds, code, name, description, active, andOperator);
+	public void setBeanIdentifier(java.lang.String beanIdentifier) {
+		_calendarResourceService.setBeanIdentifier(beanIdentifier);
 	}
 
 	@Override

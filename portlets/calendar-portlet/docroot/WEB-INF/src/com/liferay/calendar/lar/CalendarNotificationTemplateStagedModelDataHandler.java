@@ -20,15 +20,19 @@ import com.liferay.calendar.notification.NotificationTemplateType;
 import com.liferay.calendar.notification.NotificationType;
 import com.liferay.calendar.service.CalendarLocalServiceUtil;
 import com.liferay.calendar.service.CalendarNotificationTemplateLocalServiceUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.lar.BaseStagedModelDataHandler;
 import com.liferay.portal.kernel.lar.ExportImportHelperUtil;
 import com.liferay.portal.kernel.lar.ExportImportPathUtil;
 import com.liferay.portal.kernel.lar.PortletDataContext;
 import com.liferay.portal.kernel.lar.StagedModelDataHandlerUtil;
+import com.liferay.portal.kernel.lar.StagedModelModifiedDateComparator;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.service.ServiceContext;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,15 +50,39 @@ public class CalendarNotificationTemplateStagedModelDataHandler
 		String uuid, long groupId, String className, String extraData) {
 
 		CalendarNotificationTemplate calendarNotificationTemplate =
-			CalendarNotificationTemplateLocalServiceUtil.
-				fetchCalendarNotificationTemplateByUuidAndGroupId(
-					uuid, groupId);
+			fetchStagedModelByUuidAndGroupId(uuid, groupId);
 
 		if (calendarNotificationTemplate != null) {
 			CalendarNotificationTemplateLocalServiceUtil.
 				deleteCalendarNotificationTemplate(
 					calendarNotificationTemplate);
 		}
+	}
+
+	@Override
+	public CalendarNotificationTemplate fetchStagedModelByUuidAndCompanyId(
+		String uuid, long companyId) {
+
+		List<CalendarNotificationTemplate> calendarNotificationTemplates =
+			CalendarNotificationTemplateLocalServiceUtil.
+				getCalendarNotificationTemplatesByUuidAndCompanyId(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+					new StagedModelModifiedDateComparator
+						<CalendarNotificationTemplate>());
+
+		if (ListUtil.isEmpty(calendarNotificationTemplates)) {
+			return null;
+		}
+
+		return calendarNotificationTemplates.get(0);
+	}
+
+	@Override
+	public CalendarNotificationTemplate fetchStagedModelByUuidAndGroupId(
+		String uuid, long groupId) {
+
+		return CalendarNotificationTemplateLocalServiceUtil.
+			fetchCalendarNotificationTemplateByUuidAndGroupId(uuid, groupId);
 	}
 
 	@Override
@@ -102,9 +130,6 @@ public class CalendarNotificationTemplateStagedModelDataHandler
 		long userId = portletDataContext.getUserId(
 			calendarNotificationTemplate.getUserUuid());
 
-		StagedModelDataHandlerUtil.importReferenceStagedModels(
-			portletDataContext, calendarNotificationTemplate, Calendar.class);
-
 		Map<Long, Long> calendarIds =
 			(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
 				Calendar.class);
@@ -131,10 +156,9 @@ public class CalendarNotificationTemplateStagedModelDataHandler
 
 		if (portletDataContext.isDataStrategyMirror()) {
 			CalendarNotificationTemplate existingCalendarNotificationTemplate =
-				CalendarNotificationTemplateLocalServiceUtil.
-					fetchCalendarNotificationTemplateByUuidAndGroupId(
-						calendarNotificationTemplate.getUuid(),
-						portletDataContext.getScopeGroupId());
+				fetchStagedModelByUuidAndGroupId(
+					calendarNotificationTemplate.getUuid(),
+					portletDataContext.getScopeGroupId());
 
 			if (existingCalendarNotificationTemplate == null) {
 				serviceContext.setUuid(calendarNotificationTemplate.getUuid());

@@ -14,6 +14,8 @@
 
 package com.liferay.knowledgebase.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 import com.liferay.portal.service.InvokableLocalService;
@@ -32,6 +34,7 @@ import com.liferay.portal.service.InvokableLocalService;
  * @see com.liferay.knowledgebase.service.impl.KBTemplateLocalServiceImpl
  * @generated
  */
+@ProviderType
 public class KBTemplateLocalServiceUtil {
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -50,6 +53,13 @@ public class KBTemplateLocalServiceUtil {
 		return getService().addKBTemplate(kbTemplate);
 	}
 
+	public static com.liferay.knowledgebase.model.KBTemplate addKBTemplate(
+		long userId, java.lang.String title, java.lang.String content,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().addKBTemplate(userId, title, content, serviceContext);
+	}
+
 	/**
 	* Creates a new k b template with the primary key. Does not add the k b template to the database.
 	*
@@ -61,19 +71,9 @@ public class KBTemplateLocalServiceUtil {
 		return getService().createKBTemplate(kbTemplateId);
 	}
 
-	/**
-	* Deletes the k b template with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param kbTemplateId the primary key of the k b template
-	* @return the k b template that was removed
-	* @throws PortalException if a k b template with the primary key could not be found
-	* @throws SystemException
-	*/
-	public static com.liferay.knowledgebase.model.KBTemplate deleteKBTemplate(
-		long kbTemplateId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
-		return getService().deleteKBTemplate(kbTemplateId);
+	public static void deleteGroupKBTemplates(long groupId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteGroupKBTemplates(groupId);
 	}
 
 	/**
@@ -82,13 +82,38 @@ public class KBTemplateLocalServiceUtil {
 	* @param kbTemplate the k b template
 	* @return the k b template that was removed
 	* @throws PortalException
-	* @throws SystemException
 	*/
 	public static com.liferay.knowledgebase.model.KBTemplate deleteKBTemplate(
 		com.liferay.knowledgebase.model.KBTemplate kbTemplate)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteKBTemplate(kbTemplate);
+	}
+
+	/**
+	* Deletes the k b template with the primary key from the database. Also notifies the appropriate model listeners.
+	*
+	* @param kbTemplateId the primary key of the k b template
+	* @return the k b template that was removed
+	* @throws PortalException if a k b template with the primary key could not be found
+	*/
+	public static com.liferay.knowledgebase.model.KBTemplate deleteKBTemplate(
+		long kbTemplateId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deleteKBTemplate(kbTemplateId);
+	}
+
+	public static void deleteKBTemplates(long[] kbTemplateIds)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteKBTemplates(kbTemplateIds);
+	}
+
+	/**
+	* @throws PortalException
+	*/
+	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deletePersistedModel(persistedModel);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
@@ -101,8 +126,7 @@ public class KBTemplateLocalServiceUtil {
 	* @param dynamicQuery the dynamic query
 	* @return the matching rows
 	*/
-	@SuppressWarnings("rawtypes")
-	public static java.util.List dynamicQuery(
+	public static <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
@@ -119,8 +143,7 @@ public class KBTemplateLocalServiceUtil {
 	* @param end the upper bound of the range of model instances (not inclusive)
 	* @return the range of matching rows
 	*/
-	@SuppressWarnings("rawtypes")
-	public static java.util.List dynamicQuery(
+	public static <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
 		int end) {
 		return getService().dynamicQuery(dynamicQuery, start, end);
@@ -139,11 +162,10 @@ public class KBTemplateLocalServiceUtil {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of matching rows
 	*/
-	@SuppressWarnings("rawtypes")
-	public static java.util.List dynamicQuery(
+	public static <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
 		int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
 		return getService()
 				   .dynamicQuery(dynamicQuery, start, end, orderByComparator);
 	}
@@ -178,18 +200,6 @@ public class KBTemplateLocalServiceUtil {
 	}
 
 	/**
-	* Returns the k b template with the matching UUID and company.
-	*
-	* @param uuid the k b template's UUID
-	* @param companyId the primary key of the company
-	* @return the matching k b template, or <code>null</code> if a matching k b template could not be found
-	*/
-	public static com.liferay.knowledgebase.model.KBTemplate fetchKBTemplateByUuidAndCompanyId(
-		java.lang.String uuid, long companyId) {
-		return getService().fetchKBTemplateByUuidAndCompanyId(uuid, companyId);
-	}
-
-	/**
 	* Returns the k b template matching the UUID and group.
 	*
 	* @param uuid the k b template's UUID
@@ -199,6 +209,35 @@ public class KBTemplateLocalServiceUtil {
 	public static com.liferay.knowledgebase.model.KBTemplate fetchKBTemplateByUuidAndGroupId(
 		java.lang.String uuid, long groupId) {
 		return getService().fetchKBTemplateByUuidAndGroupId(uuid, groupId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the Spring bean ID for this bean.
+	*
+	* @return the Spring bean ID for this bean
+	*/
+	public static java.lang.String getBeanIdentifier() {
+		return getService().getBeanIdentifier();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
+		com.liferay.portal.kernel.lar.PortletDataContext portletDataContext) {
+		return getService().getExportActionableDynamicQuery(portletDataContext);
+	}
+
+	public static java.util.List<com.liferay.knowledgebase.model.KBTemplate> getGroupKBTemplates(
+		long groupId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator) {
+		return getService()
+				   .getGroupKBTemplates(groupId, start, end, orderByComparator);
+	}
+
+	public static int getGroupKBTemplatesCount(long groupId) {
+		return getService().getGroupKBTemplatesCount(groupId);
 	}
 
 	/**
@@ -212,44 +251,6 @@ public class KBTemplateLocalServiceUtil {
 		long kbTemplateId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getKBTemplate(kbTemplateId);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		com.liferay.portal.kernel.lar.PortletDataContext portletDataContext) {
-		return getService().getExportActionableDynamicQuery(portletDataContext);
-	}
-
-	/**
-	* @throws PortalException
-	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deletePersistedModel(persistedModel);
-	}
-
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns the k b template with the matching UUID and company.
-	*
-	* @param uuid the k b template's UUID
-	* @param companyId the primary key of the company
-	* @return the matching k b template
-	* @throws PortalException if a matching k b template could not be found
-	*/
-	public static com.liferay.knowledgebase.model.KBTemplate getKBTemplateByUuidAndCompanyId(
-		java.lang.String uuid, long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getKBTemplateByUuidAndCompanyId(uuid, companyId);
 	}
 
 	/**
@@ -282,6 +283,19 @@ public class KBTemplateLocalServiceUtil {
 		return getService().getKBTemplates(start, end);
 	}
 
+	public static java.util.List<com.liferay.knowledgebase.model.KBTemplate> getKBTemplatesByUuidAndCompanyId(
+		java.lang.String uuid, long companyId) {
+		return getService().getKBTemplatesByUuidAndCompanyId(uuid, companyId);
+	}
+
+	public static java.util.List<com.liferay.knowledgebase.model.KBTemplate> getKBTemplatesByUuidAndCompanyId(
+		java.lang.String uuid, long companyId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator) {
+		return getService()
+				   .getKBTemplatesByUuidAndCompanyId(uuid, companyId, start,
+			end, orderByComparator);
+	}
+
 	/**
 	* Returns the number of k b templates.
 	*
@@ -289,6 +303,37 @@ public class KBTemplateLocalServiceUtil {
 	*/
 	public static int getKBTemplatesCount() {
 		return getService().getKBTemplatesCount();
+	}
+
+	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	public static java.util.List<com.liferay.knowledgebase.model.KBTemplate> search(
+		long groupId, java.lang.String title, java.lang.String content,
+		java.util.Date startDate, java.util.Date endDate, boolean andOperator,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator) {
+		return getService()
+				   .search(groupId, title, content, startDate, endDate,
+			andOperator, start, end, orderByComparator);
+	}
+
+	/**
+	* Sets the Spring bean ID for this bean.
+	*
+	* @param beanIdentifier the Spring bean ID for this bean
+	*/
+	public static void setBeanIdentifier(java.lang.String beanIdentifier) {
+		getService().setBeanIdentifier(beanIdentifier);
 	}
 
 	/**
@@ -302,79 +347,10 @@ public class KBTemplateLocalServiceUtil {
 		return getService().updateKBTemplate(kbTemplate);
 	}
 
-	/**
-	* Returns the Spring bean ID for this bean.
-	*
-	* @return the Spring bean ID for this bean
-	*/
-	public static java.lang.String getBeanIdentifier() {
-		return getService().getBeanIdentifier();
-	}
-
-	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	public static void setBeanIdentifier(java.lang.String beanIdentifier) {
-		getService().setBeanIdentifier(beanIdentifier);
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
-	public static com.liferay.knowledgebase.model.KBTemplate addKBTemplate(
-		long userId, java.lang.String title, java.lang.String content,
-		com.liferay.portal.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
-		return getService().addKBTemplate(userId, title, content, serviceContext);
-	}
-
-	public static void deleteGroupKBTemplates(long groupId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
-		getService().deleteGroupKBTemplates(groupId);
-	}
-
-	public static void deleteKBTemplates(long[] kbTemplateIds)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
-		getService().deleteKBTemplates(kbTemplateIds);
-	}
-
-	public static java.util.List<com.liferay.knowledgebase.model.KBTemplate> getGroupKBTemplates(
-		long groupId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getService()
-				   .getGroupKBTemplates(groupId, start, end, orderByComparator);
-	}
-
-	public static int getGroupKBTemplatesCount(long groupId)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getService().getGroupKBTemplatesCount(groupId);
-	}
-
-	public static java.util.List<com.liferay.knowledgebase.model.KBTemplate> search(
-		long groupId, java.lang.String title, java.lang.String content,
-		java.util.Date startDate, java.util.Date endDate, boolean andOperator,
-		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getService()
-				   .search(groupId, title, content, startDate, endDate,
-			andOperator, start, end, orderByComparator);
-	}
-
 	public static com.liferay.knowledgebase.model.KBTemplate updateKBTemplate(
 		long kbTemplateId, java.lang.String title, java.lang.String content,
 		com.liferay.portal.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateKBTemplate(kbTemplateId, title, content,
 			serviceContext);
@@ -383,8 +359,7 @@ public class KBTemplateLocalServiceUtil {
 	public static void updateKBTemplateResources(
 		com.liferay.knowledgebase.model.KBTemplate kbTemplate,
 		java.lang.String[] groupPermissions, java.lang.String[] guestPermissions)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
 			.updateKBTemplateResources(kbTemplate, groupPermissions,
 			guestPermissions);

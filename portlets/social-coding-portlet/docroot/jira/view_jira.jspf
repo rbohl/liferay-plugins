@@ -53,8 +53,9 @@ String jiraUserId = ExpandoValueLocalServiceUtil.getData(company.getCompanyId(),
 					<portlet:renderURL var="editURL" windowState="<%= WindowState.MAXIMIZED.toString() %>" />
 
 					<liferay-ui:icon
-						image="edit"
+						iconCssClass="icon-edit"
 						label="<%= true %>"
+						message="edit"
 						url="<%= editURL %>"
 					/>
 				</c:if>
@@ -87,7 +88,7 @@ String jiraUserId = ExpandoValueLocalServiceUtil.getData(company.getCompanyId(),
 					<liferay-ui:message key="jira-login" />
 				</td>
 				<td>
-					<input class="lfr-input-text" name="<portlet:namespace />jiraUserId" style="width: 150px;" type="text" value="<%= jiraUserId %>" />
+					<input class="lfr-input-text" name="<portlet:namespace />jiraUserId" style="width: 150px;" type="text" value="<%= HtmlUtil.escapeAttribute(jiraUserId) %>" />
 				</td>
 			</tr>
 			</table>

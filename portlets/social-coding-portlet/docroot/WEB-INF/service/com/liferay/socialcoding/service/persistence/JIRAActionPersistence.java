@@ -14,6 +14,8 @@
 
 package com.liferay.socialcoding.service.persistence;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.service.persistence.BasePersistence;
 
 import com.liferay.socialcoding.model.JIRAAction;
@@ -30,6 +32,7 @@ import com.liferay.socialcoding.model.JIRAAction;
  * @see JIRAActionUtil
  * @generated
  */
+@ProviderType
 public interface JIRAActionPersistence extends BasePersistence<JIRAAction> {
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -76,7 +79,7 @@ public interface JIRAActionPersistence extends BasePersistence<JIRAAction> {
 	*/
 	public java.util.List<com.liferay.socialcoding.model.JIRAAction> findByJiraUserId(
 		java.lang.String jiraUserId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAAction> orderByComparator);
 
 	/**
 	* Returns the first j i r a action in the ordered set where jiraUserId = &#63;.
@@ -88,7 +91,7 @@ public interface JIRAActionPersistence extends BasePersistence<JIRAAction> {
 	*/
 	public com.liferay.socialcoding.model.JIRAAction findByJiraUserId_First(
 		java.lang.String jiraUserId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAAction> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchJIRAActionException;
 
 	/**
@@ -100,7 +103,7 @@ public interface JIRAActionPersistence extends BasePersistence<JIRAAction> {
 	*/
 	public com.liferay.socialcoding.model.JIRAAction fetchByJiraUserId_First(
 		java.lang.String jiraUserId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAAction> orderByComparator);
 
 	/**
 	* Returns the last j i r a action in the ordered set where jiraUserId = &#63;.
@@ -112,7 +115,7 @@ public interface JIRAActionPersistence extends BasePersistence<JIRAAction> {
 	*/
 	public com.liferay.socialcoding.model.JIRAAction findByJiraUserId_Last(
 		java.lang.String jiraUserId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAAction> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchJIRAActionException;
 
 	/**
@@ -124,7 +127,7 @@ public interface JIRAActionPersistence extends BasePersistence<JIRAAction> {
 	*/
 	public com.liferay.socialcoding.model.JIRAAction fetchByJiraUserId_Last(
 		java.lang.String jiraUserId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAAction> orderByComparator);
 
 	/**
 	* Returns the j i r a actions before and after the current j i r a action in the ordered set where jiraUserId = &#63;.
@@ -137,7 +140,7 @@ public interface JIRAActionPersistence extends BasePersistence<JIRAAction> {
 	*/
 	public com.liferay.socialcoding.model.JIRAAction[] findByJiraUserId_PrevAndNext(
 		long jiraActionId, java.lang.String jiraUserId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAAction> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchJIRAActionException;
 
 	/**
@@ -194,7 +197,7 @@ public interface JIRAActionPersistence extends BasePersistence<JIRAAction> {
 	*/
 	public java.util.List<com.liferay.socialcoding.model.JIRAAction> findByJiraIssueId(
 		long jiraIssueId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAAction> orderByComparator);
 
 	/**
 	* Returns the first j i r a action in the ordered set where jiraIssueId = &#63;.
@@ -206,7 +209,7 @@ public interface JIRAActionPersistence extends BasePersistence<JIRAAction> {
 	*/
 	public com.liferay.socialcoding.model.JIRAAction findByJiraIssueId_First(
 		long jiraIssueId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAAction> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchJIRAActionException;
 
 	/**
@@ -218,7 +221,7 @@ public interface JIRAActionPersistence extends BasePersistence<JIRAAction> {
 	*/
 	public com.liferay.socialcoding.model.JIRAAction fetchByJiraIssueId_First(
 		long jiraIssueId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAAction> orderByComparator);
 
 	/**
 	* Returns the last j i r a action in the ordered set where jiraIssueId = &#63;.
@@ -230,7 +233,7 @@ public interface JIRAActionPersistence extends BasePersistence<JIRAAction> {
 	*/
 	public com.liferay.socialcoding.model.JIRAAction findByJiraIssueId_Last(
 		long jiraIssueId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAAction> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchJIRAActionException;
 
 	/**
@@ -242,7 +245,7 @@ public interface JIRAActionPersistence extends BasePersistence<JIRAAction> {
 	*/
 	public com.liferay.socialcoding.model.JIRAAction fetchByJiraIssueId_Last(
 		long jiraIssueId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAAction> orderByComparator);
 
 	/**
 	* Returns the j i r a actions before and after the current j i r a action in the ordered set where jiraIssueId = &#63;.
@@ -255,7 +258,7 @@ public interface JIRAActionPersistence extends BasePersistence<JIRAAction> {
 	*/
 	public com.liferay.socialcoding.model.JIRAAction[] findByJiraIssueId_PrevAndNext(
 		long jiraActionId, long jiraIssueId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAAction> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchJIRAActionException;
 
 	/**
@@ -312,7 +315,7 @@ public interface JIRAActionPersistence extends BasePersistence<JIRAAction> {
 	*/
 	public java.util.List<com.liferay.socialcoding.model.JIRAAction> findByType(
 		java.lang.String type, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAAction> orderByComparator);
 
 	/**
 	* Returns the first j i r a action in the ordered set where type = &#63;.
@@ -324,7 +327,7 @@ public interface JIRAActionPersistence extends BasePersistence<JIRAAction> {
 	*/
 	public com.liferay.socialcoding.model.JIRAAction findByType_First(
 		java.lang.String type,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAAction> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchJIRAActionException;
 
 	/**
@@ -336,7 +339,7 @@ public interface JIRAActionPersistence extends BasePersistence<JIRAAction> {
 	*/
 	public com.liferay.socialcoding.model.JIRAAction fetchByType_First(
 		java.lang.String type,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAAction> orderByComparator);
 
 	/**
 	* Returns the last j i r a action in the ordered set where type = &#63;.
@@ -348,7 +351,7 @@ public interface JIRAActionPersistence extends BasePersistence<JIRAAction> {
 	*/
 	public com.liferay.socialcoding.model.JIRAAction findByType_Last(
 		java.lang.String type,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAAction> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchJIRAActionException;
 
 	/**
@@ -360,7 +363,7 @@ public interface JIRAActionPersistence extends BasePersistence<JIRAAction> {
 	*/
 	public com.liferay.socialcoding.model.JIRAAction fetchByType_Last(
 		java.lang.String type,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAAction> orderByComparator);
 
 	/**
 	* Returns the j i r a actions before and after the current j i r a action in the ordered set where type = &#63;.
@@ -373,7 +376,7 @@ public interface JIRAActionPersistence extends BasePersistence<JIRAAction> {
 	*/
 	public com.liferay.socialcoding.model.JIRAAction[] findByType_PrevAndNext(
 		long jiraActionId, java.lang.String type,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAAction> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchJIRAActionException;
 
 	/**
@@ -487,7 +490,7 @@ public interface JIRAActionPersistence extends BasePersistence<JIRAAction> {
 	*/
 	public java.util.List<com.liferay.socialcoding.model.JIRAAction> findAll(
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAAction> orderByComparator);
 
 	/**
 	* Removes all the j i r a actions from the database.

@@ -14,6 +14,8 @@
 
 package com.liferay.marketplace.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.marketplace.service.AppLocalServiceUtil;
 
 import java.util.Arrays;
@@ -22,6 +24,7 @@ import java.util.Arrays;
  * @author Ryan Park
  * @generated
  */
+@ProviderType
 public class AppLocalServiceClpInvoker {
 	public AppLocalServiceClpInvoker() {
 		_methodName0 = "addApp";
@@ -239,7 +242,7 @@ public class AppLocalServiceClpInvoker {
 			return AppLocalServiceUtil.dynamicQuery((com.liferay.portal.kernel.dao.orm.DynamicQuery)arguments[0],
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue(),
-				(com.liferay.portal.kernel.util.OrderByComparator)arguments[3]);
+				(com.liferay.portal.kernel.util.OrderByComparator<?>)arguments[3]);
 		}
 
 		if (_methodName8.equals(name) &&

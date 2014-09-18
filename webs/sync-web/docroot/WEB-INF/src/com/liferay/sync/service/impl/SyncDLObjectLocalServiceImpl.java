@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
@@ -45,7 +44,7 @@ public class SyncDLObjectLocalServiceImpl
 			String version, long size, String checksum, String event,
 			Date lockExpirationDate, long lockUserId, String lockUserName,
 			String type, long typePK, String typeUuid)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!isDefaultRepository(parentFolderId)) {
 			return null;
@@ -65,6 +64,19 @@ public class SyncDLObjectLocalServiceImpl
 			syncDLObject.setType(type);
 			syncDLObject.setTypePK(typePK);
 			syncDLObject.setTypeUuid(typeUuid);
+
+			if (type.equals(SyncConstants.TYPE_PRIVATE_WORKING_COPY)) {
+				SyncDLObject approvedSyncDLObject =
+					syncDLObjectPersistence.fetchByT_T(
+						SyncConstants.TYPE_FILE, typePK);
+
+				approvedSyncDLObject.setModifiedTime(modifiedTime);
+				approvedSyncDLObject.setLockExpirationDate(lockExpirationDate);
+				approvedSyncDLObject.setLockUserId(lockUserId);
+				approvedSyncDLObject.setLockUserName(lockUserName);
+
+				syncDLObjectPersistence.update(approvedSyncDLObject);
+			}
 		}
 		else if (syncDLObject.getModifiedTime() >= modifiedTime) {
 			return null;
@@ -77,7 +89,7 @@ public class SyncDLObjectLocalServiceImpl
 				DLFileEntry dlFileEntry =
 					dlFileEntryLocalService.fetchDLFileEntry(typePK);
 
-				if ((dlFileEntry != null) && !dlFileEntry.isCheckedOut()) {
+				if ((dlFileEntry == null) || !dlFileEntry.isCheckedOut()) {
 					syncDLObjectPersistence.remove(pwcSyncDLObject);
 				}
 			}
@@ -103,7 +115,12 @@ public class SyncDLObjectLocalServiceImpl
 	}
 
 	@Override
-	public long getLatestModifiedTime() throws SystemException {
+	public void deleteSyncDLObjects(String version, String type) {
+		syncDLObjectPersistence.removeByV_T(version, type);
+	}
+
+	@Override
+	public long getLatestModifiedTime() {
 		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
 			SyncDLObject.class, SyncDLObject.class.getClassLoader());
 
@@ -122,7 +139,7 @@ public class SyncDLObjectLocalServiceImpl
 	}
 
 	protected boolean isDefaultRepository(long folderId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (folderId == DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
 			return true;

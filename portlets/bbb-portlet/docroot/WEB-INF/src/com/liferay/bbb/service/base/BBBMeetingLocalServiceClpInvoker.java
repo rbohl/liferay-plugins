@@ -232,7 +232,7 @@ public class BBBMeetingLocalServiceClpInvoker {
 			return BBBMeetingLocalServiceUtil.dynamicQuery((com.liferay.portal.kernel.dao.orm.DynamicQuery)arguments[0],
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue(),
-				(com.liferay.portal.kernel.util.OrderByComparator)arguments[3]);
+				(com.liferay.portal.kernel.util.OrderByComparator<?>)arguments[3]);
 		}
 
 		if (_methodName8.equals(name) &&
@@ -336,7 +336,7 @@ public class BBBMeetingLocalServiceClpInvoker {
 			return BBBMeetingLocalServiceUtil.getBBBMeetings(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue(),
-				(com.liferay.portal.kernel.util.OrderByComparator)arguments[3]);
+				(com.liferay.portal.kernel.util.OrderByComparator<com.liferay.bbb.model.BBBMeeting>)arguments[3]);
 		}
 
 		if (_methodName65.equals(name) &&

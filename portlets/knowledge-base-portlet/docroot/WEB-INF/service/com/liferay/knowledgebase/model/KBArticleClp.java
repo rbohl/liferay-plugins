@@ -14,6 +14,8 @@
 
 package com.liferay.knowledgebase.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.knowledgebase.service.ClpSerializer;
 import com.liferay.knowledgebase.service.KBArticleLocalServiceUtil;
 
@@ -43,6 +45,7 @@ import java.util.Map;
 /**
  * @author Brian Wing Shun Chan
  */
+@ProviderType
 public class KBArticleClp extends BaseModelImpl<KBArticle> implements KBArticle {
 	public KBArticleClp() {
 	}
@@ -102,6 +105,7 @@ public class KBArticleClp extends BaseModelImpl<KBArticle> implements KBArticle 
 		attributes.put("viewCount", getViewCount());
 		attributes.put("latest", getLatest());
 		attributes.put("main", getMain());
+		attributes.put("sourceURL", getSourceURL());
 		attributes.put("status", getStatus());
 		attributes.put("statusByUserId", getStatusByUserId());
 		attributes.put("statusByUserName", getStatusByUserName());
@@ -240,6 +244,12 @@ public class KBArticleClp extends BaseModelImpl<KBArticle> implements KBArticle 
 
 		if (main != null) {
 			setMain(main);
+		}
+
+		String sourceURL = (String)attributes.get("sourceURL");
+
+		if (sourceURL != null) {
+			setSourceURL(sourceURL);
 		}
 
 		Integer status = (Integer)attributes.get("status");
@@ -791,6 +801,29 @@ public class KBArticleClp extends BaseModelImpl<KBArticle> implements KBArticle 
 	}
 
 	@Override
+	public String getSourceURL() {
+		return _sourceURL;
+	}
+
+	@Override
+	public void setSourceURL(String sourceURL) {
+		_sourceURL = sourceURL;
+
+		if (_kbArticleRemoteModel != null) {
+			try {
+				Class<?> clazz = _kbArticleRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setSourceURL", String.class);
+
+				method.invoke(_kbArticleRemoteModel, sourceURL);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
 	public int getStatus() {
 		return _status;
 	}
@@ -900,25 +933,6 @@ public class KBArticleClp extends BaseModelImpl<KBArticle> implements KBArticle 
 	}
 
 	@Override
-	public long getAttachmentsFolderId() {
-		try {
-			String methodName = "getAttachmentsFolderId";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			Long returnObj = (Long)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
 	public java.util.List<java.lang.Long> getAncestorResourcePrimaryKeys() {
 		try {
 			String methodName = "getAncestorResourcePrimaryKeys";
@@ -977,15 +991,15 @@ public class KBArticleClp extends BaseModelImpl<KBArticle> implements KBArticle 
 	}
 
 	@Override
-	public java.lang.String getAttachmentsDirName() {
+	public com.liferay.knowledgebase.model.KBArticle getParentKBArticle() {
 		try {
-			String methodName = "getAttachmentsDirName";
+			String methodName = "getParentKBArticle";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 
 			Object[] parameterValues = new Object[] {  };
 
-			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
+			com.liferay.knowledgebase.model.KBArticle returnObj = (com.liferay.knowledgebase.model.KBArticle)invokeOnRemoteModel(methodName,
 					parameterTypes, parameterValues);
 
 			return returnObj;
@@ -996,15 +1010,15 @@ public class KBArticleClp extends BaseModelImpl<KBArticle> implements KBArticle 
 	}
 
 	@Override
-	public com.liferay.knowledgebase.model.KBArticle getParentKBArticle() {
+	public long getAttachmentsFolderId() {
 		try {
-			String methodName = "getParentKBArticle";
+			String methodName = "getAttachmentsFolderId";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 
 			Object[] parameterValues = new Object[] {  };
 
-			com.liferay.knowledgebase.model.KBArticle returnObj = (com.liferay.knowledgebase.model.KBArticle)invokeOnRemoteModel(methodName,
+			Long returnObj = (Long)invokeOnRemoteModel(methodName,
 					parameterTypes, parameterValues);
 
 			return returnObj;
@@ -1043,25 +1057,6 @@ public class KBArticleClp extends BaseModelImpl<KBArticle> implements KBArticle 
 			Object[] parameterValues = new Object[] {  };
 
 			Boolean returnObj = (Boolean)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
-	public java.lang.String[] getAttachmentsFileNames() {
-		try {
-			String methodName = "getAttachmentsFileNames";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			java.lang.String[] returnObj = (java.lang.String[])invokeOnRemoteModel(methodName,
 					parameterTypes, parameterValues);
 
 			return returnObj;
@@ -1256,6 +1251,7 @@ public class KBArticleClp extends BaseModelImpl<KBArticle> implements KBArticle 
 		clone.setViewCount(getViewCount());
 		clone.setLatest(getLatest());
 		clone.setMain(getMain());
+		clone.setSourceURL(getSourceURL());
 		clone.setStatus(getStatus());
 		clone.setStatusByUserId(getStatusByUserId());
 		clone.setStatusByUserName(getStatusByUserName());
@@ -1323,7 +1319,7 @@ public class KBArticleClp extends BaseModelImpl<KBArticle> implements KBArticle 
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(51);
+		StringBundler sb = new StringBundler(53);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -1367,6 +1363,8 @@ public class KBArticleClp extends BaseModelImpl<KBArticle> implements KBArticle 
 		sb.append(getLatest());
 		sb.append(", main=");
 		sb.append(getMain());
+		sb.append(", sourceURL=");
+		sb.append(getSourceURL());
 		sb.append(", status=");
 		sb.append(getStatus());
 		sb.append(", statusByUserId=");
@@ -1382,7 +1380,7 @@ public class KBArticleClp extends BaseModelImpl<KBArticle> implements KBArticle 
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(79);
+		StringBundler sb = new StringBundler(82);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.knowledgebase.model.KBArticle");
@@ -1473,6 +1471,10 @@ public class KBArticleClp extends BaseModelImpl<KBArticle> implements KBArticle 
 		sb.append(getMain());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>sourceURL</column-name><column-value><![CDATA[");
+		sb.append(getSourceURL());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>status</column-name><column-value><![CDATA[");
 		sb.append(getStatus());
 		sb.append("]]></column-value></column>");
@@ -1516,6 +1518,7 @@ public class KBArticleClp extends BaseModelImpl<KBArticle> implements KBArticle 
 	private int _viewCount;
 	private boolean _latest;
 	private boolean _main;
+	private String _sourceURL;
 	private int _status;
 	private long _statusByUserId;
 	private String _statusByUserName;

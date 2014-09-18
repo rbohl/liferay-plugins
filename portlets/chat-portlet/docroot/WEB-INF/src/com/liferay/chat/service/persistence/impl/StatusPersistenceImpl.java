@@ -31,21 +31,17 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -354,7 +350,7 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	 */
 	@Override
 	public List<Status> findByModifiedDate(long modifiedDate, int start,
-		int end, OrderByComparator orderByComparator) {
+		int end, OrderByComparator<Status> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -464,7 +460,8 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	 */
 	@Override
 	public Status findByModifiedDate_First(long modifiedDate,
-		OrderByComparator orderByComparator) throws NoSuchStatusException {
+		OrderByComparator<Status> orderByComparator)
+		throws NoSuchStatusException {
 		Status status = fetchByModifiedDate_First(modifiedDate,
 				orderByComparator);
 
@@ -493,7 +490,7 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	 */
 	@Override
 	public Status fetchByModifiedDate_First(long modifiedDate,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Status> orderByComparator) {
 		List<Status> list = findByModifiedDate(modifiedDate, 0, 1,
 				orderByComparator);
 
@@ -514,7 +511,8 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	 */
 	@Override
 	public Status findByModifiedDate_Last(long modifiedDate,
-		OrderByComparator orderByComparator) throws NoSuchStatusException {
+		OrderByComparator<Status> orderByComparator)
+		throws NoSuchStatusException {
 		Status status = fetchByModifiedDate_Last(modifiedDate, orderByComparator);
 
 		if (status != null) {
@@ -542,7 +540,7 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	 */
 	@Override
 	public Status fetchByModifiedDate_Last(long modifiedDate,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Status> orderByComparator) {
 		int count = countByModifiedDate(modifiedDate);
 
 		if (count == 0) {
@@ -570,7 +568,7 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	 */
 	@Override
 	public Status[] findByModifiedDate_PrevAndNext(long statusId,
-		long modifiedDate, OrderByComparator orderByComparator)
+		long modifiedDate, OrderByComparator<Status> orderByComparator)
 		throws NoSuchStatusException {
 		Status status = findByPrimaryKey(statusId);
 
@@ -600,8 +598,8 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	}
 
 	protected Status getByModifiedDate_PrevAndNext(Session session,
-		Status status, long modifiedDate, OrderByComparator orderByComparator,
-		boolean previous) {
+		Status status, long modifiedDate,
+		OrderByComparator<Status> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -833,7 +831,7 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	 */
 	@Override
 	public List<Status> findByOnline(boolean online, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Status> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -939,7 +937,8 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	 */
 	@Override
 	public Status findByOnline_First(boolean online,
-		OrderByComparator orderByComparator) throws NoSuchStatusException {
+		OrderByComparator<Status> orderByComparator)
+		throws NoSuchStatusException {
 		Status status = fetchByOnline_First(online, orderByComparator);
 
 		if (status != null) {
@@ -967,7 +966,7 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	 */
 	@Override
 	public Status fetchByOnline_First(boolean online,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Status> orderByComparator) {
 		List<Status> list = findByOnline(online, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -987,7 +986,8 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	 */
 	@Override
 	public Status findByOnline_Last(boolean online,
-		OrderByComparator orderByComparator) throws NoSuchStatusException {
+		OrderByComparator<Status> orderByComparator)
+		throws NoSuchStatusException {
 		Status status = fetchByOnline_Last(online, orderByComparator);
 
 		if (status != null) {
@@ -1015,7 +1015,7 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	 */
 	@Override
 	public Status fetchByOnline_Last(boolean online,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Status> orderByComparator) {
 		int count = countByOnline(online);
 
 		if (count == 0) {
@@ -1043,7 +1043,8 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	 */
 	@Override
 	public Status[] findByOnline_PrevAndNext(long statusId, boolean online,
-		OrderByComparator orderByComparator) throws NoSuchStatusException {
+		OrderByComparator<Status> orderByComparator)
+		throws NoSuchStatusException {
 		Status status = findByPrimaryKey(statusId);
 
 		Session session = null;
@@ -1072,7 +1073,8 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	}
 
 	protected Status getByOnline_PrevAndNext(Session session, Status status,
-		boolean online, OrderByComparator orderByComparator, boolean previous) {
+		boolean online, OrderByComparator<Status> orderByComparator,
+		boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -1309,7 +1311,7 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	 */
 	@Override
 	public List<Status> findByM_O(long modifiedDate, boolean online, int start,
-		int end, OrderByComparator orderByComparator) {
+		int end, OrderByComparator<Status> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1425,7 +1427,8 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	 */
 	@Override
 	public Status findByM_O_First(long modifiedDate, boolean online,
-		OrderByComparator orderByComparator) throws NoSuchStatusException {
+		OrderByComparator<Status> orderByComparator)
+		throws NoSuchStatusException {
 		Status status = fetchByM_O_First(modifiedDate, online, orderByComparator);
 
 		if (status != null) {
@@ -1457,7 +1460,7 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	 */
 	@Override
 	public Status fetchByM_O_First(long modifiedDate, boolean online,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Status> orderByComparator) {
 		List<Status> list = findByM_O(modifiedDate, online, 0, 1,
 				orderByComparator);
 
@@ -1479,7 +1482,8 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	 */
 	@Override
 	public Status findByM_O_Last(long modifiedDate, boolean online,
-		OrderByComparator orderByComparator) throws NoSuchStatusException {
+		OrderByComparator<Status> orderByComparator)
+		throws NoSuchStatusException {
 		Status status = fetchByM_O_Last(modifiedDate, online, orderByComparator);
 
 		if (status != null) {
@@ -1511,7 +1515,7 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	 */
 	@Override
 	public Status fetchByM_O_Last(long modifiedDate, boolean online,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Status> orderByComparator) {
 		int count = countByM_O(modifiedDate, online);
 
 		if (count == 0) {
@@ -1540,7 +1544,7 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	 */
 	@Override
 	public Status[] findByM_O_PrevAndNext(long statusId, long modifiedDate,
-		boolean online, OrderByComparator orderByComparator)
+		boolean online, OrderByComparator<Status> orderByComparator)
 		throws NoSuchStatusException {
 		Status status = findByPrimaryKey(statusId);
 
@@ -1570,8 +1574,8 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	}
 
 	protected Status getByM_O_PrevAndNext(Session session, Status status,
-		long modifiedDate, boolean online, OrderByComparator orderByComparator,
-		boolean previous) {
+		long modifiedDate, boolean online,
+		OrderByComparator<Status> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -2329,7 +2333,7 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	 */
 	@Override
 	public List<Status> findAll(int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Status> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -2465,25 +2469,6 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	 * Initializes the status persistence.
 	 */
 	public void afterPropertiesSet() {
-		String[] listenerClassNames = StringUtil.split(GetterUtil.getString(
-					com.liferay.util.service.ServiceProps.get(
-						"value.object.listener.com.liferay.chat.model.Status")));
-
-		if (listenerClassNames.length > 0) {
-			try {
-				List<ModelListener<Status>> listenersList = new ArrayList<ModelListener<Status>>();
-
-				for (String listenerClassName : listenerClassNames) {
-					listenersList.add((ModelListener<Status>)InstanceFactory.newInstance(
-							getClassLoader(), listenerClassName));
-				}
-
-				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
-			}
-			catch (Exception e) {
-				_log.error(e);
-			}
-		}
 	}
 
 	public void destroy() {

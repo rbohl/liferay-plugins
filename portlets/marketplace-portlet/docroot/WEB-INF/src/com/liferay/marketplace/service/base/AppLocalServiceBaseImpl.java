@@ -14,6 +14,8 @@
 
 package com.liferay.marketplace.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.marketplace.model.App;
 import com.liferay.marketplace.service.AppLocalService;
 import com.liferay.marketplace.service.persistence.AppPersistence;
@@ -66,6 +68,7 @@ import javax.sql.DataSource;
  * @see com.liferay.marketplace.service.AppLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class AppLocalServiceBaseImpl extends BaseLocalServiceImpl
 	implements AppLocalService, IdentifiableBean {
 	/*
@@ -105,11 +108,10 @@ public abstract class AppLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param appId the primary key of the app
 	 * @return the app that was removed
 	 * @throws PortalException if a app with the primary key could not be found
-	 * @throws SystemException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public App deleteApp(long appId) throws PortalException, SystemException {
+	public App deleteApp(long appId) throws PortalException {
 		return appPersistence.remove(appId);
 	}
 
@@ -118,11 +120,10 @@ public abstract class AppLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 *
 	 * @param app the app
 	 * @return the app that was removed
-	 * @throws SystemException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public App deleteApp(App app) throws SystemException {
+	public App deleteApp(App app) {
 		return appPersistence.remove(app);
 	}
 
@@ -141,8 +142,7 @@ public abstract class AppLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @return the matching rows
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery) {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return appPersistence.findWithDynamicQuery(dynamicQuery);
 	}
 
@@ -159,8 +159,8 @@ public abstract class AppLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end) {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
 		return appPersistence.findWithDynamicQuery(dynamicQuery, start, end);
 	}
 
@@ -178,9 +178,8 @@ public abstract class AppLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator orderByComparator) {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
 		return appPersistence.findWithDynamicQuery(dynamicQuery, start, end,
 			orderByComparator);
 	}

@@ -14,6 +14,8 @@
 
 package com.liferay.knowledgebase.service.persistence;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.knowledgebase.model.KBTemplate;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
@@ -36,6 +38,7 @@ import java.util.List;
  * @see KBTemplatePersistenceImpl
  * @generated
  */
+@ProviderType
 public class KBTemplateUtil {
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -85,7 +88,7 @@ public class KBTemplateUtil {
 	 */
 	public static List<KBTemplate> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<KBTemplate> orderByComparator) {
 		return getPersistence()
 				   .findWithDynamicQuery(dynamicQuery, start, end,
 			orderByComparator);
@@ -149,7 +152,7 @@ public class KBTemplateUtil {
 	*/
 	public static java.util.List<com.liferay.knowledgebase.model.KBTemplate> findByUuid(
 		java.lang.String uuid, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator) {
 		return getPersistence().findByUuid(uuid, start, end, orderByComparator);
 	}
 
@@ -163,7 +166,7 @@ public class KBTemplateUtil {
 	*/
 	public static com.liferay.knowledgebase.model.KBTemplate findByUuid_First(
 		java.lang.String uuid,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator)
 		throws com.liferay.knowledgebase.NoSuchTemplateException {
 		return getPersistence().findByUuid_First(uuid, orderByComparator);
 	}
@@ -177,7 +180,7 @@ public class KBTemplateUtil {
 	*/
 	public static com.liferay.knowledgebase.model.KBTemplate fetchByUuid_First(
 		java.lang.String uuid,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator) {
 		return getPersistence().fetchByUuid_First(uuid, orderByComparator);
 	}
 
@@ -191,7 +194,7 @@ public class KBTemplateUtil {
 	*/
 	public static com.liferay.knowledgebase.model.KBTemplate findByUuid_Last(
 		java.lang.String uuid,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator)
 		throws com.liferay.knowledgebase.NoSuchTemplateException {
 		return getPersistence().findByUuid_Last(uuid, orderByComparator);
 	}
@@ -205,7 +208,7 @@ public class KBTemplateUtil {
 	*/
 	public static com.liferay.knowledgebase.model.KBTemplate fetchByUuid_Last(
 		java.lang.String uuid,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator) {
 		return getPersistence().fetchByUuid_Last(uuid, orderByComparator);
 	}
 
@@ -220,7 +223,7 @@ public class KBTemplateUtil {
 	*/
 	public static com.liferay.knowledgebase.model.KBTemplate[] findByUuid_PrevAndNext(
 		long kbTemplateId, java.lang.String uuid,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator)
 		throws com.liferay.knowledgebase.NoSuchTemplateException {
 		return getPersistence()
 				   .findByUuid_PrevAndNext(kbTemplateId, uuid, orderByComparator);
@@ -354,7 +357,7 @@ public class KBTemplateUtil {
 	*/
 	public static java.util.List<com.liferay.knowledgebase.model.KBTemplate> findByUuid_C(
 		java.lang.String uuid, long companyId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator) {
 		return getPersistence()
 				   .findByUuid_C(uuid, companyId, start, end, orderByComparator);
 	}
@@ -370,7 +373,7 @@ public class KBTemplateUtil {
 	*/
 	public static com.liferay.knowledgebase.model.KBTemplate findByUuid_C_First(
 		java.lang.String uuid, long companyId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator)
 		throws com.liferay.knowledgebase.NoSuchTemplateException {
 		return getPersistence()
 				   .findByUuid_C_First(uuid, companyId, orderByComparator);
@@ -386,7 +389,7 @@ public class KBTemplateUtil {
 	*/
 	public static com.liferay.knowledgebase.model.KBTemplate fetchByUuid_C_First(
 		java.lang.String uuid, long companyId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator) {
 		return getPersistence()
 				   .fetchByUuid_C_First(uuid, companyId, orderByComparator);
 	}
@@ -402,7 +405,7 @@ public class KBTemplateUtil {
 	*/
 	public static com.liferay.knowledgebase.model.KBTemplate findByUuid_C_Last(
 		java.lang.String uuid, long companyId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator)
 		throws com.liferay.knowledgebase.NoSuchTemplateException {
 		return getPersistence()
 				   .findByUuid_C_Last(uuid, companyId, orderByComparator);
@@ -418,7 +421,7 @@ public class KBTemplateUtil {
 	*/
 	public static com.liferay.knowledgebase.model.KBTemplate fetchByUuid_C_Last(
 		java.lang.String uuid, long companyId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator) {
 		return getPersistence()
 				   .fetchByUuid_C_Last(uuid, companyId, orderByComparator);
 	}
@@ -435,7 +438,7 @@ public class KBTemplateUtil {
 	*/
 	public static com.liferay.knowledgebase.model.KBTemplate[] findByUuid_C_PrevAndNext(
 		long kbTemplateId, java.lang.String uuid, long companyId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator)
 		throws com.liferay.knowledgebase.NoSuchTemplateException {
 		return getPersistence()
 				   .findByUuid_C_PrevAndNext(kbTemplateId, uuid, companyId,
@@ -506,7 +509,7 @@ public class KBTemplateUtil {
 	*/
 	public static java.util.List<com.liferay.knowledgebase.model.KBTemplate> findByGroupId(
 		long groupId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator) {
 		return getPersistence()
 				   .findByGroupId(groupId, start, end, orderByComparator);
 	}
@@ -521,7 +524,7 @@ public class KBTemplateUtil {
 	*/
 	public static com.liferay.knowledgebase.model.KBTemplate findByGroupId_First(
 		long groupId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator)
 		throws com.liferay.knowledgebase.NoSuchTemplateException {
 		return getPersistence().findByGroupId_First(groupId, orderByComparator);
 	}
@@ -535,7 +538,7 @@ public class KBTemplateUtil {
 	*/
 	public static com.liferay.knowledgebase.model.KBTemplate fetchByGroupId_First(
 		long groupId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator) {
 		return getPersistence().fetchByGroupId_First(groupId, orderByComparator);
 	}
 
@@ -549,7 +552,7 @@ public class KBTemplateUtil {
 	*/
 	public static com.liferay.knowledgebase.model.KBTemplate findByGroupId_Last(
 		long groupId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator)
 		throws com.liferay.knowledgebase.NoSuchTemplateException {
 		return getPersistence().findByGroupId_Last(groupId, orderByComparator);
 	}
@@ -563,7 +566,7 @@ public class KBTemplateUtil {
 	*/
 	public static com.liferay.knowledgebase.model.KBTemplate fetchByGroupId_Last(
 		long groupId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator) {
 		return getPersistence().fetchByGroupId_Last(groupId, orderByComparator);
 	}
 
@@ -578,7 +581,7 @@ public class KBTemplateUtil {
 	*/
 	public static com.liferay.knowledgebase.model.KBTemplate[] findByGroupId_PrevAndNext(
 		long kbTemplateId, long groupId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator)
 		throws com.liferay.knowledgebase.NoSuchTemplateException {
 		return getPersistence()
 				   .findByGroupId_PrevAndNext(kbTemplateId, groupId,
@@ -628,7 +631,7 @@ public class KBTemplateUtil {
 	*/
 	public static java.util.List<com.liferay.knowledgebase.model.KBTemplate> filterFindByGroupId(
 		long groupId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator) {
 		return getPersistence()
 				   .filterFindByGroupId(groupId, start, end, orderByComparator);
 	}
@@ -644,7 +647,7 @@ public class KBTemplateUtil {
 	*/
 	public static com.liferay.knowledgebase.model.KBTemplate[] filterFindByGroupId_PrevAndNext(
 		long kbTemplateId, long groupId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator)
 		throws com.liferay.knowledgebase.NoSuchTemplateException {
 		return getPersistence()
 				   .filterFindByGroupId_PrevAndNext(kbTemplateId, groupId,
@@ -797,7 +800,7 @@ public class KBTemplateUtil {
 	*/
 	public static java.util.List<com.liferay.knowledgebase.model.KBTemplate> findAll(
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate> orderByComparator) {
 		return getPersistence().findAll(start, end, orderByComparator);
 	}
 

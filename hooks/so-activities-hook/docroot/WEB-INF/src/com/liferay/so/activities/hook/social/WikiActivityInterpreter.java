@@ -15,7 +15,6 @@
 package com.liferay.so.activities.hook.social;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.HtmlUtil;
@@ -57,9 +56,7 @@ public class WikiActivityInterpreter extends SOSocialActivityInterpreter {
 	}
 
 	@Override
-	public void updateActivitySet(long activityId)
-		throws PortalException, SystemException {
-
+	public void updateActivitySet(long activityId) throws PortalException {
 		SocialActivity activity =
 			SocialActivityLocalServiceUtil.fetchSocialActivity(activityId);
 
@@ -93,16 +90,15 @@ public class WikiActivityInterpreter extends SOSocialActivityInterpreter {
 					extraDataJSONObject = JSONFactoryUtil.createJSONObject();
 
 					extraDataJSONObject.put(
-						"sourceVersion", wikiPage.getVersion());
+						"sourceVersion",
+						MathUtil.format(wikiPage.getVersion() - 0.1, 1, 1));
 				}
 				else {
 					extraDataJSONObject = JSONFactoryUtil.createJSONObject(
 						activitySet.getExtraData());
 				}
 
-				extraDataJSONObject.put(
-					"targetVersion",
-					MathUtil.format(wikiPage.getVersion() + 0.1, 1, 1));
+				extraDataJSONObject.put("targetVersion", wikiPage.getVersion());
 
 				activitySet.setExtraData(extraDataJSONObject.toString());
 
@@ -127,10 +123,10 @@ public class WikiActivityInterpreter extends SOSocialActivityInterpreter {
 				JSONObject extraDataJSONObject =
 					JSONFactoryUtil.createJSONObject();
 
-				extraDataJSONObject.put("sourceVersion", wikiPage.getVersion());
 				extraDataJSONObject.put(
-					"targetVersion",
-					MathUtil.format(wikiPage.getVersion() + 0.1, 1, 1));
+					"sourceVersion",
+					MathUtil.format(wikiPage.getVersion() - 0.1, 1, 1));
+				extraDataJSONObject.put("targetVersion", wikiPage.getVersion());
 
 				activitySet.setExtraData(extraDataJSONObject.toString());
 

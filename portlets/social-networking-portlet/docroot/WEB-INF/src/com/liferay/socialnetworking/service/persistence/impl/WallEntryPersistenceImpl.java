@@ -25,15 +25,12 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import com.liferay.socialnetworking.NoSuchWallEntryException;
@@ -44,7 +41,6 @@ import com.liferay.socialnetworking.service.persistence.WallEntryPersistence;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -150,7 +146,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 */
 	@Override
 	public List<WallEntry> findByGroupId(long groupId, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<WallEntry> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -256,7 +252,8 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 */
 	@Override
 	public WallEntry findByGroupId_First(long groupId,
-		OrderByComparator orderByComparator) throws NoSuchWallEntryException {
+		OrderByComparator<WallEntry> orderByComparator)
+		throws NoSuchWallEntryException {
 		WallEntry wallEntry = fetchByGroupId_First(groupId, orderByComparator);
 
 		if (wallEntry != null) {
@@ -284,7 +281,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 */
 	@Override
 	public WallEntry fetchByGroupId_First(long groupId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<WallEntry> orderByComparator) {
 		List<WallEntry> list = findByGroupId(groupId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -304,7 +301,8 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 */
 	@Override
 	public WallEntry findByGroupId_Last(long groupId,
-		OrderByComparator orderByComparator) throws NoSuchWallEntryException {
+		OrderByComparator<WallEntry> orderByComparator)
+		throws NoSuchWallEntryException {
 		WallEntry wallEntry = fetchByGroupId_Last(groupId, orderByComparator);
 
 		if (wallEntry != null) {
@@ -332,7 +330,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 */
 	@Override
 	public WallEntry fetchByGroupId_Last(long groupId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<WallEntry> orderByComparator) {
 		int count = countByGroupId(groupId);
 
 		if (count == 0) {
@@ -360,7 +358,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 */
 	@Override
 	public WallEntry[] findByGroupId_PrevAndNext(long wallEntryId,
-		long groupId, OrderByComparator orderByComparator)
+		long groupId, OrderByComparator<WallEntry> orderByComparator)
 		throws NoSuchWallEntryException {
 		WallEntry wallEntry = findByPrimaryKey(wallEntryId);
 
@@ -390,8 +388,8 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	}
 
 	protected WallEntry getByGroupId_PrevAndNext(Session session,
-		WallEntry wallEntry, long groupId, OrderByComparator orderByComparator,
-		boolean previous) {
+		WallEntry wallEntry, long groupId,
+		OrderByComparator<WallEntry> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -624,7 +622,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 */
 	@Override
 	public List<WallEntry> findByUserId(long userId, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<WallEntry> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -730,7 +728,8 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 */
 	@Override
 	public WallEntry findByUserId_First(long userId,
-		OrderByComparator orderByComparator) throws NoSuchWallEntryException {
+		OrderByComparator<WallEntry> orderByComparator)
+		throws NoSuchWallEntryException {
 		WallEntry wallEntry = fetchByUserId_First(userId, orderByComparator);
 
 		if (wallEntry != null) {
@@ -758,7 +757,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 */
 	@Override
 	public WallEntry fetchByUserId_First(long userId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<WallEntry> orderByComparator) {
 		List<WallEntry> list = findByUserId(userId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -778,7 +777,8 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 */
 	@Override
 	public WallEntry findByUserId_Last(long userId,
-		OrderByComparator orderByComparator) throws NoSuchWallEntryException {
+		OrderByComparator<WallEntry> orderByComparator)
+		throws NoSuchWallEntryException {
 		WallEntry wallEntry = fetchByUserId_Last(userId, orderByComparator);
 
 		if (wallEntry != null) {
@@ -806,7 +806,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 */
 	@Override
 	public WallEntry fetchByUserId_Last(long userId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<WallEntry> orderByComparator) {
 		int count = countByUserId(userId);
 
 		if (count == 0) {
@@ -834,7 +834,8 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 */
 	@Override
 	public WallEntry[] findByUserId_PrevAndNext(long wallEntryId, long userId,
-		OrderByComparator orderByComparator) throws NoSuchWallEntryException {
+		OrderByComparator<WallEntry> orderByComparator)
+		throws NoSuchWallEntryException {
 		WallEntry wallEntry = findByPrimaryKey(wallEntryId);
 
 		Session session = null;
@@ -863,8 +864,8 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	}
 
 	protected WallEntry getByUserId_PrevAndNext(Session session,
-		WallEntry wallEntry, long userId, OrderByComparator orderByComparator,
-		boolean previous) {
+		WallEntry wallEntry, long userId,
+		OrderByComparator<WallEntry> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -1102,7 +1103,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 */
 	@Override
 	public List<WallEntry> findByG_U(long groupId, long userId, int start,
-		int end, OrderByComparator orderByComparator) {
+		int end, OrderByComparator<WallEntry> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1218,7 +1219,8 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 */
 	@Override
 	public WallEntry findByG_U_First(long groupId, long userId,
-		OrderByComparator orderByComparator) throws NoSuchWallEntryException {
+		OrderByComparator<WallEntry> orderByComparator)
+		throws NoSuchWallEntryException {
 		WallEntry wallEntry = fetchByG_U_First(groupId, userId,
 				orderByComparator);
 
@@ -1251,7 +1253,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 */
 	@Override
 	public WallEntry fetchByG_U_First(long groupId, long userId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<WallEntry> orderByComparator) {
 		List<WallEntry> list = findByG_U(groupId, userId, 0, 1,
 				orderByComparator);
 
@@ -1273,7 +1275,8 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 */
 	@Override
 	public WallEntry findByG_U_Last(long groupId, long userId,
-		OrderByComparator orderByComparator) throws NoSuchWallEntryException {
+		OrderByComparator<WallEntry> orderByComparator)
+		throws NoSuchWallEntryException {
 		WallEntry wallEntry = fetchByG_U_Last(groupId, userId, orderByComparator);
 
 		if (wallEntry != null) {
@@ -1305,7 +1308,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 */
 	@Override
 	public WallEntry fetchByG_U_Last(long groupId, long userId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<WallEntry> orderByComparator) {
 		int count = countByG_U(groupId, userId);
 
 		if (count == 0) {
@@ -1334,7 +1337,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 */
 	@Override
 	public WallEntry[] findByG_U_PrevAndNext(long wallEntryId, long groupId,
-		long userId, OrderByComparator orderByComparator)
+		long userId, OrderByComparator<WallEntry> orderByComparator)
 		throws NoSuchWallEntryException {
 		WallEntry wallEntry = findByPrimaryKey(wallEntryId);
 
@@ -1365,7 +1368,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 
 	protected WallEntry getByG_U_PrevAndNext(Session session,
 		WallEntry wallEntry, long groupId, long userId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<WallEntry> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -2078,7 +2081,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 */
 	@Override
 	public List<WallEntry> findAll(int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<WallEntry> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -2209,25 +2212,6 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 * Initializes the wall entry persistence.
 	 */
 	public void afterPropertiesSet() {
-		String[] listenerClassNames = StringUtil.split(GetterUtil.getString(
-					com.liferay.util.service.ServiceProps.get(
-						"value.object.listener.com.liferay.socialnetworking.model.WallEntry")));
-
-		if (listenerClassNames.length > 0) {
-			try {
-				List<ModelListener<WallEntry>> listenersList = new ArrayList<ModelListener<WallEntry>>();
-
-				for (String listenerClassName : listenerClassNames) {
-					listenersList.add((ModelListener<WallEntry>)InstanceFactory.newInstance(
-							getClassLoader(), listenerClassName));
-				}
-
-				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
-			}
-			catch (Exception e) {
-				_log.error(e);
-			}
-		}
 	}
 
 	public void destroy() {

@@ -24,6 +24,7 @@ import java.security.KeyStore;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +61,7 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.ConnectTimeoutException;
+import org.apache.http.conn.routing.HttpRoutePlanner;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
@@ -69,6 +71,7 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HttpContext;
@@ -109,6 +112,8 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 		}
 
 		try {
+			setProxyHost(httpClientBuilder);
+
 			_closeableHttpClient = httpClientBuilder.build();
 
 			if (_logger.isDebugEnabled()) {
@@ -175,6 +180,10 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 
 		HttpGet httpGet = new HttpGet(url);
 
+		for (String key : _headers.keySet()) {
+			httpGet.addHeader(key, _headers.get(key));
+		}
+
 		return execute(httpGet);
 	}
 
@@ -194,9 +203,17 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 		HttpEntity httpEntity = new UrlEncodedFormEntity(
 			nameValuePairs, Charsets.UTF_8);
 
+		for (String key : _headers.keySet()) {
+			httpPost.addHeader(key, _headers.get(key));
+		}
+
 		httpPost.setEntity(httpEntity);
 
 		return execute(httpPost);
+	}
+
+	public Map<String, String> getHeaders() {
+		return _headers;
 	}
 
 	public String getHostName() {
@@ -216,6 +233,10 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 		destroy();
 
 		afterPropertiesSet();
+	}
+
+	public void setHeaders(Map<String, String> headers) {
+		_headers = headers;
 	}
 
 	public void setHostName(String hostName) {
@@ -243,6 +264,14 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 
 	public void setProtocol(String protocol) {
 		_protocol = protocol;
+	}
+
+	public void setProxyHostName(String proxyHostName) {
+		_proxyHostName = proxyHostName;
+	}
+
+	public void setProxyHostPort(int proxyHostPort) {
+		_proxyHostPort = proxyHostPort;
 	}
 
 	protected String execute(HttpRequestBase httpRequestBase)
@@ -322,6 +351,19 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 			SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
 	}
 
+	protected void setProxyHost(HttpClientBuilder httpClientBuilder) {
+		if ((_proxyHostName == null) || _proxyHostName.equals("")) {
+			return;
+		}
+
+		HttpHost httpHost = new HttpHost(_proxyHostName, _proxyHostPort);
+
+		HttpRoutePlanner httpRoutePlanner = new DefaultProxyRoutePlanner(
+			httpHost);
+
+		httpClientBuilder.setRoutePlanner(httpRoutePlanner);
+	}
+
 	protected List<NameValuePair> toNameValuePairs(
 		Map<String, String> parameters) {
 
@@ -350,12 +392,15 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 		JSONWebServiceClientImpl.class);
 
 	private CloseableHttpClient _closeableHttpClient;
+	private Map<String, String> _headers = Collections.emptyMap();
 	private String _hostName;
 	private int _hostPort = 80;
 	private KeyStore _keyStore;
 	private String _login;
 	private String _password;
 	private String _protocol = "http";
+	private String _proxyHostName;
+	private int _proxyHostPort;
 
 	private class HttpRequestRetryHandlerImpl
 		implements HttpRequestRetryHandler {

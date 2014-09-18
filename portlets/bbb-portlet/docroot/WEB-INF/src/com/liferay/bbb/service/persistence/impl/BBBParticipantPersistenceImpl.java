@@ -31,22 +31,18 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -158,7 +154,7 @@ public class BBBParticipantPersistenceImpl extends BasePersistenceImpl<BBBPartic
 	 */
 	@Override
 	public List<BBBParticipant> findByBbbMeetingId(long bbbMeetingId,
-		int start, int end, OrderByComparator orderByComparator) {
+		int start, int end, OrderByComparator<BBBParticipant> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -268,7 +264,8 @@ public class BBBParticipantPersistenceImpl extends BasePersistenceImpl<BBBPartic
 	 */
 	@Override
 	public BBBParticipant findByBbbMeetingId_First(long bbbMeetingId,
-		OrderByComparator orderByComparator) throws NoSuchParticipantException {
+		OrderByComparator<BBBParticipant> orderByComparator)
+		throws NoSuchParticipantException {
 		BBBParticipant bbbParticipant = fetchByBbbMeetingId_First(bbbMeetingId,
 				orderByComparator);
 
@@ -297,7 +294,7 @@ public class BBBParticipantPersistenceImpl extends BasePersistenceImpl<BBBPartic
 	 */
 	@Override
 	public BBBParticipant fetchByBbbMeetingId_First(long bbbMeetingId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<BBBParticipant> orderByComparator) {
 		List<BBBParticipant> list = findByBbbMeetingId(bbbMeetingId, 0, 1,
 				orderByComparator);
 
@@ -318,7 +315,8 @@ public class BBBParticipantPersistenceImpl extends BasePersistenceImpl<BBBPartic
 	 */
 	@Override
 	public BBBParticipant findByBbbMeetingId_Last(long bbbMeetingId,
-		OrderByComparator orderByComparator) throws NoSuchParticipantException {
+		OrderByComparator<BBBParticipant> orderByComparator)
+		throws NoSuchParticipantException {
 		BBBParticipant bbbParticipant = fetchByBbbMeetingId_Last(bbbMeetingId,
 				orderByComparator);
 
@@ -347,7 +345,7 @@ public class BBBParticipantPersistenceImpl extends BasePersistenceImpl<BBBPartic
 	 */
 	@Override
 	public BBBParticipant fetchByBbbMeetingId_Last(long bbbMeetingId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<BBBParticipant> orderByComparator) {
 		int count = countByBbbMeetingId(bbbMeetingId);
 
 		if (count == 0) {
@@ -376,7 +374,8 @@ public class BBBParticipantPersistenceImpl extends BasePersistenceImpl<BBBPartic
 	@Override
 	public BBBParticipant[] findByBbbMeetingId_PrevAndNext(
 		long bbbParticipantId, long bbbMeetingId,
-		OrderByComparator orderByComparator) throws NoSuchParticipantException {
+		OrderByComparator<BBBParticipant> orderByComparator)
+		throws NoSuchParticipantException {
 		BBBParticipant bbbParticipant = findByPrimaryKey(bbbParticipantId);
 
 		Session session = null;
@@ -406,7 +405,7 @@ public class BBBParticipantPersistenceImpl extends BasePersistenceImpl<BBBPartic
 
 	protected BBBParticipant getByBbbMeetingId_PrevAndNext(Session session,
 		BBBParticipant bbbParticipant, long bbbMeetingId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<BBBParticipant> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -1405,7 +1404,7 @@ public class BBBParticipantPersistenceImpl extends BasePersistenceImpl<BBBPartic
 	 */
 	@Override
 	public List<BBBParticipant> findAll(int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<BBBParticipant> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1541,25 +1540,6 @@ public class BBBParticipantPersistenceImpl extends BasePersistenceImpl<BBBPartic
 	 * Initializes the b b b participant persistence.
 	 */
 	public void afterPropertiesSet() {
-		String[] listenerClassNames = StringUtil.split(GetterUtil.getString(
-					com.liferay.util.service.ServiceProps.get(
-						"value.object.listener.com.liferay.bbb.model.BBBParticipant")));
-
-		if (listenerClassNames.length > 0) {
-			try {
-				List<ModelListener<BBBParticipant>> listenersList = new ArrayList<ModelListener<BBBParticipant>>();
-
-				for (String listenerClassName : listenerClassNames) {
-					listenersList.add((ModelListener<BBBParticipant>)InstanceFactory.newInstance(
-							getClassLoader(), listenerClassName));
-				}
-
-				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
-			}
-			catch (Exception e) {
-				_log.error(e);
-			}
-		}
 	}
 
 	public void destroy() {

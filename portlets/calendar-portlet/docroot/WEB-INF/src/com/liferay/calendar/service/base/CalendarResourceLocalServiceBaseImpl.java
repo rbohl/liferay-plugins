@@ -14,6 +14,8 @@
 
 package com.liferay.calendar.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.calendar.model.CalendarResource;
 import com.liferay.calendar.service.CalendarResourceLocalService;
 import com.liferay.calendar.service.persistence.CalendarBookingFinder;
@@ -75,6 +77,7 @@ import javax.sql.DataSource;
  * @see com.liferay.calendar.service.CalendarResourceLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class CalendarResourceLocalServiceBaseImpl
 	extends BaseLocalServiceImpl implements CalendarResourceLocalService,
 		IdentifiableBean {
@@ -227,20 +230,6 @@ public abstract class CalendarResourceLocalServiceBaseImpl
 	}
 
 	/**
-	 * Returns the calendar resource with the matching UUID and company.
-	 *
-	 * @param uuid the calendar resource's UUID
-	 * @param  companyId the primary key of the company
-	 * @return the matching calendar resource, or <code>null</code> if a matching calendar resource could not be found
-	 */
-	@Override
-	public CalendarResource fetchCalendarResourceByUuidAndCompanyId(
-		String uuid, long companyId) {
-		return calendarResourcePersistence.fetchByUuid_C_First(uuid, companyId,
-			null);
-	}
-
-	/**
 	 * Returns the calendar resource matching the UUID and group.
 	 *
 	 * @param uuid the calendar resource's UUID
@@ -368,19 +357,18 @@ public abstract class CalendarResourceLocalServiceBaseImpl
 		return calendarResourcePersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
-	/**
-	 * Returns the calendar resource with the matching UUID and company.
-	 *
-	 * @param uuid the calendar resource's UUID
-	 * @param  companyId the primary key of the company
-	 * @return the matching calendar resource
-	 * @throws PortalException if a matching calendar resource could not be found
-	 */
 	@Override
-	public CalendarResource getCalendarResourceByUuidAndCompanyId(String uuid,
-		long companyId) throws PortalException {
-		return calendarResourcePersistence.findByUuid_C_First(uuid, companyId,
-			null);
+	public List<CalendarResource> getCalendarResourcesByUuidAndCompanyId(
+		String uuid, long companyId) {
+		return calendarResourcePersistence.findByUuid_C(uuid, companyId);
+	}
+
+	@Override
+	public List<CalendarResource> getCalendarResourcesByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CalendarResource> orderByComparator) {
+		return calendarResourcePersistence.findByUuid_C(uuid, companyId, start,
+			end, orderByComparator);
 	}
 
 	/**

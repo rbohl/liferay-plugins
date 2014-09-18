@@ -17,7 +17,6 @@ package com.liferay.knowledgebase.admin.util;
 import com.liferay.knowledgebase.model.KBArticle;
 import com.liferay.knowledgebase.service.KBArticleLocalServiceUtil;
 import com.liferay.knowledgebase.service.permission.KBArticlePermission;
-import com.liferay.knowledgebase.service.persistence.KBArticleActionableDynamicQuery;
 import com.liferay.knowledgebase.util.KnowledgeBaseUtil;
 import com.liferay.knowledgebase.util.PortletKeys;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
@@ -111,7 +110,7 @@ public class AdminIndexer extends BaseIndexer {
 		String keywords = searchContext.getKeywords();
 
 		queryTerms = ArrayUtil.append(
-			queryTerms, KnowledgeBaseUtil.parseKeywords(keywords));
+			queryTerms, KnowledgeBaseUtil.splitKeywords(keywords));
 
 		hits.setQueryTerms(queryTerms);
 
@@ -135,8 +134,6 @@ public class AdminIndexer extends BaseIndexer {
 		document.addText(
 			Field.CONTENT, HtmlUtil.extractText(kbArticle.getContent()));
 		document.addText(Field.DESCRIPTION, kbArticle.getDescription());
-		document.addKeyword(
-			Field.ROOT_ENTRY_CLASS_PK, kbArticle.getRootResourcePrimKey());
 		document.addText(Field.TITLE, kbArticle.getTitle());
 
 		document.addKeyword("titleKeyword", kbArticle.getTitle(), true);
@@ -175,7 +172,7 @@ public class AdminIndexer extends BaseIndexer {
 
 		SearchEngineUtil.updateDocument(
 			getSearchEngineId(), kbArticle.getCompanyId(),
-			getDocument(kbArticle));
+			getDocument(kbArticle), isCommitImmediately());
 	}
 
 	@Override
@@ -214,33 +211,42 @@ public class AdminIndexer extends BaseIndexer {
 		}
 
 		SearchEngineUtil.updateDocuments(
-			getSearchEngineId(), kbArticle.getCompanyId(), documents);
+			getSearchEngineId(), kbArticle.getCompanyId(), documents,
+			isCommitImmediately());
 	}
 
 	protected void reindexKBArticles(long companyId) throws Exception {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new KBArticleActionableDynamicQuery() {
+		final ActionableDynamicQuery actionableDynamicQuery =
+			KBArticleLocalServiceUtil.getActionableDynamicQuery();
 
-			@Override
-			protected void addCriteria(DynamicQuery dynamicQuery) {
-				Property property = PropertyFactoryUtil.forName("status");
+		actionableDynamicQuery.setAddCriteriaMethod(
+			new ActionableDynamicQuery.AddCriteriaMethod() {
 
-				dynamicQuery.add(
-					property.eq(WorkflowConstants.STATUS_APPROVED));
-			}
+				@Override
+				public void addCriteria(DynamicQuery dynamicQuery) {
+					Property property = PropertyFactoryUtil.forName("status");
 
-			@Override
-			protected void performAction(Object object) throws PortalException {
-				KBArticle kbArticle = (KBArticle)object;
+					dynamicQuery.add(
+						property.eq(WorkflowConstants.STATUS_APPROVED));
+				}
 
-				Document document = getDocument(kbArticle);
-
-				addDocument(document);
-			}
-
-		};
-
+			});
 		actionableDynamicQuery.setCompanyId(companyId);
+		actionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod() {
+
+				@Override
+				public void performAction(Object object)
+					throws PortalException {
+
+					KBArticle kbArticle = (KBArticle)object;
+
+					Document document = getDocument(kbArticle);
+
+					actionableDynamicQuery.addDocument(document);
+				}
+
+			});
 		actionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
 		actionableDynamicQuery.performActions();

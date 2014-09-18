@@ -30,6 +30,17 @@ public class KaleoLogLocalServiceWrapper implements KaleoLogLocalService,
 		_kaleoLogLocalService = kaleoLogLocalService;
 	}
 
+	@Override
+	public com.liferay.portal.workflow.kaleo.model.KaleoLog addActionExecutionKaleoLog(
+		com.liferay.portal.workflow.kaleo.model.KaleoInstanceToken kaleoInstanceToken,
+		com.liferay.portal.workflow.kaleo.model.KaleoAction kaleoAction,
+		long startTime, long endTime, java.lang.String comment,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _kaleoLogLocalService.addActionExecutionKaleoLog(kaleoInstanceToken,
+			kaleoAction, startTime, endTime, comment, serviceContext);
+	}
+
 	/**
 	* Adds the kaleo log to the database. Also notifies the appropriate model listeners.
 	*
@@ -40,251 +51,6 @@ public class KaleoLogLocalServiceWrapper implements KaleoLogLocalService,
 	public com.liferay.portal.workflow.kaleo.model.KaleoLog addKaleoLog(
 		com.liferay.portal.workflow.kaleo.model.KaleoLog kaleoLog) {
 		return _kaleoLogLocalService.addKaleoLog(kaleoLog);
-	}
-
-	/**
-	* Creates a new kaleo log with the primary key. Does not add the kaleo log to the database.
-	*
-	* @param kaleoLogId the primary key for the new kaleo log
-	* @return the new kaleo log
-	*/
-	@Override
-	public com.liferay.portal.workflow.kaleo.model.KaleoLog createKaleoLog(
-		long kaleoLogId) {
-		return _kaleoLogLocalService.createKaleoLog(kaleoLogId);
-	}
-
-	/**
-	* Deletes the kaleo log with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param kaleoLogId the primary key of the kaleo log
-	* @return the kaleo log that was removed
-	* @throws PortalException if a kaleo log with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.portal.workflow.kaleo.model.KaleoLog deleteKaleoLog(
-		long kaleoLogId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _kaleoLogLocalService.deleteKaleoLog(kaleoLogId);
-	}
-
-	/**
-	* Deletes the kaleo log from the database. Also notifies the appropriate model listeners.
-	*
-	* @param kaleoLog the kaleo log
-	* @return the kaleo log that was removed
-	*/
-	@Override
-	public com.liferay.portal.workflow.kaleo.model.KaleoLog deleteKaleoLog(
-		com.liferay.portal.workflow.kaleo.model.KaleoLog kaleoLog) {
-		return _kaleoLogLocalService.deleteKaleoLog(kaleoLog);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return _kaleoLogLocalService.dynamicQuery();
-	}
-
-	/**
-	* Performs a dynamic query on the database and returns the matching rows.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the matching rows
-	*/
-	@Override
-	@SuppressWarnings("rawtypes")
-	public java.util.List dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return _kaleoLogLocalService.dynamicQuery(dynamicQuery);
-	}
-
-	/**
-	* Performs a dynamic query on the database and returns a range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.workflow.kaleo.model.impl.KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @return the range of matching rows
-	*/
-	@Override
-	@SuppressWarnings("rawtypes")
-	public java.util.List dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
-		return _kaleoLogLocalService.dynamicQuery(dynamicQuery, start, end);
-	}
-
-	/**
-	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.workflow.kaleo.model.impl.KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching rows
-	*/
-	@Override
-	@SuppressWarnings("rawtypes")
-	public java.util.List dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
-		return _kaleoLogLocalService.dynamicQuery(dynamicQuery, start, end,
-			orderByComparator);
-	}
-
-	/**
-	* Returns the number of rows that match the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows that match the dynamic query
-	*/
-	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return _kaleoLogLocalService.dynamicQueryCount(dynamicQuery);
-	}
-
-	/**
-	* Returns the number of rows that match the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows that match the dynamic query
-	*/
-	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return _kaleoLogLocalService.dynamicQueryCount(dynamicQuery, projection);
-	}
-
-	@Override
-	public com.liferay.portal.workflow.kaleo.model.KaleoLog fetchKaleoLog(
-		long kaleoLogId) {
-		return _kaleoLogLocalService.fetchKaleoLog(kaleoLogId);
-	}
-
-	/**
-	* Returns the kaleo log with the primary key.
-	*
-	* @param kaleoLogId the primary key of the kaleo log
-	* @return the kaleo log
-	* @throws PortalException if a kaleo log with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.portal.workflow.kaleo.model.KaleoLog getKaleoLog(
-		long kaleoLogId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _kaleoLogLocalService.getKaleoLog(kaleoLogId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _kaleoLogLocalService.getActionableDynamicQuery();
-	}
-
-	/**
-	* @throws PortalException
-	*/
-	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _kaleoLogLocalService.deletePersistedModel(persistedModel);
-	}
-
-	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _kaleoLogLocalService.getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns a range of all the kaleo logs.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.workflow.kaleo.model.impl.KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of kaleo logs
-	* @param end the upper bound of the range of kaleo logs (not inclusive)
-	* @return the range of kaleo logs
-	*/
-	@Override
-	public java.util.List<com.liferay.portal.workflow.kaleo.model.KaleoLog> getKaleoLogs(
-		int start, int end) {
-		return _kaleoLogLocalService.getKaleoLogs(start, end);
-	}
-
-	/**
-	* Returns the number of kaleo logs.
-	*
-	* @return the number of kaleo logs
-	*/
-	@Override
-	public int getKaleoLogsCount() {
-		return _kaleoLogLocalService.getKaleoLogsCount();
-	}
-
-	/**
-	* Updates the kaleo log in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param kaleoLog the kaleo log
-	* @return the kaleo log that was updated
-	*/
-	@Override
-	public com.liferay.portal.workflow.kaleo.model.KaleoLog updateKaleoLog(
-		com.liferay.portal.workflow.kaleo.model.KaleoLog kaleoLog) {
-		return _kaleoLogLocalService.updateKaleoLog(kaleoLog);
-	}
-
-	/**
-	* Returns the Spring bean ID for this bean.
-	*
-	* @return the Spring bean ID for this bean
-	*/
-	@Override
-	public java.lang.String getBeanIdentifier() {
-		return _kaleoLogLocalService.getBeanIdentifier();
-	}
-
-	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	@Override
-	public void setBeanIdentifier(java.lang.String beanIdentifier) {
-		_kaleoLogLocalService.setBeanIdentifier(beanIdentifier);
-	}
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _kaleoLogLocalService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
-	public com.liferay.portal.workflow.kaleo.model.KaleoLog addActionExecutionKaleoLog(
-		com.liferay.portal.workflow.kaleo.model.KaleoInstanceToken kaleoInstanceToken,
-		com.liferay.portal.workflow.kaleo.model.KaleoAction kaleoAction,
-		long startTime, long endTime, java.lang.String comment,
-		com.liferay.portal.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _kaleoLogLocalService.addActionExecutionKaleoLog(kaleoInstanceToken,
-			kaleoAction, startTime, endTime, comment, serviceContext);
 	}
 
 	@Override
@@ -360,6 +126,18 @@ public class KaleoLogLocalServiceWrapper implements KaleoLogLocalService,
 			serviceContext);
 	}
 
+	/**
+	* Creates a new kaleo log with the primary key. Does not add the kaleo log to the database.
+	*
+	* @param kaleoLogId the primary key for the new kaleo log
+	* @return the new kaleo log
+	*/
+	@Override
+	public com.liferay.portal.workflow.kaleo.model.KaleoLog createKaleoLog(
+		long kaleoLogId) {
+		return _kaleoLogLocalService.createKaleoLog(kaleoLogId);
+	}
+
 	@Override
 	public void deleteCompanyKaleoLogs(long companyId) {
 		_kaleoLogLocalService.deleteCompanyKaleoLogs(companyId);
@@ -375,11 +153,152 @@ public class KaleoLogLocalServiceWrapper implements KaleoLogLocalService,
 		_kaleoLogLocalService.deleteKaleoInstanceKaleoLogs(kaleoInstanceId);
 	}
 
+	/**
+	* Deletes the kaleo log from the database. Also notifies the appropriate model listeners.
+	*
+	* @param kaleoLog the kaleo log
+	* @return the kaleo log that was removed
+	*/
+	@Override
+	public com.liferay.portal.workflow.kaleo.model.KaleoLog deleteKaleoLog(
+		com.liferay.portal.workflow.kaleo.model.KaleoLog kaleoLog) {
+		return _kaleoLogLocalService.deleteKaleoLog(kaleoLog);
+	}
+
+	/**
+	* Deletes the kaleo log with the primary key from the database. Also notifies the appropriate model listeners.
+	*
+	* @param kaleoLogId the primary key of the kaleo log
+	* @return the kaleo log that was removed
+	* @throws PortalException if a kaleo log with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.portal.workflow.kaleo.model.KaleoLog deleteKaleoLog(
+		long kaleoLogId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _kaleoLogLocalService.deleteKaleoLog(kaleoLogId);
+	}
+
+	/**
+	* @throws PortalException
+	*/
+	@Override
+	public com.liferay.portal.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _kaleoLogLocalService.deletePersistedModel(persistedModel);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _kaleoLogLocalService.dynamicQuery();
+	}
+
+	/**
+	* Performs a dynamic query on the database and returns the matching rows.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the matching rows
+	*/
+	@Override
+	public <T> java.util.List<T> dynamicQuery(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return _kaleoLogLocalService.dynamicQuery(dynamicQuery);
+	}
+
+	/**
+	* Performs a dynamic query on the database and returns a range of the matching rows.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.workflow.kaleo.model.impl.KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param dynamicQuery the dynamic query
+	* @param start the lower bound of the range of model instances
+	* @param end the upper bound of the range of model instances (not inclusive)
+	* @return the range of matching rows
+	*/
+	@Override
+	public <T> java.util.List<T> dynamicQuery(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
+		int end) {
+		return _kaleoLogLocalService.dynamicQuery(dynamicQuery, start, end);
+	}
+
+	/**
+	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.workflow.kaleo.model.impl.KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param dynamicQuery the dynamic query
+	* @param start the lower bound of the range of model instances
+	* @param end the upper bound of the range of model instances (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching rows
+	*/
+	@Override
+	public <T> java.util.List<T> dynamicQuery(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
+		int end,
+		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+		return _kaleoLogLocalService.dynamicQuery(dynamicQuery, start, end,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the number of rows that match the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows that match the dynamic query
+	*/
+	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return _kaleoLogLocalService.dynamicQueryCount(dynamicQuery);
+	}
+
+	/**
+	* Returns the number of rows that match the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows that match the dynamic query
+	*/
+	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return _kaleoLogLocalService.dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	@Override
+	public com.liferay.portal.workflow.kaleo.model.KaleoLog fetchKaleoLog(
+		long kaleoLogId) {
+		return _kaleoLogLocalService.fetchKaleoLog(kaleoLogId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _kaleoLogLocalService.getActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the Spring bean ID for this bean.
+	*
+	* @return the Spring bean ID for this bean
+	*/
+	@Override
+	public java.lang.String getBeanIdentifier() {
+		return _kaleoLogLocalService.getBeanIdentifier();
+	}
+
 	@Override
 	public java.util.List<com.liferay.portal.workflow.kaleo.model.KaleoLog> getKaleoInstanceKaleoLogs(
 		long kaleoInstanceId, java.util.List<java.lang.Integer> logTypes,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.workflow.kaleo.model.KaleoLog> orderByComparator) {
 		return _kaleoLogLocalService.getKaleoInstanceKaleoLogs(kaleoInstanceId,
 			logTypes, start, end, orderByComparator);
 	}
@@ -391,11 +310,52 @@ public class KaleoLogLocalServiceWrapper implements KaleoLogLocalService,
 			logTypes);
 	}
 
+	/**
+	* Returns the kaleo log with the primary key.
+	*
+	* @param kaleoLogId the primary key of the kaleo log
+	* @return the kaleo log
+	* @throws PortalException if a kaleo log with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.portal.workflow.kaleo.model.KaleoLog getKaleoLog(
+		long kaleoLogId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _kaleoLogLocalService.getKaleoLog(kaleoLogId);
+	}
+
+	/**
+	* Returns a range of all the kaleo logs.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.workflow.kaleo.model.impl.KaleoLogModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of kaleo logs
+	* @param end the upper bound of the range of kaleo logs (not inclusive)
+	* @return the range of kaleo logs
+	*/
+	@Override
+	public java.util.List<com.liferay.portal.workflow.kaleo.model.KaleoLog> getKaleoLogs(
+		int start, int end) {
+		return _kaleoLogLocalService.getKaleoLogs(start, end);
+	}
+
+	/**
+	* Returns the number of kaleo logs.
+	*
+	* @return the number of kaleo logs
+	*/
+	@Override
+	public int getKaleoLogsCount() {
+		return _kaleoLogLocalService.getKaleoLogsCount();
+	}
+
 	@Override
 	public java.util.List<com.liferay.portal.workflow.kaleo.model.KaleoLog> getKaleoTaskInstanceTokenKaleoLogs(
 		long kaleoTaskInstanceTokenId,
 		java.util.List<java.lang.Integer> logTypes, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.workflow.kaleo.model.KaleoLog> orderByComparator) {
 		return _kaleoLogLocalService.getKaleoTaskInstanceTokenKaleoLogs(kaleoTaskInstanceTokenId,
 			logTypes, start, end, orderByComparator);
 	}
@@ -406,6 +366,43 @@ public class KaleoLogLocalServiceWrapper implements KaleoLogLocalService,
 		java.util.List<java.lang.Integer> logTypes) {
 		return _kaleoLogLocalService.getKaleoTaskInstanceTokenKaleoLogsCount(kaleoTaskInstanceTokenId,
 			logTypes);
+	}
+
+	@Override
+	public com.liferay.portal.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _kaleoLogLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _kaleoLogLocalService.invokeMethod(name, parameterTypes,
+			arguments);
+	}
+
+	/**
+	* Sets the Spring bean ID for this bean.
+	*
+	* @param beanIdentifier the Spring bean ID for this bean
+	*/
+	@Override
+	public void setBeanIdentifier(java.lang.String beanIdentifier) {
+		_kaleoLogLocalService.setBeanIdentifier(beanIdentifier);
+	}
+
+	/**
+	* Updates the kaleo log in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param kaleoLog the kaleo log
+	* @return the kaleo log that was updated
+	*/
+	@Override
+	public com.liferay.portal.workflow.kaleo.model.KaleoLog updateKaleoLog(
+		com.liferay.portal.workflow.kaleo.model.KaleoLog kaleoLog) {
+		return _kaleoLogLocalService.updateKaleoLog(kaleoLog);
 	}
 
 	/**

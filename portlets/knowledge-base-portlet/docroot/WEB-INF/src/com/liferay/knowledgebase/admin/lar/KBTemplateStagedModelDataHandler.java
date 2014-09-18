@@ -16,13 +16,17 @@ package com.liferay.knowledgebase.admin.lar;
 
 import com.liferay.knowledgebase.model.KBTemplate;
 import com.liferay.knowledgebase.service.KBTemplateLocalServiceUtil;
-import com.liferay.knowledgebase.service.persistence.KBTemplateUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.lar.BaseStagedModelDataHandler;
 import com.liferay.portal.kernel.lar.ExportImportPathUtil;
 import com.liferay.portal.kernel.lar.PortletDataContext;
+import com.liferay.portal.kernel.lar.StagedModelModifiedDateComparator;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.service.ServiceContext;
+
+import java.util.List;
 
 /**
  * @author Daniel Kocsis
@@ -37,13 +41,35 @@ public class KBTemplateStagedModelDataHandler
 			String uuid, long groupId, String className, String extraData)
 		throws PortalException {
 
-		KBTemplate kbTemplate =
-			KBTemplateLocalServiceUtil.fetchKBTemplateByUuidAndGroupId(
-				uuid, groupId);
+		KBTemplate kbTemplate = fetchStagedModelByUuidAndGroupId(uuid, groupId);
 
 		if (kbTemplate != null) {
 			KBTemplateLocalServiceUtil.deleteKBTemplate(kbTemplate);
 		}
+	}
+
+	@Override
+	public KBTemplate fetchStagedModelByUuidAndCompanyId(
+		String uuid, long companyId) {
+
+		List<KBTemplate> kbTemplates =
+			KBTemplateLocalServiceUtil.getKBTemplatesByUuidAndCompanyId(
+				uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+				new StagedModelModifiedDateComparator<KBTemplate>());
+
+		if (ListUtil.isEmpty(kbTemplates)) {
+			return null;
+		}
+
+		return kbTemplates.get(0);
+	}
+
+	@Override
+	public KBTemplate fetchStagedModelByUuidAndGroupId(
+		String uuid, long groupId) {
+
+		return KBTemplateLocalServiceUtil.fetchKBTemplateByUuidAndGroupId(
+			uuid, groupId);
 	}
 
 	@Override
@@ -82,7 +108,7 @@ public class KBTemplateStagedModelDataHandler
 		KBTemplate importedKBTemplate = null;
 
 		if (portletDataContext.isDataStrategyMirror()) {
-			KBTemplate existingKBTemplate = KBTemplateUtil.fetchByUUID_G(
+			KBTemplate existingKBTemplate = fetchStagedModelByUuidAndGroupId(
 				kbTemplate.getUuid(), portletDataContext.getScopeGroupId());
 
 			if (existingKBTemplate == null) {

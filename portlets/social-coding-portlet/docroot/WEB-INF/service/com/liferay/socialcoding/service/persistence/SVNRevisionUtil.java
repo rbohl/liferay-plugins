@@ -14,6 +14,8 @@
 
 package com.liferay.socialcoding.service.persistence;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -36,6 +38,7 @@ import java.util.List;
  * @see SVNRevisionPersistenceImpl
  * @generated
  */
+@ProviderType
 public class SVNRevisionUtil {
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -85,7 +88,7 @@ public class SVNRevisionUtil {
 	 */
 	public static List<SVNRevision> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<SVNRevision> orderByComparator) {
 		return getPersistence()
 				   .findWithDynamicQuery(dynamicQuery, start, end,
 			orderByComparator);
@@ -149,7 +152,7 @@ public class SVNRevisionUtil {
 	*/
 	public static java.util.List<com.liferay.socialcoding.model.SVNRevision> findBySVNUserId(
 		java.lang.String svnUserId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.SVNRevision> orderByComparator) {
 		return getPersistence()
 				   .findBySVNUserId(svnUserId, start, end, orderByComparator);
 	}
@@ -164,7 +167,7 @@ public class SVNRevisionUtil {
 	*/
 	public static com.liferay.socialcoding.model.SVNRevision findBySVNUserId_First(
 		java.lang.String svnUserId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.SVNRevision> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchSVNRevisionException {
 		return getPersistence()
 				   .findBySVNUserId_First(svnUserId, orderByComparator);
@@ -179,7 +182,7 @@ public class SVNRevisionUtil {
 	*/
 	public static com.liferay.socialcoding.model.SVNRevision fetchBySVNUserId_First(
 		java.lang.String svnUserId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.SVNRevision> orderByComparator) {
 		return getPersistence()
 				   .fetchBySVNUserId_First(svnUserId, orderByComparator);
 	}
@@ -194,7 +197,7 @@ public class SVNRevisionUtil {
 	*/
 	public static com.liferay.socialcoding.model.SVNRevision findBySVNUserId_Last(
 		java.lang.String svnUserId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.SVNRevision> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchSVNRevisionException {
 		return getPersistence()
 				   .findBySVNUserId_Last(svnUserId, orderByComparator);
@@ -209,7 +212,7 @@ public class SVNRevisionUtil {
 	*/
 	public static com.liferay.socialcoding.model.SVNRevision fetchBySVNUserId_Last(
 		java.lang.String svnUserId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.SVNRevision> orderByComparator) {
 		return getPersistence()
 				   .fetchBySVNUserId_Last(svnUserId, orderByComparator);
 	}
@@ -225,7 +228,7 @@ public class SVNRevisionUtil {
 	*/
 	public static com.liferay.socialcoding.model.SVNRevision[] findBySVNUserId_PrevAndNext(
 		long svnRevisionId, java.lang.String svnUserId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.SVNRevision> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchSVNRevisionException {
 		return getPersistence()
 				   .findBySVNUserId_PrevAndNext(svnRevisionId, svnUserId,
@@ -295,7 +298,7 @@ public class SVNRevisionUtil {
 	*/
 	public static java.util.List<com.liferay.socialcoding.model.SVNRevision> findBySVNRepositoryId(
 		long svnRepositoryId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.SVNRevision> orderByComparator) {
 		return getPersistence()
 				   .findBySVNRepositoryId(svnRepositoryId, start, end,
 			orderByComparator);
@@ -311,7 +314,7 @@ public class SVNRevisionUtil {
 	*/
 	public static com.liferay.socialcoding.model.SVNRevision findBySVNRepositoryId_First(
 		long svnRepositoryId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.SVNRevision> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchSVNRevisionException {
 		return getPersistence()
 				   .findBySVNRepositoryId_First(svnRepositoryId,
@@ -327,7 +330,7 @@ public class SVNRevisionUtil {
 	*/
 	public static com.liferay.socialcoding.model.SVNRevision fetchBySVNRepositoryId_First(
 		long svnRepositoryId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.SVNRevision> orderByComparator) {
 		return getPersistence()
 				   .fetchBySVNRepositoryId_First(svnRepositoryId,
 			orderByComparator);
@@ -343,7 +346,7 @@ public class SVNRevisionUtil {
 	*/
 	public static com.liferay.socialcoding.model.SVNRevision findBySVNRepositoryId_Last(
 		long svnRepositoryId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.SVNRevision> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchSVNRevisionException {
 		return getPersistence()
 				   .findBySVNRepositoryId_Last(svnRepositoryId,
@@ -359,7 +362,7 @@ public class SVNRevisionUtil {
 	*/
 	public static com.liferay.socialcoding.model.SVNRevision fetchBySVNRepositoryId_Last(
 		long svnRepositoryId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.SVNRevision> orderByComparator) {
 		return getPersistence()
 				   .fetchBySVNRepositoryId_Last(svnRepositoryId,
 			orderByComparator);
@@ -376,7 +379,7 @@ public class SVNRevisionUtil {
 	*/
 	public static com.liferay.socialcoding.model.SVNRevision[] findBySVNRepositoryId_PrevAndNext(
 		long svnRevisionId, long svnRepositoryId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.SVNRevision> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchSVNRevisionException {
 		return getPersistence()
 				   .findBySVNRepositoryId_PrevAndNext(svnRevisionId,
@@ -449,7 +452,7 @@ public class SVNRevisionUtil {
 	*/
 	public static java.util.List<com.liferay.socialcoding.model.SVNRevision> findBySVNU_SVNR(
 		java.lang.String svnUserId, long svnRepositoryId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.SVNRevision> orderByComparator) {
 		return getPersistence()
 				   .findBySVNU_SVNR(svnUserId, svnRepositoryId, start, end,
 			orderByComparator);
@@ -466,7 +469,7 @@ public class SVNRevisionUtil {
 	*/
 	public static com.liferay.socialcoding.model.SVNRevision findBySVNU_SVNR_First(
 		java.lang.String svnUserId, long svnRepositoryId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.SVNRevision> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchSVNRevisionException {
 		return getPersistence()
 				   .findBySVNU_SVNR_First(svnUserId, svnRepositoryId,
@@ -483,7 +486,7 @@ public class SVNRevisionUtil {
 	*/
 	public static com.liferay.socialcoding.model.SVNRevision fetchBySVNU_SVNR_First(
 		java.lang.String svnUserId, long svnRepositoryId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.SVNRevision> orderByComparator) {
 		return getPersistence()
 				   .fetchBySVNU_SVNR_First(svnUserId, svnRepositoryId,
 			orderByComparator);
@@ -500,7 +503,7 @@ public class SVNRevisionUtil {
 	*/
 	public static com.liferay.socialcoding.model.SVNRevision findBySVNU_SVNR_Last(
 		java.lang.String svnUserId, long svnRepositoryId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.SVNRevision> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchSVNRevisionException {
 		return getPersistence()
 				   .findBySVNU_SVNR_Last(svnUserId, svnRepositoryId,
@@ -517,7 +520,7 @@ public class SVNRevisionUtil {
 	*/
 	public static com.liferay.socialcoding.model.SVNRevision fetchBySVNU_SVNR_Last(
 		java.lang.String svnUserId, long svnRepositoryId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.SVNRevision> orderByComparator) {
 		return getPersistence()
 				   .fetchBySVNU_SVNR_Last(svnUserId, svnRepositoryId,
 			orderByComparator);
@@ -535,7 +538,7 @@ public class SVNRevisionUtil {
 	*/
 	public static com.liferay.socialcoding.model.SVNRevision[] findBySVNU_SVNR_PrevAndNext(
 		long svnRevisionId, java.lang.String svnUserId, long svnRepositoryId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.SVNRevision> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchSVNRevisionException {
 		return getPersistence()
 				   .findBySVNU_SVNR_PrevAndNext(svnRevisionId, svnUserId,
@@ -682,7 +685,7 @@ public class SVNRevisionUtil {
 	*/
 	public static java.util.List<com.liferay.socialcoding.model.SVNRevision> findAll(
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.SVNRevision> orderByComparator) {
 		return getPersistence().findAll(start, end, orderByComparator);
 	}
 

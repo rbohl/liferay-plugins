@@ -14,6 +14,8 @@
 
 package com.liferay.pushnotifications.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
@@ -23,12 +25,28 @@ import com.liferay.portal.service.ServiceWrapper;
  * @see PushNotificationsDeviceService
  * @generated
  */
+@ProviderType
 public class PushNotificationsDeviceServiceWrapper
 	implements PushNotificationsDeviceService,
 		ServiceWrapper<PushNotificationsDeviceService> {
 	public PushNotificationsDeviceServiceWrapper(
 		PushNotificationsDeviceService pushNotificationsDeviceService) {
 		_pushNotificationsDeviceService = pushNotificationsDeviceService;
+	}
+
+	@Override
+	public com.liferay.pushnotifications.model.PushNotificationsDevice addPushNotificationsDevice(
+		java.lang.String token, java.lang.String platform)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _pushNotificationsDeviceService.addPushNotificationsDevice(token,
+			platform);
+	}
+
+	@Override
+	public com.liferay.pushnotifications.model.PushNotificationsDevice deletePushNotificationsDevice(
+		java.lang.String token)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _pushNotificationsDeviceService.deletePushNotificationsDevice(token);
 	}
 
 	/**
@@ -41,16 +59,6 @@ public class PushNotificationsDeviceServiceWrapper
 		return _pushNotificationsDeviceService.getBeanIdentifier();
 	}
 
-	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	@Override
-	public void setBeanIdentifier(java.lang.String beanIdentifier) {
-		_pushNotificationsDeviceService.setBeanIdentifier(beanIdentifier);
-	}
-
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
@@ -60,20 +68,25 @@ public class PushNotificationsDeviceServiceWrapper
 	}
 
 	@Override
-	public com.liferay.pushnotifications.model.PushNotificationsDevice addPushNotificationsDevice(
-		java.lang.String token, java.lang.String platform)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
-		return _pushNotificationsDeviceService.addPushNotificationsDevice(token,
-			platform);
+	public void sendPushNotification(java.lang.String payload)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_pushNotificationsDeviceService.sendPushNotification(payload);
 	}
 
 	@Override
-	public com.liferay.pushnotifications.model.PushNotificationsDevice deletePushNotificationsDevice(
-		java.lang.String token)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
-		return _pushNotificationsDeviceService.deletePushNotificationsDevice(token);
+	public void sendPushNotification(long toUserId, java.lang.String payload)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_pushNotificationsDeviceService.sendPushNotification(toUserId, payload);
+	}
+
+	/**
+	* Sets the Spring bean ID for this bean.
+	*
+	* @param beanIdentifier the Spring bean ID for this bean
+	*/
+	@Override
+	public void setBeanIdentifier(java.lang.String beanIdentifier) {
+		_pushNotificationsDeviceService.setBeanIdentifier(beanIdentifier);
 	}
 
 	/**

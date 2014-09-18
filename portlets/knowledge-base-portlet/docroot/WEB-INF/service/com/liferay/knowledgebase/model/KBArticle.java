@@ -14,6 +14,8 @@
 
 package com.liferay.knowledgebase.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.model.PersistedModel;
 
 /**
@@ -25,6 +27,7 @@ import com.liferay.portal.model.PersistedModel;
  * @see com.liferay.knowledgebase.model.impl.KBArticleModelImpl
  * @generated
  */
+@ProviderType
 public interface KBArticle extends KBArticleModel, PersistedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -32,28 +35,18 @@ public interface KBArticle extends KBArticleModel, PersistedModel {
 	 * Never modify this interface directly. Add methods to {@link com.liferay.knowledgebase.model.impl.KBArticleImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public java.util.List<java.lang.Long> getAncestorResourcePrimaryKeys()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
-
-	public java.lang.String getAttachmentsDirName();
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.util.List<com.liferay.portal.kernel.repository.model.FileEntry> getAttachmentsFileEntries()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
-
-	public java.lang.String[] getAttachmentsFileNames()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public long getAttachmentsFolderId()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public long getClassPK();
 
 	public com.liferay.knowledgebase.model.KBArticle getParentKBArticle()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public boolean isFirstVersion();
 

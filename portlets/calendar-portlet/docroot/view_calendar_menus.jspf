@@ -57,7 +57,7 @@ String backURL = PortalUtil.getCurrentURL(request);
 										modal: true
 									},
 									refreshWindow: window,
-									title: Liferay.Language.get('add-calendar'),
+									title: '<liferay-ui:message key="add-calendar" />',
 
 									<portlet:renderURL var="editCalendarURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 										<portlet:param name="mvcPath" value="/edit_calendar.jsp" />
@@ -74,6 +74,7 @@ String backURL = PortalUtil.getCurrentURL(request);
 							);
 						}
 					},
+					icon: 'icon-plus',
 					id: 'add'
 				},
 				{
@@ -98,6 +99,7 @@ String backURL = PortalUtil.getCurrentURL(request);
 							);
 						}
 					},
+					icon: 'icon-calendar',
 					id: 'manage'
 				}
 			],
@@ -136,7 +138,7 @@ String backURL = PortalUtil.getCurrentURL(request);
 								modal: true
 							},
 							refreshWindow: window,
-							title: Liferay.Language.get('new-calendar-booking'),
+							title: '<liferay-ui:message key="new-calendar-booking" />',
 							uri: A.Lang.sub(
 								decodeURIComponent('<%= addCalendarBookingURL %>'),
 								{
@@ -146,6 +148,7 @@ String backURL = PortalUtil.getCurrentURL(request);
 						}
 					);
 				},
+				icon: 'icon-plus',
 				id: 'addEvent'
 			},
 			{
@@ -161,6 +164,7 @@ String backURL = PortalUtil.getCurrentURL(request);
 
 					instance.set('visible', false);
 				},
+				icon: 'icon-remove',
 				id: 'hide'
 			},
 			{
@@ -193,7 +197,7 @@ String backURL = PortalUtil.getCurrentURL(request);
 								modal: true
 							},
 							refreshWindow: window,
-							title: Liferay.Language.get('calendar-settings'),
+							title: '<liferay-ui:message key="calendar-settings" />',
 
 							<portlet:renderURL var="editCalendarURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 								<portlet:param name="mvcPath" value="/edit_calendar.jsp" />
@@ -210,6 +214,7 @@ String backURL = PortalUtil.getCurrentURL(request);
 						}
 					);
 				},
+				icon: 'icon-edit',
 				id: 'settings'
 			},
 			{
@@ -233,7 +238,7 @@ String backURL = PortalUtil.getCurrentURL(request);
 								modal: true
 							},
 							refreshWindow: window,
-							title: Liferay.Language.get('permissions'),
+							title: '<liferay-ui:message key="permissions" />',
 
 							<liferay-security:permissionsURL
 								modelResource="<%= Calendar.class.getName() %>"
@@ -255,6 +260,7 @@ String backURL = PortalUtil.getCurrentURL(request);
 						}
 					);
 				},
+				icon: 'icon-lock',
 				id: 'permissions'
 			},
 			{
@@ -278,19 +284,21 @@ String backURL = PortalUtil.getCurrentURL(request);
 										<portlet:namespace />syncCalendarsMap();
 
 										<portlet:namespace />scheduler.load();
+
+										Liferay.CalendarMessageUtil.showAlert('#<portlet:namespace />alert', '<liferay-ui:message key="the-calendar-was-deleted-successfully" />');
 									}
 								);
 							}
 						);
 					}
 				},
+				icon: 'icon-remove',
 				id: 'delete'
 			},
 
 			<c:if test="<%= enableRSS %>">
 				{
 					caption: '<liferay-ui:message key="rss" />',
-					cssClass: 'calendar-subscribe-link',
 					fn: function(event) {
 						var instance = this;
 
@@ -313,6 +321,7 @@ String backURL = PortalUtil.getCurrentURL(request);
 
 						instance.set('visible', false);
 					},
+					icon: 'icon-rss',
 					id: 'subscribe'
 				},
 			</c:if>

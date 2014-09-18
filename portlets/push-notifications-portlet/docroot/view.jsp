@@ -14,8 +14,60 @@
  */
 --%>
 
-<%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
+<%@ include file="/init.jsp" %>
 
-<portlet:defineObjects />
+<aui:form name="fm">
+	<aui:input label="message" name="message" required="<%= true %>" type="textarea" />
 
-This is the <b>Push Notifications</b> portlet.
+	<aui:input label="url" name="url" />
+
+	<aui:button disabled="<%= !PushNotificationsPermission.contains(permissionChecker, ActionKeys.SEND_NOTIFICATION) %>" type="submit" value="send" />
+</aui:form>
+
+<aui:script use="aui-base">
+	var form = A.one('#<portlet:namespace />fm');
+
+	form.on(
+		'submit',
+		function(event) {
+			event.halt();
+
+			var message = form.one('textarea[name="<portlet:namespace />message"]').val();
+			var type = 'text';
+			var url = form.one('input[name="<portlet:namespace />url"]').val().trim();
+
+			if (url.length !== 0) {
+				if (<portlet:namespace />isImage(url)) {
+					type = 'image';
+				}
+				else {
+					type = 'link';
+				}
+			}
+
+			Liferay.Service(
+				'/push-notifications-portlet.pushnotificationsdevice/send-push-notification',
+				{
+					payload: A.JSON.stringify(
+						{
+							message: message,
+							type: type,
+							url: url
+						}
+					)
+				}
+			);
+		}
+	);
+
+	function <portlet:namespace />isImage(url) {
+		var regex = /(.*\.(?:gif|jpeg|jpg|png))/i;
+
+		if (regex.test(url)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+</aui:script>

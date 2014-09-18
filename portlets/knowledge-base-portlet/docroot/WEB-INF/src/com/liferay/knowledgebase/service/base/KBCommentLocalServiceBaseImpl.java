@@ -14,6 +14,8 @@
 
 package com.liferay.knowledgebase.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.knowledgebase.model.KBComment;
 import com.liferay.knowledgebase.service.KBCommentLocalService;
 import com.liferay.knowledgebase.service.persistence.KBArticlePersistence;
@@ -48,6 +50,7 @@ import com.liferay.portal.model.PersistedModel;
 import com.liferay.portal.service.BaseLocalServiceImpl;
 import com.liferay.portal.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.service.persistence.ClassNamePersistence;
+import com.liferay.portal.service.persistence.PortletPreferencesPersistence;
 import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.util.PortalUtil;
 
@@ -71,6 +74,7 @@ import javax.sql.DataSource;
  * @see com.liferay.knowledgebase.service.KBCommentLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class KBCommentLocalServiceBaseImpl extends BaseLocalServiceImpl
 	implements KBCommentLocalService, IdentifiableBean {
 	/*
@@ -110,12 +114,11 @@ public abstract class KBCommentLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param kbCommentId the primary key of the k b comment
 	 * @return the k b comment that was removed
 	 * @throws PortalException if a k b comment with the primary key could not be found
-	 * @throws SystemException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public KBComment deleteKBComment(long kbCommentId)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return kbCommentPersistence.remove(kbCommentId);
 	}
 
@@ -125,12 +128,11 @@ public abstract class KBCommentLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param kbComment the k b comment
 	 * @return the k b comment that was removed
 	 * @throws PortalException
-	 * @throws SystemException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public KBComment deleteKBComment(KBComment kbComment)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return kbCommentPersistence.remove(kbComment);
 	}
 
@@ -149,8 +151,7 @@ public abstract class KBCommentLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @return the matching rows
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery) {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return kbCommentPersistence.findWithDynamicQuery(dynamicQuery);
 	}
 
@@ -167,8 +168,8 @@ public abstract class KBCommentLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end) {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
 		return kbCommentPersistence.findWithDynamicQuery(dynamicQuery, start,
 			end);
 	}
@@ -187,9 +188,8 @@ public abstract class KBCommentLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator orderByComparator) {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
 		return kbCommentPersistence.findWithDynamicQuery(dynamicQuery, start,
 			end, orderByComparator);
 	}
@@ -222,19 +222,6 @@ public abstract class KBCommentLocalServiceBaseImpl extends BaseLocalServiceImpl
 	@Override
 	public KBComment fetchKBComment(long kbCommentId) {
 		return kbCommentPersistence.fetchByPrimaryKey(kbCommentId);
-	}
-
-	/**
-	 * Returns the k b comment with the matching UUID and company.
-	 *
-	 * @param uuid the k b comment's UUID
-	 * @param  companyId the primary key of the company
-	 * @return the matching k b comment, or <code>null</code> if a matching k b comment could not be found
-	 */
-	@Override
-	public KBComment fetchKBCommentByUuidAndCompanyId(String uuid,
-		long companyId) {
-		return kbCommentPersistence.fetchByUuid_C_First(uuid, companyId, null);
 	}
 
 	/**
@@ -363,18 +350,18 @@ public abstract class KBCommentLocalServiceBaseImpl extends BaseLocalServiceImpl
 		return kbCommentPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
-	/**
-	 * Returns the k b comment with the matching UUID and company.
-	 *
-	 * @param uuid the k b comment's UUID
-	 * @param  companyId the primary key of the company
-	 * @return the matching k b comment
-	 * @throws PortalException if a matching k b comment could not be found
-	 */
 	@Override
-	public KBComment getKBCommentByUuidAndCompanyId(String uuid, long companyId)
-		throws PortalException {
-		return kbCommentPersistence.findByUuid_C_First(uuid, companyId, null);
+	public List<KBComment> getKBCommentsByUuidAndCompanyId(String uuid,
+		long companyId) {
+		return kbCommentPersistence.findByUuid_C(uuid, companyId);
+	}
+
+	@Override
+	public List<KBComment> getKBCommentsByUuidAndCompanyId(String uuid,
+		long companyId, int start, int end,
+		OrderByComparator<KBComment> orderByComparator) {
+		return kbCommentPersistence.findByUuid_C(uuid, companyId, start, end,
+			orderByComparator);
 	}
 
 	/**
@@ -677,6 +664,63 @@ public abstract class KBCommentLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	/**
+	 * Returns the portlet preferences local service.
+	 *
+	 * @return the portlet preferences local service
+	 */
+	public com.liferay.portal.service.PortletPreferencesLocalService getPortletPreferencesLocalService() {
+		return portletPreferencesLocalService;
+	}
+
+	/**
+	 * Sets the portlet preferences local service.
+	 *
+	 * @param portletPreferencesLocalService the portlet preferences local service
+	 */
+	public void setPortletPreferencesLocalService(
+		com.liferay.portal.service.PortletPreferencesLocalService portletPreferencesLocalService) {
+		this.portletPreferencesLocalService = portletPreferencesLocalService;
+	}
+
+	/**
+	 * Returns the portlet preferences remote service.
+	 *
+	 * @return the portlet preferences remote service
+	 */
+	public com.liferay.portal.service.PortletPreferencesService getPortletPreferencesService() {
+		return portletPreferencesService;
+	}
+
+	/**
+	 * Sets the portlet preferences remote service.
+	 *
+	 * @param portletPreferencesService the portlet preferences remote service
+	 */
+	public void setPortletPreferencesService(
+		com.liferay.portal.service.PortletPreferencesService portletPreferencesService) {
+		this.portletPreferencesService = portletPreferencesService;
+	}
+
+	/**
+	 * Returns the portlet preferences persistence.
+	 *
+	 * @return the portlet preferences persistence
+	 */
+	public PortletPreferencesPersistence getPortletPreferencesPersistence() {
+		return portletPreferencesPersistence;
+	}
+
+	/**
+	 * Sets the portlet preferences persistence.
+	 *
+	 * @param portletPreferencesPersistence the portlet preferences persistence
+	 */
+	public void setPortletPreferencesPersistence(
+		PortletPreferencesPersistence portletPreferencesPersistence) {
+		this.portletPreferencesPersistence = portletPreferencesPersistence;
+	}
+
+	/**
 	 * Returns the resource local service.
 	 *
 	 * @return the resource local service
@@ -921,6 +965,12 @@ public abstract class KBCommentLocalServiceBaseImpl extends BaseLocalServiceImpl
 	protected com.liferay.portal.service.ClassNameService classNameService;
 	@BeanReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
+	@BeanReference(type = com.liferay.portal.service.PortletPreferencesLocalService.class)
+	protected com.liferay.portal.service.PortletPreferencesLocalService portletPreferencesLocalService;
+	@BeanReference(type = com.liferay.portal.service.PortletPreferencesService.class)
+	protected com.liferay.portal.service.PortletPreferencesService portletPreferencesService;
+	@BeanReference(type = PortletPreferencesPersistence.class)
+	protected PortletPreferencesPersistence portletPreferencesPersistence;
 	@BeanReference(type = com.liferay.portal.service.ResourceLocalService.class)
 	protected com.liferay.portal.service.ResourceLocalService resourceLocalService;
 	@BeanReference(type = com.liferay.portal.service.UserLocalService.class)

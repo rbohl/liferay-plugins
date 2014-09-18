@@ -14,6 +14,8 @@
 
 package com.liferay.knowledgebase.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 import com.liferay.portal.service.InvokableLocalService;
@@ -32,6 +34,7 @@ import com.liferay.portal.service.InvokableLocalService;
  * @see com.liferay.knowledgebase.service.impl.KBCommentLocalServiceImpl
  * @generated
  */
+@ProviderType
 public class KBCommentLocalServiceUtil {
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -50,6 +53,16 @@ public class KBCommentLocalServiceUtil {
 		return getService().addKBComment(kbComment);
 	}
 
+	public static com.liferay.knowledgebase.model.KBComment addKBComment(
+		long userId, long classNameId, long classPK, java.lang.String content,
+		boolean helpful,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addKBComment(userId, classNameId, classPK, content,
+			helpful, serviceContext);
+	}
+
 	/**
 	* Creates a new k b comment with the primary key. Does not add the k b comment to the database.
 	*
@@ -62,33 +75,43 @@ public class KBCommentLocalServiceUtil {
 	}
 
 	/**
-	* Deletes the k b comment with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param kbCommentId the primary key of the k b comment
-	* @return the k b comment that was removed
-	* @throws PortalException if a k b comment with the primary key could not be found
-	* @throws SystemException
-	*/
-	public static com.liferay.knowledgebase.model.KBComment deleteKBComment(
-		long kbCommentId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
-		return getService().deleteKBComment(kbCommentId);
-	}
-
-	/**
 	* Deletes the k b comment from the database. Also notifies the appropriate model listeners.
 	*
 	* @param kbComment the k b comment
 	* @return the k b comment that was removed
 	* @throws PortalException
-	* @throws SystemException
 	*/
 	public static com.liferay.knowledgebase.model.KBComment deleteKBComment(
 		com.liferay.knowledgebase.model.KBComment kbComment)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteKBComment(kbComment);
+	}
+
+	/**
+	* Deletes the k b comment with the primary key from the database. Also notifies the appropriate model listeners.
+	*
+	* @param kbCommentId the primary key of the k b comment
+	* @return the k b comment that was removed
+	* @throws PortalException if a k b comment with the primary key could not be found
+	*/
+	public static com.liferay.knowledgebase.model.KBComment deleteKBComment(
+		long kbCommentId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deleteKBComment(kbCommentId);
+	}
+
+	public static void deleteKBComments(java.lang.String className, long classPK)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteKBComments(className, classPK);
+	}
+
+	/**
+	* @throws PortalException
+	*/
+	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deletePersistedModel(persistedModel);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
@@ -101,8 +124,7 @@ public class KBCommentLocalServiceUtil {
 	* @param dynamicQuery the dynamic query
 	* @return the matching rows
 	*/
-	@SuppressWarnings("rawtypes")
-	public static java.util.List dynamicQuery(
+	public static <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
@@ -119,8 +141,7 @@ public class KBCommentLocalServiceUtil {
 	* @param end the upper bound of the range of model instances (not inclusive)
 	* @return the range of matching rows
 	*/
-	@SuppressWarnings("rawtypes")
-	public static java.util.List dynamicQuery(
+	public static <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
 		int end) {
 		return getService().dynamicQuery(dynamicQuery, start, end);
@@ -139,11 +160,10 @@ public class KBCommentLocalServiceUtil {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of matching rows
 	*/
-	@SuppressWarnings("rawtypes")
-	public static java.util.List dynamicQuery(
+	public static <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
 		int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
 		return getService()
 				   .dynamicQuery(dynamicQuery, start, end, orderByComparator);
 	}
@@ -178,18 +198,6 @@ public class KBCommentLocalServiceUtil {
 	}
 
 	/**
-	* Returns the k b comment with the matching UUID and company.
-	*
-	* @param uuid the k b comment's UUID
-	* @param companyId the primary key of the company
-	* @return the matching k b comment, or <code>null</code> if a matching k b comment could not be found
-	*/
-	public static com.liferay.knowledgebase.model.KBComment fetchKBCommentByUuidAndCompanyId(
-		java.lang.String uuid, long companyId) {
-		return getService().fetchKBCommentByUuidAndCompanyId(uuid, companyId);
-	}
-
-	/**
 	* Returns the k b comment matching the UUID and group.
 	*
 	* @param uuid the k b comment's UUID
@@ -199,6 +207,24 @@ public class KBCommentLocalServiceUtil {
 	public static com.liferay.knowledgebase.model.KBComment fetchKBCommentByUuidAndGroupId(
 		java.lang.String uuid, long groupId) {
 		return getService().fetchKBCommentByUuidAndGroupId(uuid, groupId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the Spring bean ID for this bean.
+	*
+	* @return the Spring bean ID for this bean
+	*/
+	public static java.lang.String getBeanIdentifier() {
+		return getService().getBeanIdentifier();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
+		com.liferay.portal.kernel.lar.PortletDataContext portletDataContext) {
+		return getService().getExportActionableDynamicQuery(portletDataContext);
 	}
 
 	/**
@@ -214,42 +240,10 @@ public class KBCommentLocalServiceUtil {
 		return getService().getKBComment(kbCommentId);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		com.liferay.portal.kernel.lar.PortletDataContext portletDataContext) {
-		return getService().getExportActionableDynamicQuery(portletDataContext);
-	}
-
-	/**
-	* @throws PortalException
-	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.knowledgebase.model.KBComment getKBComment(
+		long userId, java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deletePersistedModel(persistedModel);
-	}
-
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns the k b comment with the matching UUID and company.
-	*
-	* @param uuid the k b comment's UUID
-	* @param companyId the primary key of the company
-	* @return the matching k b comment
-	* @throws PortalException if a matching k b comment could not be found
-	*/
-	public static com.liferay.knowledgebase.model.KBComment getKBCommentByUuidAndCompanyId(
-		java.lang.String uuid, long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getKBCommentByUuidAndCompanyId(uuid, companyId);
+		return getService().getKBComment(userId, className, classPK);
 	}
 
 	/**
@@ -264,6 +258,25 @@ public class KBCommentLocalServiceUtil {
 		java.lang.String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getKBCommentByUuidAndGroupId(uuid, groupId);
+	}
+
+	public static java.util.List<com.liferay.knowledgebase.model.KBComment> getKBComments(
+		java.lang.String className, long classPK, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBComment> orderByComparator) {
+		return getService()
+				   .getKBComments(className, classPK, start, end,
+			orderByComparator);
+	}
+
+	public static java.util.List<com.liferay.knowledgebase.model.KBComment> getKBComments(
+		java.lang.String className, long classPK, int[] status, int start,
+		int end) {
+		return getService().getKBComments(className, classPK, status, start, end);
+	}
+
+	public static java.util.List<com.liferay.knowledgebase.model.KBComment> getKBComments(
+		long groupId, int status, int start, int end) {
+		return getService().getKBComments(groupId, status, start, end);
 	}
 
 	/**
@@ -282,6 +295,28 @@ public class KBCommentLocalServiceUtil {
 		return getService().getKBComments(start, end);
 	}
 
+	public static java.util.List<com.liferay.knowledgebase.model.KBComment> getKBComments(
+		long userId, java.lang.String className, long classPK, int start,
+		int end,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBComment> orderByComparator) {
+		return getService()
+				   .getKBComments(userId, className, classPK, start, end,
+			orderByComparator);
+	}
+
+	public static java.util.List<com.liferay.knowledgebase.model.KBComment> getKBCommentsByUuidAndCompanyId(
+		java.lang.String uuid, long companyId) {
+		return getService().getKBCommentsByUuidAndCompanyId(uuid, companyId);
+	}
+
+	public static java.util.List<com.liferay.knowledgebase.model.KBComment> getKBCommentsByUuidAndCompanyId(
+		java.lang.String uuid, long companyId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBComment> orderByComparator) {
+		return getService()
+				   .getKBCommentsByUuidAndCompanyId(uuid, companyId, start,
+			end, orderByComparator);
+	}
+
 	/**
 	* Returns the number of k b comments.
 	*
@@ -289,6 +324,51 @@ public class KBCommentLocalServiceUtil {
 	*/
 	public static int getKBCommentsCount() {
 		return getService().getKBCommentsCount();
+	}
+
+	public static int getKBCommentsCount(java.lang.String className,
+		long classPK) {
+		return getService().getKBCommentsCount(className, classPK);
+	}
+
+	public static int getKBCommentsCount(java.lang.String className,
+		long classPK, int status) {
+		return getService().getKBCommentsCount(className, classPK, status);
+	}
+
+	public static int getKBCommentsCount(java.lang.String className,
+		long classPK, int[] status) {
+		return getService().getKBCommentsCount(className, classPK, status);
+	}
+
+	public static int getKBCommentsCount(long groupId, int status) {
+		return getService().getKBCommentsCount(groupId, status);
+	}
+
+	public static int getKBCommentsCount(long userId,
+		java.lang.String className, long classPK) {
+		return getService().getKBCommentsCount(userId, className, classPK);
+	}
+
+	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Sets the Spring bean ID for this bean.
+	*
+	* @param beanIdentifier the Spring bean ID for this bean
+	*/
+	public static void setBeanIdentifier(java.lang.String beanIdentifier) {
+		getService().setBeanIdentifier(beanIdentifier);
 	}
 
 	/**
@@ -302,78 +382,21 @@ public class KBCommentLocalServiceUtil {
 		return getService().updateKBComment(kbComment);
 	}
 
-	/**
-	* Returns the Spring bean ID for this bean.
-	*
-	* @return the Spring bean ID for this bean
-	*/
-	public static java.lang.String getBeanIdentifier() {
-		return getService().getBeanIdentifier();
-	}
-
-	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	public static void setBeanIdentifier(java.lang.String beanIdentifier) {
-		getService().setBeanIdentifier(beanIdentifier);
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
-	public static com.liferay.knowledgebase.model.KBComment addKBComment(
-		long userId, long classNameId, long classPK, java.lang.String content,
-		boolean helpful,
-		com.liferay.portal.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
-		return getService()
-				   .addKBComment(userId, classNameId, classPK, content,
-			helpful, serviceContext);
-	}
-
-	public static void deleteKBComments(java.lang.String className, long classPK)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
-		getService().deleteKBComments(className, classPK);
-	}
-
-	public static com.liferay.knowledgebase.model.KBComment getKBComment(
-		long userId, java.lang.String className, long classPK)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
-		return getService().getKBComment(userId, className, classPK);
-	}
-
-	public static java.util.List<com.liferay.knowledgebase.model.KBComment> getKBComments(
-		java.lang.String className, long classPK, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getService()
-				   .getKBComments(className, classPK, start, end,
-			orderByComparator);
-	}
-
-	public static int getKBCommentsCount(java.lang.String className,
-		long classPK)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getService().getKBCommentsCount(className, classPK);
-	}
-
 	public static com.liferay.knowledgebase.model.KBComment updateKBComment(
 		long kbCommentId, long classNameId, long classPK,
-		java.lang.String content, boolean helpful,
+		java.lang.String content, boolean helpful, int status,
 		com.liferay.portal.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateKBComment(kbCommentId, classNameId, classPK, content,
-			helpful, serviceContext);
+			helpful, status, serviceContext);
+	}
+
+	public static com.liferay.knowledgebase.model.KBComment updateStatus(
+		long kbCommentId, int status,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().updateStatus(kbCommentId, status, serviceContext);
 	}
 
 	public static void clearService() {

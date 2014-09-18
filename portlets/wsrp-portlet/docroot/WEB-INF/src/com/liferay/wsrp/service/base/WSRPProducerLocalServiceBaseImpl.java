@@ -109,12 +109,11 @@ public abstract class WSRPProducerLocalServiceBaseImpl
 	 * @param wsrpProducerId the primary key of the w s r p producer
 	 * @return the w s r p producer that was removed
 	 * @throws PortalException if a w s r p producer with the primary key could not be found
-	 * @throws SystemException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public WSRPProducer deleteWSRPProducer(long wsrpProducerId)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return wsrpProducerPersistence.remove(wsrpProducerId);
 	}
 
@@ -124,12 +123,11 @@ public abstract class WSRPProducerLocalServiceBaseImpl
 	 * @param wsrpProducer the w s r p producer
 	 * @return the w s r p producer that was removed
 	 * @throws PortalException
-	 * @throws SystemException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public WSRPProducer deleteWSRPProducer(WSRPProducer wsrpProducer)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return wsrpProducerPersistence.remove(wsrpProducer);
 	}
 
@@ -148,8 +146,7 @@ public abstract class WSRPProducerLocalServiceBaseImpl
 	 * @return the matching rows
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery) {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return wsrpProducerPersistence.findWithDynamicQuery(dynamicQuery);
 	}
 
@@ -166,8 +163,8 @@ public abstract class WSRPProducerLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end) {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
 		return wsrpProducerPersistence.findWithDynamicQuery(dynamicQuery,
 			start, end);
 	}
@@ -186,9 +183,8 @@ public abstract class WSRPProducerLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator orderByComparator) {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
 		return wsrpProducerPersistence.findWithDynamicQuery(dynamicQuery,
 			start, end, orderByComparator);
 	}
@@ -221,19 +217,6 @@ public abstract class WSRPProducerLocalServiceBaseImpl
 	@Override
 	public WSRPProducer fetchWSRPProducer(long wsrpProducerId) {
 		return wsrpProducerPersistence.fetchByPrimaryKey(wsrpProducerId);
-	}
-
-	/**
-	 * Returns the w s r p producer with the matching UUID and company.
-	 *
-	 * @param uuid the w s r p producer's UUID
-	 * @param  companyId the primary key of the company
-	 * @return the matching w s r p producer, or <code>null</code> if a matching w s r p producer could not be found
-	 */
-	@Override
-	public WSRPProducer fetchWSRPProducerByUuidAndCompanyId(String uuid,
-		long companyId) {
-		return wsrpProducerPersistence.fetchByUuid_C_First(uuid, companyId, null);
 	}
 
 	/**
@@ -352,18 +335,18 @@ public abstract class WSRPProducerLocalServiceBaseImpl
 		return wsrpProducerPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
-	/**
-	 * Returns the w s r p producer with the matching UUID and company.
-	 *
-	 * @param uuid the w s r p producer's UUID
-	 * @param  companyId the primary key of the company
-	 * @return the matching w s r p producer
-	 * @throws PortalException if a matching w s r p producer could not be found
-	 */
 	@Override
-	public WSRPProducer getWSRPProducerByUuidAndCompanyId(String uuid,
-		long companyId) throws PortalException {
-		return wsrpProducerPersistence.findByUuid_C_First(uuid, companyId, null);
+	public List<WSRPProducer> getWSRPProducersByUuidAndCompanyId(String uuid,
+		long companyId) {
+		return wsrpProducerPersistence.findByUuid_C(uuid, companyId);
+	}
+
+	@Override
+	public List<WSRPProducer> getWSRPProducersByUuidAndCompanyId(String uuid,
+		long companyId, int start, int end,
+		OrderByComparator<WSRPProducer> orderByComparator) {
+		return wsrpProducerPersistence.findByUuid_C(uuid, companyId, start,
+			end, orderByComparator);
 	}
 
 	/**

@@ -25,16 +25,13 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.workflow.kaleo.NoSuchTimerException;
 import com.liferay.portal.workflow.kaleo.model.KaleoTimer;
@@ -44,7 +41,6 @@ import com.liferay.portal.workflow.kaleo.service.persistence.KaleoTimerPersisten
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -157,7 +153,7 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	@Override
 	public List<KaleoTimer> findByKCN_KCPK(String kaleoClassName,
 		long kaleoClassPK, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<KaleoTimer> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -288,7 +284,7 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	 */
 	@Override
 	public KaleoTimer findByKCN_KCPK_First(String kaleoClassName,
-		long kaleoClassPK, OrderByComparator orderByComparator)
+		long kaleoClassPK, OrderByComparator<KaleoTimer> orderByComparator)
 		throws NoSuchTimerException {
 		KaleoTimer kaleoTimer = fetchByKCN_KCPK_First(kaleoClassName,
 				kaleoClassPK, orderByComparator);
@@ -322,7 +318,7 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	 */
 	@Override
 	public KaleoTimer fetchByKCN_KCPK_First(String kaleoClassName,
-		long kaleoClassPK, OrderByComparator orderByComparator) {
+		long kaleoClassPK, OrderByComparator<KaleoTimer> orderByComparator) {
 		List<KaleoTimer> list = findByKCN_KCPK(kaleoClassName, kaleoClassPK, 0,
 				1, orderByComparator);
 
@@ -344,7 +340,7 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	 */
 	@Override
 	public KaleoTimer findByKCN_KCPK_Last(String kaleoClassName,
-		long kaleoClassPK, OrderByComparator orderByComparator)
+		long kaleoClassPK, OrderByComparator<KaleoTimer> orderByComparator)
 		throws NoSuchTimerException {
 		KaleoTimer kaleoTimer = fetchByKCN_KCPK_Last(kaleoClassName,
 				kaleoClassPK, orderByComparator);
@@ -378,7 +374,7 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	 */
 	@Override
 	public KaleoTimer fetchByKCN_KCPK_Last(String kaleoClassName,
-		long kaleoClassPK, OrderByComparator orderByComparator) {
+		long kaleoClassPK, OrderByComparator<KaleoTimer> orderByComparator) {
 		int count = countByKCN_KCPK(kaleoClassName, kaleoClassPK);
 
 		if (count == 0) {
@@ -408,7 +404,8 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	@Override
 	public KaleoTimer[] findByKCN_KCPK_PrevAndNext(long kaleoTimerId,
 		String kaleoClassName, long kaleoClassPK,
-		OrderByComparator orderByComparator) throws NoSuchTimerException {
+		OrderByComparator<KaleoTimer> orderByComparator)
+		throws NoSuchTimerException {
 		KaleoTimer kaleoTimer = findByPrimaryKey(kaleoTimerId);
 
 		Session session = null;
@@ -438,7 +435,7 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 
 	protected KaleoTimer getByKCN_KCPK_PrevAndNext(Session session,
 		KaleoTimer kaleoTimer, String kaleoClassName, long kaleoClassPK,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<KaleoTimer> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -734,7 +731,7 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	@Override
 	public List<KaleoTimer> findByKCN_KCPK_Blocking(String kaleoClassName,
 		long kaleoClassPK, boolean blocking, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<KaleoTimer> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -871,7 +868,8 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	 */
 	@Override
 	public KaleoTimer findByKCN_KCPK_Blocking_First(String kaleoClassName,
-		long kaleoClassPK, boolean blocking, OrderByComparator orderByComparator)
+		long kaleoClassPK, boolean blocking,
+		OrderByComparator<KaleoTimer> orderByComparator)
 		throws NoSuchTimerException {
 		KaleoTimer kaleoTimer = fetchByKCN_KCPK_Blocking_First(kaleoClassName,
 				kaleoClassPK, blocking, orderByComparator);
@@ -909,7 +907,8 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	 */
 	@Override
 	public KaleoTimer fetchByKCN_KCPK_Blocking_First(String kaleoClassName,
-		long kaleoClassPK, boolean blocking, OrderByComparator orderByComparator) {
+		long kaleoClassPK, boolean blocking,
+		OrderByComparator<KaleoTimer> orderByComparator) {
 		List<KaleoTimer> list = findByKCN_KCPK_Blocking(kaleoClassName,
 				kaleoClassPK, blocking, 0, 1, orderByComparator);
 
@@ -932,7 +931,8 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	 */
 	@Override
 	public KaleoTimer findByKCN_KCPK_Blocking_Last(String kaleoClassName,
-		long kaleoClassPK, boolean blocking, OrderByComparator orderByComparator)
+		long kaleoClassPK, boolean blocking,
+		OrderByComparator<KaleoTimer> orderByComparator)
 		throws NoSuchTimerException {
 		KaleoTimer kaleoTimer = fetchByKCN_KCPK_Blocking_Last(kaleoClassName,
 				kaleoClassPK, blocking, orderByComparator);
@@ -970,7 +970,8 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	 */
 	@Override
 	public KaleoTimer fetchByKCN_KCPK_Blocking_Last(String kaleoClassName,
-		long kaleoClassPK, boolean blocking, OrderByComparator orderByComparator) {
+		long kaleoClassPK, boolean blocking,
+		OrderByComparator<KaleoTimer> orderByComparator) {
 		int count = countByKCN_KCPK_Blocking(kaleoClassName, kaleoClassPK,
 				blocking);
 
@@ -1002,7 +1003,8 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	@Override
 	public KaleoTimer[] findByKCN_KCPK_Blocking_PrevAndNext(long kaleoTimerId,
 		String kaleoClassName, long kaleoClassPK, boolean blocking,
-		OrderByComparator orderByComparator) throws NoSuchTimerException {
+		OrderByComparator<KaleoTimer> orderByComparator)
+		throws NoSuchTimerException {
 		KaleoTimer kaleoTimer = findByPrimaryKey(kaleoTimerId);
 
 		Session session = null;
@@ -1034,7 +1036,8 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 
 	protected KaleoTimer getByKCN_KCPK_Blocking_PrevAndNext(Session session,
 		KaleoTimer kaleoTimer, String kaleoClassName, long kaleoClassPK,
-		boolean blocking, OrderByComparator orderByComparator, boolean previous) {
+		boolean blocking, OrderByComparator<KaleoTimer> orderByComparator,
+		boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -1796,7 +1799,7 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	 */
 	@Override
 	public List<KaleoTimer> findAll(int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<KaleoTimer> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1927,25 +1930,6 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	 * Initializes the kaleo timer persistence.
 	 */
 	public void afterPropertiesSet() {
-		String[] listenerClassNames = StringUtil.split(GetterUtil.getString(
-					com.liferay.util.service.ServiceProps.get(
-						"value.object.listener.com.liferay.portal.workflow.kaleo.model.KaleoTimer")));
-
-		if (listenerClassNames.length > 0) {
-			try {
-				List<ModelListener<KaleoTimer>> listenersList = new ArrayList<ModelListener<KaleoTimer>>();
-
-				for (String listenerClassName : listenerClassNames) {
-					listenersList.add((ModelListener<KaleoTimer>)InstanceFactory.newInstance(
-							getClassLoader(), listenerClassName));
-				}
-
-				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
-			}
-			catch (Exception e) {
-				_log.error(e);
-			}
-		}
 	}
 
 	public void destroy() {

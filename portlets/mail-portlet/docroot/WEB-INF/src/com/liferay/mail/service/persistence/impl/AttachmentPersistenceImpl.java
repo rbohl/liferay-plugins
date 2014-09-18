@@ -31,21 +31,17 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -152,7 +148,7 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 	 */
 	@Override
 	public List<Attachment> findByMessageId(long messageId, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Attachment> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -258,7 +254,8 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 	 */
 	@Override
 	public Attachment findByMessageId_First(long messageId,
-		OrderByComparator orderByComparator) throws NoSuchAttachmentException {
+		OrderByComparator<Attachment> orderByComparator)
+		throws NoSuchAttachmentException {
 		Attachment attachment = fetchByMessageId_First(messageId,
 				orderByComparator);
 
@@ -287,7 +284,7 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 	 */
 	@Override
 	public Attachment fetchByMessageId_First(long messageId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Attachment> orderByComparator) {
 		List<Attachment> list = findByMessageId(messageId, 0, 1,
 				orderByComparator);
 
@@ -308,7 +305,8 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 	 */
 	@Override
 	public Attachment findByMessageId_Last(long messageId,
-		OrderByComparator orderByComparator) throws NoSuchAttachmentException {
+		OrderByComparator<Attachment> orderByComparator)
+		throws NoSuchAttachmentException {
 		Attachment attachment = fetchByMessageId_Last(messageId,
 				orderByComparator);
 
@@ -337,7 +335,7 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 	 */
 	@Override
 	public Attachment fetchByMessageId_Last(long messageId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Attachment> orderByComparator) {
 		int count = countByMessageId(messageId);
 
 		if (count == 0) {
@@ -365,7 +363,7 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 	 */
 	@Override
 	public Attachment[] findByMessageId_PrevAndNext(long attachmentId,
-		long messageId, OrderByComparator orderByComparator)
+		long messageId, OrderByComparator<Attachment> orderByComparator)
 		throws NoSuchAttachmentException {
 		Attachment attachment = findByPrimaryKey(attachmentId);
 
@@ -396,7 +394,7 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 
 	protected Attachment getByMessageId_PrevAndNext(Session session,
 		Attachment attachment, long messageId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<Attachment> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -1063,7 +1061,7 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 	 */
 	@Override
 	public List<Attachment> findAll(int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Attachment> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1199,25 +1197,6 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 	 * Initializes the attachment persistence.
 	 */
 	public void afterPropertiesSet() {
-		String[] listenerClassNames = StringUtil.split(GetterUtil.getString(
-					com.liferay.util.service.ServiceProps.get(
-						"value.object.listener.com.liferay.mail.model.Attachment")));
-
-		if (listenerClassNames.length > 0) {
-			try {
-				List<ModelListener<Attachment>> listenersList = new ArrayList<ModelListener<Attachment>>();
-
-				for (String listenerClassName : listenerClassNames) {
-					listenersList.add((ModelListener<Attachment>)InstanceFactory.newInstance(
-							getClassLoader(), listenerClassName));
-				}
-
-				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
-			}
-			catch (Exception e) {
-				_log.error(e);
-			}
-		}
 	}
 
 	public void destroy() {

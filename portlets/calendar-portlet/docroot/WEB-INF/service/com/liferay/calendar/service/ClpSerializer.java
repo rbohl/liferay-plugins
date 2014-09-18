@@ -14,6 +14,8 @@
 
 package com.liferay.calendar.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.calendar.model.CalendarBookingClp;
 import com.liferay.calendar.model.CalendarClp;
 import com.liferay.calendar.model.CalendarNotificationTemplateClp;
@@ -39,6 +41,7 @@ import java.util.List;
 /**
  * @author Eduardo Lundgren
  */
+@ProviderType
 public class ClpSerializer {
 	public static String getServletContextName() {
 		if (Validator.isNotNull(_servletContextName)) {
@@ -211,7 +214,7 @@ public class ClpSerializer {
 				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
 						BaseModel.class);
 
-				Class<?> oldModelModelClass = (Class<?>)oldModel.getModelClass();
+				Class<?> oldModelModelClass = oldModel.getModelClass();
 
 				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
 						oldModelModelClass.getSimpleName() + "RemoteModel");
@@ -248,7 +251,7 @@ public class ClpSerializer {
 				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
 						BaseModel.class);
 
-				Class<?> oldModelModelClass = (Class<?>)oldModel.getModelClass();
+				Class<?> oldModelModelClass = oldModel.getModelClass();
 
 				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
 						oldModelModelClass.getSimpleName() + "RemoteModel");
@@ -285,7 +288,7 @@ public class ClpSerializer {
 				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
 						BaseModel.class);
 
-				Class<?> oldModelModelClass = (Class<?>)oldModel.getModelClass();
+				Class<?> oldModelModelClass = oldModel.getModelClass();
 
 				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
 						oldModelModelClass.getSimpleName() + "RemoteModel");
@@ -322,7 +325,7 @@ public class ClpSerializer {
 				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
 						BaseModel.class);
 
-				Class<?> oldModelModelClass = (Class<?>)oldModel.getModelClass();
+				Class<?> oldModelModelClass = oldModel.getModelClass();
 
 				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
 						oldModelModelClass.getSimpleName() + "RemoteModel");

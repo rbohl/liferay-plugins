@@ -14,6 +14,8 @@
 
 package com.liferay.knowledgebase.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.knowledgebase.model.KBTemplate;
 import com.liferay.knowledgebase.service.KBTemplateLocalService;
 import com.liferay.knowledgebase.service.persistence.KBArticlePersistence;
@@ -70,6 +72,7 @@ import javax.sql.DataSource;
  * @see com.liferay.knowledgebase.service.KBTemplateLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class KBTemplateLocalServiceBaseImpl
 	extends BaseLocalServiceImpl implements KBTemplateLocalService,
 		IdentifiableBean {
@@ -110,12 +113,11 @@ public abstract class KBTemplateLocalServiceBaseImpl
 	 * @param kbTemplateId the primary key of the k b template
 	 * @return the k b template that was removed
 	 * @throws PortalException if a k b template with the primary key could not be found
-	 * @throws SystemException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public KBTemplate deleteKBTemplate(long kbTemplateId)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return kbTemplatePersistence.remove(kbTemplateId);
 	}
 
@@ -125,12 +127,11 @@ public abstract class KBTemplateLocalServiceBaseImpl
 	 * @param kbTemplate the k b template
 	 * @return the k b template that was removed
 	 * @throws PortalException
-	 * @throws SystemException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public KBTemplate deleteKBTemplate(KBTemplate kbTemplate)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return kbTemplatePersistence.remove(kbTemplate);
 	}
 
@@ -149,8 +150,7 @@ public abstract class KBTemplateLocalServiceBaseImpl
 	 * @return the matching rows
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery) {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return kbTemplatePersistence.findWithDynamicQuery(dynamicQuery);
 	}
 
@@ -167,8 +167,8 @@ public abstract class KBTemplateLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end) {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
 		return kbTemplatePersistence.findWithDynamicQuery(dynamicQuery, start,
 			end);
 	}
@@ -187,9 +187,8 @@ public abstract class KBTemplateLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator orderByComparator) {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
 		return kbTemplatePersistence.findWithDynamicQuery(dynamicQuery, start,
 			end, orderByComparator);
 	}
@@ -222,19 +221,6 @@ public abstract class KBTemplateLocalServiceBaseImpl
 	@Override
 	public KBTemplate fetchKBTemplate(long kbTemplateId) {
 		return kbTemplatePersistence.fetchByPrimaryKey(kbTemplateId);
-	}
-
-	/**
-	 * Returns the k b template with the matching UUID and company.
-	 *
-	 * @param uuid the k b template's UUID
-	 * @param  companyId the primary key of the company
-	 * @return the matching k b template, or <code>null</code> if a matching k b template could not be found
-	 */
-	@Override
-	public KBTemplate fetchKBTemplateByUuidAndCompanyId(String uuid,
-		long companyId) {
-		return kbTemplatePersistence.fetchByUuid_C_First(uuid, companyId, null);
 	}
 
 	/**
@@ -354,18 +340,18 @@ public abstract class KBTemplateLocalServiceBaseImpl
 		return kbTemplatePersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
-	/**
-	 * Returns the k b template with the matching UUID and company.
-	 *
-	 * @param uuid the k b template's UUID
-	 * @param  companyId the primary key of the company
-	 * @return the matching k b template
-	 * @throws PortalException if a matching k b template could not be found
-	 */
 	@Override
-	public KBTemplate getKBTemplateByUuidAndCompanyId(String uuid,
-		long companyId) throws PortalException {
-		return kbTemplatePersistence.findByUuid_C_First(uuid, companyId, null);
+	public List<KBTemplate> getKBTemplatesByUuidAndCompanyId(String uuid,
+		long companyId) {
+		return kbTemplatePersistence.findByUuid_C(uuid, companyId);
+	}
+
+	@Override
+	public List<KBTemplate> getKBTemplatesByUuidAndCompanyId(String uuid,
+		long companyId, int start, int end,
+		OrderByComparator<KBTemplate> orderByComparator) {
+		return kbTemplatePersistence.findByUuid_C(uuid, companyId, start, end,
+			orderByComparator);
 	}
 
 	/**

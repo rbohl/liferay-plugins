@@ -53,7 +53,13 @@ else if (filterBy.startsWith(ContactsConstants.FILTER_BY_GROUP)) {
 List<BaseModel<?>> contacts = null;
 int contactsCount = 0;
 
-if (userPublicPage || showOnlySiteMembers || !filterBy.equals(ContactsConstants.FILTER_BY_DEFAULT)) {
+if (userPublicPage) {
+	List<User> users = UserLocalServiceUtil.getSocialUsers(group.getClassPK(), SocialRelationConstants.TYPE_BI_CONNECTION, StringPool.EQUAL, 0, ContactsConstants.MAX_RESULT_COUNT, new UserLastNameComparator(true));
+
+	contacts = new ArrayList<BaseModel<?>>(users);
+	contactsCount = UserLocalServiceUtil.getSocialUsersCount(group.getClassPK(), SocialRelationConstants.TYPE_BI_CONNECTION, StringPool.EQUAL);
+}
+else if (showOnlySiteMembers || !filterBy.equals(ContactsConstants.FILTER_BY_DEFAULT)) {
 	List<User> users = UserLocalServiceUtil.search(company.getCompanyId(), name, WorkflowConstants.STATUS_APPROVED, params, 0, ContactsConstants.MAX_RESULT_COUNT, new UserLastNameComparator(true));
 
 	contacts = new ArrayList<BaseModel<?>>(users);
@@ -73,7 +79,7 @@ portletURL.setWindowState(WindowState.NORMAL);
 	<c:when test="<%= userPublicPage && (contactsCount <= 0) %>">
 		<aui:layout cssClass="contacts-center-home">
 			<h3 class="header-title">
-				<liferay-ui:message arguments="<%= new Object[] {HtmlUtil.escape(group.getDescriptiveName(locale)), String.valueOf(contactsCount)} %>" key="x-has-no-contacts" translateArguments="<%= false %>" />
+				<liferay-ui:message arguments="<%= new Object[] {HtmlUtil.escape(group.getDescriptiveName(locale)), String.valueOf(contactsCount)} %>" key='<%= userPublicPage ? "x-has-no-connections" : "x-has-no-contacts" %>' translateArguments="<%= false %>" />
 			</h3>
 		</aui:layout>
 	</c:when>
@@ -101,6 +107,7 @@ portletURL.setWindowState(WindowState.NORMAL);
 								<aui:option label="following" value="<%= ContactsConstants.FILTER_BY_TYPE_UNI_FOLLOWER %>" />
 
 								<c:if test="<%= !showOnlySiteMembers %>">
+									<aui:option label="followers" value="<%= ContactsConstants.FILTER_BY_FOLLOWERS %>" />
 									<aui:option label="my-contacts" value="<%= ContactsConstants.FILTER_BY_TYPE_MY_CONTACTS %>" />
 
 									<%
@@ -333,6 +340,8 @@ portletURL.setWindowState(WindowState.NORMAL);
 								params.put("socialRelationType", new Long[] {themeDisplay.getUserId(), new Long(SocialRelationConstants.TYPE_UNI_FOLLOWER)});
 
 								int followingUsersCount = UserLocalServiceUtil.searchCount(themeDisplay.getCompanyId(), null, WorkflowConstants.STATUS_APPROVED, params);
+
+								int followerUsersCount = SocialRelationLocalServiceUtil.getInverseRelationsCount(themeDisplay.getUserId(), SocialRelationConstants.TYPE_UNI_FOLLOWER);
 								%>
 
 								<aui:layout cssClass="connections contacts-count">
@@ -344,6 +353,9 @@ portletURL.setWindowState(WindowState.NORMAL);
 								</aui:layout>
 
 								<c:if test="<%= !showOnlySiteMembers %>">
+									<aui:layout cssClass="contacts-count followers">
+										<a href="javascript:;"><liferay-ui:message arguments="<%= String.valueOf(followerUsersCount) %>" key="you-have-x-followers" translateArguments="<%= false %>" /></a>
+									</aui:layout>
 
 									<%
 									int myContactsCount = EntryLocalServiceUtil.getEntriesCount(user.getUserId());
@@ -614,6 +626,20 @@ portletURL.setWindowState(WindowState.NORMAL);
 						'click',
 						function(event) {
 							contactFilterSelect.set('value', '<%= ContactsConstants.FILTER_BY_TYPE_UNI_FOLLOWER %>');
+
+							contactsCenter.updateContacts(searchInput.get('value'), contactFilterSelect.get('value'));
+						},
+						'a'
+					);
+				}
+
+				var followers = contactsCenterHome.one('.followers');
+
+				if (followers) {
+					followers.on(
+						'click',
+						function(event) {
+							contactFilterSelect.set('value', '<%= ContactsConstants.FILTER_BY_FOLLOWERS %>');
 
 							contactsCenter.updateContacts(searchInput.get('value'), contactFilterSelect.get('value'));
 						},

@@ -50,6 +50,16 @@ public class MicroblogsEntryLocalServiceUtil {
 		return getService().addMicroblogsEntry(microblogsEntry);
 	}
 
+	public static com.liferay.microblogs.model.MicroblogsEntry addMicroblogsEntry(
+		long userId, java.lang.String content, int type, long receiverUserId,
+		long receiverMicroblogsEntryId, int socialRelationType,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addMicroblogsEntry(userId, content, type, receiverUserId,
+			receiverMicroblogsEntryId, socialRelationType, serviceContext);
+	}
+
 	/**
 	* Creates a new microblogs entry with the primary key. Does not add the microblogs entry to the database.
 	*
@@ -59,6 +69,19 @@ public class MicroblogsEntryLocalServiceUtil {
 	public static com.liferay.microblogs.model.MicroblogsEntry createMicroblogsEntry(
 		long microblogsEntryId) {
 		return getService().createMicroblogsEntry(microblogsEntryId);
+	}
+
+	/**
+	* Deletes the microblogs entry from the database. Also notifies the appropriate model listeners.
+	*
+	* @param microblogsEntry the microblogs entry
+	* @return the microblogs entry that was removed
+	* @throws PortalException
+	*/
+	public static com.liferay.microblogs.model.MicroblogsEntry deleteMicroblogsEntry(
+		com.liferay.microblogs.model.MicroblogsEntry microblogsEntry)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deleteMicroblogsEntry(microblogsEntry);
 	}
 
 	/**
@@ -75,16 +98,17 @@ public class MicroblogsEntryLocalServiceUtil {
 	}
 
 	/**
-	* Deletes the microblogs entry from the database. Also notifies the appropriate model listeners.
-	*
-	* @param microblogsEntry the microblogs entry
-	* @return the microblogs entry that was removed
 	* @throws PortalException
 	*/
-	public static com.liferay.microblogs.model.MicroblogsEntry deleteMicroblogsEntry(
-		com.liferay.microblogs.model.MicroblogsEntry microblogsEntry)
+	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deleteMicroblogsEntry(microblogsEntry);
+		return getService().deletePersistedModel(persistedModel);
+	}
+
+	public static void deleteUserMicroblogsEntries(long userId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteUserMicroblogsEntries(userId);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
@@ -97,8 +121,7 @@ public class MicroblogsEntryLocalServiceUtil {
 	* @param dynamicQuery the dynamic query
 	* @return the matching rows
 	*/
-	@SuppressWarnings("rawtypes")
-	public static java.util.List dynamicQuery(
+	public static <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
@@ -115,8 +138,7 @@ public class MicroblogsEntryLocalServiceUtil {
 	* @param end the upper bound of the range of model instances (not inclusive)
 	* @return the range of matching rows
 	*/
-	@SuppressWarnings("rawtypes")
-	public static java.util.List dynamicQuery(
+	public static <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
 		int end) {
 		return getService().dynamicQuery(dynamicQuery, start, end);
@@ -135,11 +157,10 @@ public class MicroblogsEntryLocalServiceUtil {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of matching rows
 	*/
-	@SuppressWarnings("rawtypes")
-	public static java.util.List dynamicQuery(
+	public static <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
 		int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
 		return getService()
 				   .dynamicQuery(dynamicQuery, start, end, orderByComparator);
 	}
@@ -173,36 +194,26 @@ public class MicroblogsEntryLocalServiceUtil {
 		return getService().fetchMicroblogsEntry(microblogsEntryId);
 	}
 
-	/**
-	* Returns the microblogs entry with the primary key.
-	*
-	* @param microblogsEntryId the primary key of the microblogs entry
-	* @return the microblogs entry
-	* @throws PortalException if a microblogs entry with the primary key could not be found
-	*/
-	public static com.liferay.microblogs.model.MicroblogsEntry getMicroblogsEntry(
-		long microblogsEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getMicroblogsEntry(microblogsEntryId);
-	}
-
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return getService().getActionableDynamicQuery();
 	}
 
 	/**
-	* @throws PortalException
+	* Returns the Spring bean ID for this bean.
+	*
+	* @return the Spring bean ID for this bean
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deletePersistedModel(persistedModel);
+	public static java.lang.String getBeanIdentifier() {
+		return getService().getBeanIdentifier();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
+	public static java.util.List<com.liferay.microblogs.model.MicroblogsEntry> getCompanyMicroblogsEntries(
+		long companyId, int start, int end) {
+		return getService().getCompanyMicroblogsEntries(companyId, start, end);
+	}
+
+	public static int getCompanyMicroblogsEntriesCount(long companyId) {
+		return getService().getCompanyMicroblogsEntriesCount(companyId);
 	}
 
 	/**
@@ -231,62 +242,22 @@ public class MicroblogsEntryLocalServiceUtil {
 	}
 
 	/**
-	* Updates the microblogs entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Returns the microblogs entry with the primary key.
 	*
-	* @param microblogsEntry the microblogs entry
-	* @return the microblogs entry that was updated
+	* @param microblogsEntryId the primary key of the microblogs entry
+	* @return the microblogs entry
+	* @throws PortalException if a microblogs entry with the primary key could not be found
 	*/
-	public static com.liferay.microblogs.model.MicroblogsEntry updateMicroblogsEntry(
-		com.liferay.microblogs.model.MicroblogsEntry microblogsEntry) {
-		return getService().updateMicroblogsEntry(microblogsEntry);
-	}
-
-	/**
-	* Returns the Spring bean ID for this bean.
-	*
-	* @return the Spring bean ID for this bean
-	*/
-	public static java.lang.String getBeanIdentifier() {
-		return getService().getBeanIdentifier();
-	}
-
-	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	public static void setBeanIdentifier(java.lang.String beanIdentifier) {
-		getService().setBeanIdentifier(beanIdentifier);
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
-	public static com.liferay.microblogs.model.MicroblogsEntry addMicroblogsEntry(
-		long userId, java.lang.String content, int type, long receiverUserId,
-		long receiverMicroblogsEntryId, int socialRelationType,
-		com.liferay.portal.service.ServiceContext serviceContext)
+	public static com.liferay.microblogs.model.MicroblogsEntry getMicroblogsEntry(
+		long microblogsEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .addMicroblogsEntry(userId, content, type, receiverUserId,
-			receiverMicroblogsEntryId, socialRelationType, serviceContext);
+		return getService().getMicroblogsEntry(microblogsEntryId);
 	}
 
-	public static void deleteUserMicroblogsEntries(long userId)
+	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteUserMicroblogsEntries(userId);
-	}
-
-	public static java.util.List<com.liferay.microblogs.model.MicroblogsEntry> getCompanyMicroblogsEntries(
-		long companyId, int start, int end) {
-		return getService().getCompanyMicroblogsEntries(companyId, start, end);
-	}
-
-	public static int getCompanyMicroblogsEntriesCount(long companyId) {
-		return getService().getCompanyMicroblogsEntriesCount(companyId);
+		return getService().getPersistedModel(primaryKeyObj);
 	}
 
 	public static java.util.List<com.liferay.microblogs.model.MicroblogsEntry> getReceiverMicroblogsEntryMicroblogsEntries(
@@ -298,7 +269,7 @@ public class MicroblogsEntryLocalServiceUtil {
 
 	public static java.util.List<com.liferay.microblogs.model.MicroblogsEntry> getReceiverMicroblogsEntryMicroblogsEntries(
 		int type, long receiverMicroblogsEntryId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.microblogs.model.MicroblogsEntry> orderByComparator) {
 		return getService()
 				   .getReceiverMicroblogsEntryMicroblogsEntries(type,
 			receiverMicroblogsEntryId, start, end, orderByComparator);
@@ -342,12 +313,38 @@ public class MicroblogsEntryLocalServiceUtil {
 		return getService().getUserMicroblogsEntriesCount(userId, type);
 	}
 
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Sets the Spring bean ID for this bean.
+	*
+	* @param beanIdentifier the Spring bean ID for this bean
+	*/
+	public static void setBeanIdentifier(java.lang.String beanIdentifier) {
+		getService().setBeanIdentifier(beanIdentifier);
+	}
+
 	public static void updateAsset(
 		com.liferay.microblogs.model.MicroblogsEntry microblogsEntry,
 		long[] assetCategoryIds, java.lang.String[] assetTagNames)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
 			.updateAsset(microblogsEntry, assetCategoryIds, assetTagNames);
+	}
+
+	/**
+	* Updates the microblogs entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param microblogsEntry the microblogs entry
+	* @return the microblogs entry that was updated
+	*/
+	public static com.liferay.microblogs.model.MicroblogsEntry updateMicroblogsEntry(
+		com.liferay.microblogs.model.MicroblogsEntry microblogsEntry) {
+		return getService().updateMicroblogsEntry(microblogsEntry);
 	}
 
 	public static com.liferay.microblogs.model.MicroblogsEntry updateMicroblogsEntry(

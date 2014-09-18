@@ -14,6 +14,8 @@
 
 package com.liferay.calendar.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
@@ -23,37 +25,11 @@ import com.liferay.portal.service.ServiceWrapper;
  * @see CalendarService
  * @generated
  */
+@ProviderType
 public class CalendarServiceWrapper implements CalendarService,
 	ServiceWrapper<CalendarService> {
 	public CalendarServiceWrapper(CalendarService calendarService) {
 		_calendarService = calendarService;
-	}
-
-	/**
-	* Returns the Spring bean ID for this bean.
-	*
-	* @return the Spring bean ID for this bean
-	*/
-	@Override
-	public java.lang.String getBeanIdentifier() {
-		return _calendarService.getBeanIdentifier();
-	}
-
-	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	@Override
-	public void setBeanIdentifier(java.lang.String beanIdentifier) {
-		_calendarService.setBeanIdentifier(beanIdentifier);
-	}
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _calendarService.invokeMethod(name, parameterTypes, arguments);
 	}
 
 	@Override
@@ -88,6 +64,16 @@ public class CalendarServiceWrapper implements CalendarService,
 		return _calendarService.fetchCalendar(calendarId);
 	}
 
+	/**
+	* Returns the Spring bean ID for this bean.
+	*
+	* @return the Spring bean ID for this bean
+	*/
+	@Override
+	public java.lang.String getBeanIdentifier() {
+		return _calendarService.getBeanIdentifier();
+	}
+
 	@Override
 	public com.liferay.calendar.model.Calendar getCalendar(long calendarId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -117,10 +103,17 @@ public class CalendarServiceWrapper implements CalendarService,
 	}
 
 	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _calendarService.invokeMethod(name, parameterTypes, arguments);
+	}
+
+	@Override
 	public java.util.List<com.liferay.calendar.model.Calendar> search(
 		long companyId, long[] groupIds, long[] calendarResourceIds,
 		java.lang.String keywords, boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.calendar.model.Calendar> orderByComparator)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _calendarService.search(companyId, groupIds,
 			calendarResourceIds, keywords, andOperator, start, end,
@@ -131,7 +124,7 @@ public class CalendarServiceWrapper implements CalendarService,
 	public java.util.List<com.liferay.calendar.model.Calendar> search(
 		long companyId, long[] groupIds, long[] calendarResourceIds,
 		java.lang.String keywords, boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.calendar.model.Calendar> orderByComparator,
 		java.lang.String actionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _calendarService.search(companyId, groupIds,
@@ -144,7 +137,7 @@ public class CalendarServiceWrapper implements CalendarService,
 		long companyId, long[] groupIds, long[] calendarResourceIds,
 		java.lang.String name, java.lang.String description,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.calendar.model.Calendar> orderByComparator)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _calendarService.search(companyId, groupIds,
 			calendarResourceIds, name, description, andOperator, start, end,
@@ -156,7 +149,7 @@ public class CalendarServiceWrapper implements CalendarService,
 		long companyId, long[] groupIds, long[] calendarResourceIds,
 		java.lang.String name, java.lang.String description,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.calendar.model.Calendar> orderByComparator,
 		java.lang.String actionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _calendarService.search(companyId, groupIds,
@@ -199,6 +192,16 @@ public class CalendarServiceWrapper implements CalendarService,
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _calendarService.searchCount(companyId, groupIds,
 			calendarResourceIds, name, description, andOperator, actionId);
+	}
+
+	/**
+	* Sets the Spring bean ID for this bean.
+	*
+	* @param beanIdentifier the Spring bean ID for this bean
+	*/
+	@Override
+	public void setBeanIdentifier(java.lang.String beanIdentifier) {
+		_calendarService.setBeanIdentifier(beanIdentifier);
 	}
 
 	@Override

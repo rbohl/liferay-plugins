@@ -25,17 +25,14 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.workflow.kaleo.NoSuchLogException;
 import com.liferay.portal.workflow.kaleo.model.KaleoLog;
@@ -45,7 +42,6 @@ import com.liferay.portal.workflow.kaleo.service.persistence.KaleoLogPersistence
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -152,7 +148,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public List<KaleoLog> findByCompanyId(long companyId, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<KaleoLog> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -258,7 +254,8 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public KaleoLog findByCompanyId_First(long companyId,
-		OrderByComparator orderByComparator) throws NoSuchLogException {
+		OrderByComparator<KaleoLog> orderByComparator)
+		throws NoSuchLogException {
 		KaleoLog kaleoLog = fetchByCompanyId_First(companyId, orderByComparator);
 
 		if (kaleoLog != null) {
@@ -286,7 +283,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public KaleoLog fetchByCompanyId_First(long companyId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<KaleoLog> orderByComparator) {
 		List<KaleoLog> list = findByCompanyId(companyId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -306,7 +303,8 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public KaleoLog findByCompanyId_Last(long companyId,
-		OrderByComparator orderByComparator) throws NoSuchLogException {
+		OrderByComparator<KaleoLog> orderByComparator)
+		throws NoSuchLogException {
 		KaleoLog kaleoLog = fetchByCompanyId_Last(companyId, orderByComparator);
 
 		if (kaleoLog != null) {
@@ -334,7 +332,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public KaleoLog fetchByCompanyId_Last(long companyId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<KaleoLog> orderByComparator) {
 		int count = countByCompanyId(companyId);
 
 		if (count == 0) {
@@ -362,7 +360,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public KaleoLog[] findByCompanyId_PrevAndNext(long kaleoLogId,
-		long companyId, OrderByComparator orderByComparator)
+		long companyId, OrderByComparator<KaleoLog> orderByComparator)
 		throws NoSuchLogException {
 		KaleoLog kaleoLog = findByPrimaryKey(kaleoLogId);
 
@@ -392,8 +390,8 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	}
 
 	protected KaleoLog getByCompanyId_PrevAndNext(Session session,
-		KaleoLog kaleoLog, long companyId, OrderByComparator orderByComparator,
-		boolean previous) {
+		KaleoLog kaleoLog, long companyId,
+		OrderByComparator<KaleoLog> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -628,7 +626,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public List<KaleoLog> findByKaleoDefinitionId(long kaleoDefinitionId,
-		int start, int end, OrderByComparator orderByComparator) {
+		int start, int end, OrderByComparator<KaleoLog> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -738,7 +736,8 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public KaleoLog findByKaleoDefinitionId_First(long kaleoDefinitionId,
-		OrderByComparator orderByComparator) throws NoSuchLogException {
+		OrderByComparator<KaleoLog> orderByComparator)
+		throws NoSuchLogException {
 		KaleoLog kaleoLog = fetchByKaleoDefinitionId_First(kaleoDefinitionId,
 				orderByComparator);
 
@@ -767,7 +766,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public KaleoLog fetchByKaleoDefinitionId_First(long kaleoDefinitionId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<KaleoLog> orderByComparator) {
 		List<KaleoLog> list = findByKaleoDefinitionId(kaleoDefinitionId, 0, 1,
 				orderByComparator);
 
@@ -788,7 +787,8 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public KaleoLog findByKaleoDefinitionId_Last(long kaleoDefinitionId,
-		OrderByComparator orderByComparator) throws NoSuchLogException {
+		OrderByComparator<KaleoLog> orderByComparator)
+		throws NoSuchLogException {
 		KaleoLog kaleoLog = fetchByKaleoDefinitionId_Last(kaleoDefinitionId,
 				orderByComparator);
 
@@ -817,7 +817,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public KaleoLog fetchByKaleoDefinitionId_Last(long kaleoDefinitionId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<KaleoLog> orderByComparator) {
 		int count = countByKaleoDefinitionId(kaleoDefinitionId);
 
 		if (count == 0) {
@@ -845,7 +845,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public KaleoLog[] findByKaleoDefinitionId_PrevAndNext(long kaleoLogId,
-		long kaleoDefinitionId, OrderByComparator orderByComparator)
+		long kaleoDefinitionId, OrderByComparator<KaleoLog> orderByComparator)
 		throws NoSuchLogException {
 		KaleoLog kaleoLog = findByPrimaryKey(kaleoLogId);
 
@@ -876,7 +876,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 
 	protected KaleoLog getByKaleoDefinitionId_PrevAndNext(Session session,
 		KaleoLog kaleoLog, long kaleoDefinitionId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<KaleoLog> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -1112,7 +1112,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public List<KaleoLog> findByKaleoInstanceId(long kaleoInstanceId,
-		int start, int end, OrderByComparator orderByComparator) {
+		int start, int end, OrderByComparator<KaleoLog> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1222,7 +1222,8 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public KaleoLog findByKaleoInstanceId_First(long kaleoInstanceId,
-		OrderByComparator orderByComparator) throws NoSuchLogException {
+		OrderByComparator<KaleoLog> orderByComparator)
+		throws NoSuchLogException {
 		KaleoLog kaleoLog = fetchByKaleoInstanceId_First(kaleoInstanceId,
 				orderByComparator);
 
@@ -1251,7 +1252,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public KaleoLog fetchByKaleoInstanceId_First(long kaleoInstanceId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<KaleoLog> orderByComparator) {
 		List<KaleoLog> list = findByKaleoInstanceId(kaleoInstanceId, 0, 1,
 				orderByComparator);
 
@@ -1272,7 +1273,8 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public KaleoLog findByKaleoInstanceId_Last(long kaleoInstanceId,
-		OrderByComparator orderByComparator) throws NoSuchLogException {
+		OrderByComparator<KaleoLog> orderByComparator)
+		throws NoSuchLogException {
 		KaleoLog kaleoLog = fetchByKaleoInstanceId_Last(kaleoInstanceId,
 				orderByComparator);
 
@@ -1301,7 +1303,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public KaleoLog fetchByKaleoInstanceId_Last(long kaleoInstanceId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<KaleoLog> orderByComparator) {
 		int count = countByKaleoInstanceId(kaleoInstanceId);
 
 		if (count == 0) {
@@ -1329,7 +1331,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public KaleoLog[] findByKaleoInstanceId_PrevAndNext(long kaleoLogId,
-		long kaleoInstanceId, OrderByComparator orderByComparator)
+		long kaleoInstanceId, OrderByComparator<KaleoLog> orderByComparator)
 		throws NoSuchLogException {
 		KaleoLog kaleoLog = findByPrimaryKey(kaleoLogId);
 
@@ -1360,7 +1362,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 
 	protected KaleoLog getByKaleoInstanceId_PrevAndNext(Session session,
 		KaleoLog kaleoLog, long kaleoInstanceId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<KaleoLog> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -1603,7 +1605,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	@Override
 	public List<KaleoLog> findByKaleoTaskInstanceTokenId(
 		long kaleoTaskInstanceTokenId, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<KaleoLog> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1713,7 +1715,8 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public KaleoLog findByKaleoTaskInstanceTokenId_First(
-		long kaleoTaskInstanceTokenId, OrderByComparator orderByComparator)
+		long kaleoTaskInstanceTokenId,
+		OrderByComparator<KaleoLog> orderByComparator)
 		throws NoSuchLogException {
 		KaleoLog kaleoLog = fetchByKaleoTaskInstanceTokenId_First(kaleoTaskInstanceTokenId,
 				orderByComparator);
@@ -1743,7 +1746,8 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public KaleoLog fetchByKaleoTaskInstanceTokenId_First(
-		long kaleoTaskInstanceTokenId, OrderByComparator orderByComparator) {
+		long kaleoTaskInstanceTokenId,
+		OrderByComparator<KaleoLog> orderByComparator) {
 		List<KaleoLog> list = findByKaleoTaskInstanceTokenId(kaleoTaskInstanceTokenId,
 				0, 1, orderByComparator);
 
@@ -1764,7 +1768,8 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public KaleoLog findByKaleoTaskInstanceTokenId_Last(
-		long kaleoTaskInstanceTokenId, OrderByComparator orderByComparator)
+		long kaleoTaskInstanceTokenId,
+		OrderByComparator<KaleoLog> orderByComparator)
 		throws NoSuchLogException {
 		KaleoLog kaleoLog = fetchByKaleoTaskInstanceTokenId_Last(kaleoTaskInstanceTokenId,
 				orderByComparator);
@@ -1794,7 +1799,8 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public KaleoLog fetchByKaleoTaskInstanceTokenId_Last(
-		long kaleoTaskInstanceTokenId, OrderByComparator orderByComparator) {
+		long kaleoTaskInstanceTokenId,
+		OrderByComparator<KaleoLog> orderByComparator) {
 		int count = countByKaleoTaskInstanceTokenId(kaleoTaskInstanceTokenId);
 
 		if (count == 0) {
@@ -1823,7 +1829,8 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	@Override
 	public KaleoLog[] findByKaleoTaskInstanceTokenId_PrevAndNext(
 		long kaleoLogId, long kaleoTaskInstanceTokenId,
-		OrderByComparator orderByComparator) throws NoSuchLogException {
+		OrderByComparator<KaleoLog> orderByComparator)
+		throws NoSuchLogException {
 		KaleoLog kaleoLog = findByPrimaryKey(kaleoLogId);
 
 		Session session = null;
@@ -1853,7 +1860,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 
 	protected KaleoLog getByKaleoTaskInstanceTokenId_PrevAndNext(
 		Session session, KaleoLog kaleoLog, long kaleoTaskInstanceTokenId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<KaleoLog> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -2093,7 +2100,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public List<KaleoLog> findByKITI_T(long kaleoInstanceTokenId, String type,
-		int start, int end, OrderByComparator orderByComparator) {
+		int start, int end, OrderByComparator<KaleoLog> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -2223,7 +2230,8 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public KaleoLog findByKITI_T_First(long kaleoInstanceTokenId, String type,
-		OrderByComparator orderByComparator) throws NoSuchLogException {
+		OrderByComparator<KaleoLog> orderByComparator)
+		throws NoSuchLogException {
 		KaleoLog kaleoLog = fetchByKITI_T_First(kaleoInstanceTokenId, type,
 				orderByComparator);
 
@@ -2256,7 +2264,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public KaleoLog fetchByKITI_T_First(long kaleoInstanceTokenId, String type,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<KaleoLog> orderByComparator) {
 		List<KaleoLog> list = findByKITI_T(kaleoInstanceTokenId, type, 0, 1,
 				orderByComparator);
 
@@ -2278,7 +2286,8 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public KaleoLog findByKITI_T_Last(long kaleoInstanceTokenId, String type,
-		OrderByComparator orderByComparator) throws NoSuchLogException {
+		OrderByComparator<KaleoLog> orderByComparator)
+		throws NoSuchLogException {
 		KaleoLog kaleoLog = fetchByKITI_T_Last(kaleoInstanceTokenId, type,
 				orderByComparator);
 
@@ -2311,7 +2320,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public KaleoLog fetchByKITI_T_Last(long kaleoInstanceTokenId, String type,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<KaleoLog> orderByComparator) {
 		int count = countByKITI_T(kaleoInstanceTokenId, type);
 
 		if (count == 0) {
@@ -2341,7 +2350,8 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	@Override
 	public KaleoLog[] findByKITI_T_PrevAndNext(long kaleoLogId,
 		long kaleoInstanceTokenId, String type,
-		OrderByComparator orderByComparator) throws NoSuchLogException {
+		OrderByComparator<KaleoLog> orderByComparator)
+		throws NoSuchLogException {
 		KaleoLog kaleoLog = findByPrimaryKey(kaleoLogId);
 
 		Session session = null;
@@ -2371,7 +2381,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 
 	protected KaleoLog getByKITI_T_PrevAndNext(Session session,
 		KaleoLog kaleoLog, long kaleoInstanceTokenId, String type,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<KaleoLog> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -2672,7 +2682,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	@Override
 	public List<KaleoLog> findByKCN_KCPK_KITI_T(String kaleoClassName,
 		long kaleoClassPK, long kaleoInstanceTokenId, String type, int start,
-		int end, OrderByComparator orderByComparator) {
+		int end, OrderByComparator<KaleoLog> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -2832,7 +2842,8 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	@Override
 	public KaleoLog findByKCN_KCPK_KITI_T_First(String kaleoClassName,
 		long kaleoClassPK, long kaleoInstanceTokenId, String type,
-		OrderByComparator orderByComparator) throws NoSuchLogException {
+		OrderByComparator<KaleoLog> orderByComparator)
+		throws NoSuchLogException {
 		KaleoLog kaleoLog = fetchByKCN_KCPK_KITI_T_First(kaleoClassName,
 				kaleoClassPK, kaleoInstanceTokenId, type, orderByComparator);
 
@@ -2874,7 +2885,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	@Override
 	public KaleoLog fetchByKCN_KCPK_KITI_T_First(String kaleoClassName,
 		long kaleoClassPK, long kaleoInstanceTokenId, String type,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<KaleoLog> orderByComparator) {
 		List<KaleoLog> list = findByKCN_KCPK_KITI_T(kaleoClassName,
 				kaleoClassPK, kaleoInstanceTokenId, type, 0, 1,
 				orderByComparator);
@@ -2900,7 +2911,8 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	@Override
 	public KaleoLog findByKCN_KCPK_KITI_T_Last(String kaleoClassName,
 		long kaleoClassPK, long kaleoInstanceTokenId, String type,
-		OrderByComparator orderByComparator) throws NoSuchLogException {
+		OrderByComparator<KaleoLog> orderByComparator)
+		throws NoSuchLogException {
 		KaleoLog kaleoLog = fetchByKCN_KCPK_KITI_T_Last(kaleoClassName,
 				kaleoClassPK, kaleoInstanceTokenId, type, orderByComparator);
 
@@ -2942,7 +2954,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	@Override
 	public KaleoLog fetchByKCN_KCPK_KITI_T_Last(String kaleoClassName,
 		long kaleoClassPK, long kaleoInstanceTokenId, String type,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<KaleoLog> orderByComparator) {
 		int count = countByKCN_KCPK_KITI_T(kaleoClassName, kaleoClassPK,
 				kaleoInstanceTokenId, type);
 
@@ -2976,7 +2988,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	@Override
 	public KaleoLog[] findByKCN_KCPK_KITI_T_PrevAndNext(long kaleoLogId,
 		String kaleoClassName, long kaleoClassPK, long kaleoInstanceTokenId,
-		String type, OrderByComparator orderByComparator)
+		String type, OrderByComparator<KaleoLog> orderByComparator)
 		throws NoSuchLogException {
 		KaleoLog kaleoLog = findByPrimaryKey(kaleoLogId);
 
@@ -3010,7 +3022,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	protected KaleoLog getByKCN_KCPK_KITI_T_PrevAndNext(Session session,
 		KaleoLog kaleoLog, String kaleoClassName, long kaleoClassPK,
 		long kaleoInstanceTokenId, String type,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<KaleoLog> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -3901,7 +3913,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 */
 	@Override
 	public List<KaleoLog> findAll(int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<KaleoLog> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -4037,25 +4049,6 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 * Initializes the kaleo log persistence.
 	 */
 	public void afterPropertiesSet() {
-		String[] listenerClassNames = StringUtil.split(GetterUtil.getString(
-					com.liferay.util.service.ServiceProps.get(
-						"value.object.listener.com.liferay.portal.workflow.kaleo.model.KaleoLog")));
-
-		if (listenerClassNames.length > 0) {
-			try {
-				List<ModelListener<KaleoLog>> listenersList = new ArrayList<ModelListener<KaleoLog>>();
-
-				for (String listenerClassName : listenerClassNames) {
-					listenersList.add((ModelListener<KaleoLog>)InstanceFactory.newInstance(
-							getClassLoader(), listenerClassName));
-				}
-
-				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
-			}
-			catch (Exception e) {
-				_log.error(e);
-			}
-		}
 	}
 
 	public void destroy() {

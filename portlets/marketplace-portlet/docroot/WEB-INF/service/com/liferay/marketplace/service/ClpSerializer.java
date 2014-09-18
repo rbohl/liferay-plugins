@@ -14,6 +14,8 @@
 
 package com.liferay.marketplace.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.marketplace.model.AppClp;
 import com.liferay.marketplace.model.ModuleClp;
 
@@ -37,6 +39,7 @@ import java.util.List;
 /**
  * @author Ryan Park
  */
+@ProviderType
 public class ClpSerializer {
 	public static String getServletContextName() {
 		if (Validator.isNotNull(_servletContextName)) {
@@ -179,7 +182,7 @@ public class ClpSerializer {
 				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
 						BaseModel.class);
 
-				Class<?> oldModelModelClass = (Class<?>)oldModel.getModelClass();
+				Class<?> oldModelModelClass = oldModel.getModelClass();
 
 				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
 						oldModelModelClass.getSimpleName() + "RemoteModel");
@@ -216,7 +219,7 @@ public class ClpSerializer {
 				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
 						BaseModel.class);
 
-				Class<?> oldModelModelClass = (Class<?>)oldModel.getModelClass();
+				Class<?> oldModelModelClass = oldModel.getModelClass();
 
 				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
 						oldModelModelClass.getSimpleName() + "RemoteModel");

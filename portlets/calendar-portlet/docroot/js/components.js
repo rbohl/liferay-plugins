@@ -34,7 +34,9 @@
 
 			var DEFAULT_ALIGN_POINTS = [A.WidgetPositionAlign.TL, A.WidgetPositionAlign.BL];
 
-			var TPL_SIMPLE_MENU_ITEM = '<li class="{cssClass}" data-id="{id}">{caption}</li>';
+			var TPL_ICON = '<i class="{iconClass}"></i>';
+
+			var TPL_SIMPLE_MENU_ITEM = '<li class="{cssClass}" data-id="{id}">{icon} {caption}</li>';
 
 			var getItemHandler = A.cached(
 				function(id, items) {
@@ -200,11 +202,25 @@
 										cssClass += STR_SPACE + item.cssClass;
 									}
 
+									var icon = STR_BLANK;
+
+									if (item.icon) {
+										icon = Lang.sub(
+											TPL_ICON,
+											{
+												iconClass: item.icon
+											}
+										);
+
+										caption = [icon, caption].join(STR_SPACE);
+									}
+
 									var li = A.Node.create(
 										Lang.sub(
 											TPL_SIMPLE_MENU_ITEM,
 											{
 												cssClass: cssClass,
+												icon: icon,
 												id: id
 											}
 										)
@@ -289,7 +305,7 @@
 				'<tpl for="calendars">',
 					'<div class="', CSS_CALENDAR_LIST_ITEM, '">',
 						'<div class="', CSS_CALENDAR_LIST_ITEM_COLOR, '" {[ parent.calendars[$i].get("visible") ? ', '\'style="background-color:\'', STR_PLUS, 'parent.calendars[$i].get("color")', STR_PLUS, '";border-color:"', STR_PLUS, 'parent.calendars[$i].get("color")', STR_PLUS, '";\\""', ' : \'', STR_BLANK, '\' ]}></div>',
-							'<span class="', CSS_CALENDAR_LIST_ITEM_LABEL, '">{[ Liferay.Util.escapeHTML(parent.calendars[$i].getDisplayName()) ]}</span>',
+							'<span class="', CSS_CALENDAR_LIST_ITEM_LABEL, '">{[LString.escapeHTML(parent.calendars[$i].getDisplayName())]}</span>',
 						'<div class="', CSS_CALENDAR_LIST_ITEM_ARROW, '"><i class="', CSS_ICON_CARET_DOWN, '"></i></div>',
 					'</div>',
 				'</tpl>'
@@ -613,13 +629,13 @@
 							return A.merge(
 								{
 									align: {
-										points: [ A.WidgetPositionAlign.TL, A.WidgetPositionAlign.BL ]
+										points: [A.WidgetPositionAlign.TL, A.WidgetPositionAlign.BL]
 									},
-									bubbleTargets: [ instance ],
+									bubbleTargets: [instance],
 									constrain: true,
 									host: instance,
 									items: [],
-									plugins: [ A.Plugin.OverlayAutohide ],
+									plugins: [A.Plugin.OverlayAutohide],
 									visible: false,
 									width: 290,
 									zIndex: Liferay.zIndex.MENU
@@ -774,7 +790,7 @@
 				'</label>' +
 				'<label class="reminder-type" for="{portletNamespace}reminder{i}">' +
 					'<input id="{portletNamespace}reminderType{i}" name="{portletNamespace}reminderType{i}" type="hidden" value="email" />' +
-					'{email}'+
+					'{email}' +
 				'</label>' +
 				'<input class="input-mini reminder-value" name="{portletNamespace}reminderValue{i}" type="text" size="5" value="{time.value}" <tpl if="disabled">disabled="disabled"</tpl> /> ' +
 				'<select class="reminder-duration span2" name="{portletNamespace}reminderDuration{i}" <tpl if="disabled">disabled="disabled"</tpl>>' +
@@ -1008,10 +1024,31 @@
 					Liferay.Language.get('december')
 				],
 
+				POSITION_LABELS: {
+					'-1': Liferay.Language.get('last'),
+					'1': Liferay.Language.get('first'),
+					'2': Liferay.Language.get('second'),
+					'3': Liferay.Language.get('third'),
+					'4': Liferay.Language.get('fourth')
+				},
+
+				WEEKDAY_LABELS: {
+					FR: Liferay.Language.get('weekday.FR'),
+					MO: Liferay.Language.get('weekday.MO'),
+					SA: Liferay.Language.get('weekday.SA'),
+					SU: Liferay.Language.get('weekday.SU'),
+					TH: Liferay.Language.get('weekday.TH'),
+					TU: Liferay.Language.get('weekday.TU'),
+					WE: Liferay.Language.get('weekday.WE')
+				},
+
 				getSummary: function(recurrence) {
 					var instance = this;
 
+					var month = null;
+					var position = null;
 					var template = [];
+					var weekDay = null;
 
 					if (recurrence.interval == 1) {
 						template.push(recurrence.frequency);
@@ -1020,7 +1057,19 @@
 						template.push(Liferay.Language.get('every'), ' {interval} {intervalLabel}');
 					}
 
-					if ((recurrence.frequency == instance.FREQUENCY.WEEKLY) && (recurrence.weekdays.length > 0)) {
+					if (recurrence.positionalWeekday) {
+						if (recurrence.frequency == instance.FREQUENCY.MONTHLY) {
+							template.push(STR_SPACE, Liferay.Language.get('on'), ' {position} {weekDay}');
+						}
+						else {
+							template.push(STR_SPACE, Liferay.Language.get('on-the'), ' {position} {weekDay} ', Liferay.Language.get('of'), ' {month}');
+						}
+
+						month = instance.MONTH_LABELS[recurrence.positionalWeekday.month];
+						position = instance.POSITION_LABELS[recurrence.positionalWeekday.position];
+						weekDay = instance.WEEKDAY_LABELS[recurrence.positionalWeekday.weekday];
+					}
+					else if ((recurrence.frequency == instance.FREQUENCY.WEEKLY) && (recurrence.weekdays.length > 0)) {
 						template.push(STR_SPACE, TPL_SPAN, Liferay.Language.get('on'), TPL_SPAN_CLOSE, ' {weekDays}');
 					}
 
@@ -1053,6 +1102,9 @@
 							count: recurrence.count,
 							interval: recurrence.interval,
 							intervalLabel: instance.INTERVAL_LABELS[recurrence.frequency],
+							month: month,
+							position: position,
+							weekDay: weekDay,
 							weekDays: recurrence.weekdays.join(', ')
 						}
 					);
@@ -1063,8 +1115,9 @@
 				openConfirmationPanel: function(actionName, onlyThisInstanceFn, allFollowingFn, allEventsInFn, cancelFn) {
 					var instance = this;
 
-					var titleText;
 					var changeDeleteText;
+					var confirmationPanel;
+					var titleText;
 
 					if (actionName === 'delete') {
 						titleText = Liferay.Language.get('delete-recurring-event');
@@ -1079,9 +1132,9 @@
 						return {
 							label: label,
 							on: {
-								click: function(event, buttonItem) {
+								click: function() {
 									if (callback) {
-										callback.apply(confirmationPanel, arguments);
+										callback.apply(this, arguments);
 									}
 
 									confirmationPanel.hide();
@@ -1090,7 +1143,7 @@
 						};
 					};
 
-					var confirmationPanel = Liferay.Util.Window.getWindow(
+					confirmationPanel = Liferay.Util.Window.getWindow(
 						{
 							dialog:	{
 								bodyContent: changeDeleteText,
@@ -1130,13 +1183,15 @@
 				confirm: function(message, yesButtonLabel, noButtonLabel, yesFn, noFn) {
 					var instance = this;
 
+					var confirmationPanel;
+
 					var getButtonConfig = function(label, callback) {
 						return {
 							label: label,
 							on: {
-								click: function(event, buttonItem) {
+								click: function() {
 									if (callback) {
-										callback.apply(confirmationPanel, arguments);
+										callback.apply(this, arguments);
 									}
 
 									confirmationPanel.hide();
@@ -1145,7 +1200,7 @@
 						};
 					};
 
-					var confirmationPanel = Liferay.Util.Window.getWindow(
+					confirmationPanel = Liferay.Util.Window.getWindow(
 						{
 							dialog : {
 								bodyContent: message,
@@ -1165,12 +1220,25 @@
 					);
 
 					return confirmationPanel.render().show();
+				},
+
+				showAlert: function(container, message) {
+					new A.Alert(
+						{
+							animated: true,
+							bodyContent: message,
+							closeable: true,
+							cssClass: 'alert-success',
+							destroyOnHide: true,
+							duration: 1
+						}
+					).render(container);
 				}
 			};
 		},
 		'',
 		{
-			requires: ['liferay-util-window']
+			requires: ['aui-alert', 'liferay-util-window']
 		}
 	);
 }());

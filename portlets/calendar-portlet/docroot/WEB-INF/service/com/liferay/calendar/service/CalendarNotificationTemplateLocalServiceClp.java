@@ -14,12 +14,15 @@
 
 package com.liferay.calendar.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.service.InvokableLocalService;
 
 /**
  * @author Eduardo Lundgren
  * @generated
  */
+@ProviderType
 public class CalendarNotificationTemplateLocalServiceClp
 	implements CalendarNotificationTemplateLocalService {
 	public CalendarNotificationTemplateLocalServiceClp(
@@ -32,11 +35,18 @@ public class CalendarNotificationTemplateLocalServiceClp
 				"com.liferay.calendar.model.CalendarNotificationTemplate"
 			};
 
-		_methodName1 = "createCalendarNotificationTemplate";
+		_methodName1 = "addCalendarNotificationTemplate";
 
-		_methodParameterTypes1 = new String[] { "long" };
+		_methodParameterTypes1 = new String[] {
+				"long", "long",
+				"com.liferay.calendar.notification.NotificationType",
+				"java.lang.String",
+				"com.liferay.calendar.notification.NotificationTemplateType",
+				"java.lang.String", "java.lang.String",
+				"com.liferay.portal.service.ServiceContext"
+			};
 
-		_methodName2 = "deleteCalendarNotificationTemplate";
+		_methodName2 = "createCalendarNotificationTemplate";
 
 		_methodParameterTypes2 = new String[] { "long" };
 
@@ -46,81 +56,82 @@ public class CalendarNotificationTemplateLocalServiceClp
 				"com.liferay.calendar.model.CalendarNotificationTemplate"
 			};
 
-		_methodName4 = "dynamicQuery";
+		_methodName4 = "deleteCalendarNotificationTemplate";
 
-		_methodParameterTypes4 = new String[] {  };
+		_methodParameterTypes4 = new String[] { "long" };
 
-		_methodName5 = "dynamicQuery";
+		_methodName5 = "deleteCalendarNotificationTemplates";
 
-		_methodParameterTypes5 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
-			};
+		_methodParameterTypes5 = new String[] { "long" };
 
-		_methodName6 = "dynamicQuery";
+		_methodName6 = "deletePersistedModel";
 
 		_methodParameterTypes6 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
+				"com.liferay.portal.model.PersistedModel"
 			};
 
 		_methodName7 = "dynamicQuery";
 
-		_methodParameterTypes7 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
-				"com.liferay.portal.kernel.util.OrderByComparator"
-			};
+		_methodParameterTypes7 = new String[] {  };
 
-		_methodName8 = "dynamicQueryCount";
+		_methodName8 = "dynamicQuery";
 
 		_methodParameterTypes8 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName9 = "dynamicQueryCount";
+		_methodName9 = "dynamicQuery";
 
 		_methodParameterTypes9 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
+			};
+
+		_methodName10 = "dynamicQuery";
+
+		_methodParameterTypes10 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
+				"com.liferay.portal.kernel.util.OrderByComparator"
+			};
+
+		_methodName11 = "dynamicQueryCount";
+
+		_methodParameterTypes11 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+			};
+
+		_methodName12 = "dynamicQueryCount";
+
+		_methodParameterTypes12 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
 
-		_methodName10 = "fetchCalendarNotificationTemplate";
+		_methodName13 = "fetchCalendarNotificationTemplate";
 
-		_methodParameterTypes10 = new String[] { "long" };
-
-		_methodName11 = "fetchCalendarNotificationTemplateByUuidAndCompanyId";
-
-		_methodParameterTypes11 = new String[] { "java.lang.String", "long" };
-
-		_methodName12 = "fetchCalendarNotificationTemplateByUuidAndGroupId";
-
-		_methodParameterTypes12 = new String[] { "java.lang.String", "long" };
-
-		_methodName13 = "getCalendarNotificationTemplate";
-
-		_methodParameterTypes13 = new String[] { "long" };
-
-		_methodName14 = "getActionableDynamicQuery";
-
-		_methodParameterTypes14 = new String[] {  };
-
-		_methodName15 = "getExportActionableDynamicQuery";
-
-		_methodParameterTypes15 = new String[] {
-				"com.liferay.portal.kernel.lar.PortletDataContext"
+		_methodParameterTypes13 = new String[] {
+				"long", "com.liferay.calendar.notification.NotificationType",
+				"com.liferay.calendar.notification.NotificationTemplateType"
 			};
 
-		_methodName16 = "deletePersistedModel";
+		_methodName14 = "fetchCalendarNotificationTemplate";
 
-		_methodParameterTypes16 = new String[] {
-				"com.liferay.portal.model.PersistedModel"
-			};
+		_methodParameterTypes14 = new String[] { "long" };
 
-		_methodName17 = "getPersistedModel";
+		_methodName15 = "fetchCalendarNotificationTemplateByUuidAndGroupId";
 
-		_methodParameterTypes17 = new String[] { "java.io.Serializable" };
+		_methodParameterTypes15 = new String[] { "java.lang.String", "long" };
 
-		_methodName18 = "getCalendarNotificationTemplateByUuidAndCompanyId";
+		_methodName16 = "getActionableDynamicQuery";
 
-		_methodParameterTypes18 = new String[] { "java.lang.String", "long" };
+		_methodParameterTypes16 = new String[] {  };
+
+		_methodName17 = "getBeanIdentifier";
+
+		_methodParameterTypes17 = new String[] {  };
+
+		_methodName18 = "getCalendarNotificationTemplate";
+
+		_methodParameterTypes18 = new String[] { "long" };
 
 		_methodName19 = "getCalendarNotificationTemplateByUuidAndGroupId";
 
@@ -130,44 +141,39 @@ public class CalendarNotificationTemplateLocalServiceClp
 
 		_methodParameterTypes20 = new String[] { "int", "int" };
 
-		_methodName21 = "getCalendarNotificationTemplatesCount";
+		_methodName21 = "getCalendarNotificationTemplatesByUuidAndCompanyId";
 
-		_methodParameterTypes21 = new String[] {  };
+		_methodParameterTypes21 = new String[] { "java.lang.String", "long" };
 
-		_methodName22 = "updateCalendarNotificationTemplate";
+		_methodName22 = "getCalendarNotificationTemplatesByUuidAndCompanyId";
 
 		_methodParameterTypes22 = new String[] {
-				"com.liferay.calendar.model.CalendarNotificationTemplate"
+				"java.lang.String", "long", "int", "int",
+				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName23 = "getBeanIdentifier";
+		_methodName23 = "getCalendarNotificationTemplatesCount";
 
 		_methodParameterTypes23 = new String[] {  };
 
-		_methodName24 = "setBeanIdentifier";
+		_methodName24 = "getExportActionableDynamicQuery";
 
-		_methodParameterTypes24 = new String[] { "java.lang.String" };
-
-		_methodName26 = "addCalendarNotificationTemplate";
-
-		_methodParameterTypes26 = new String[] {
-				"long", "long",
-				"com.liferay.calendar.notification.NotificationType",
-				"java.lang.String",
-				"com.liferay.calendar.notification.NotificationTemplateType",
-				"java.lang.String", "java.lang.String",
-				"com.liferay.portal.service.ServiceContext"
+		_methodParameterTypes24 = new String[] {
+				"com.liferay.portal.kernel.lar.PortletDataContext"
 			};
 
-		_methodName27 = "deleteCalendarNotificationTemplates";
+		_methodName25 = "getPersistedModel";
 
-		_methodParameterTypes27 = new String[] { "long" };
+		_methodParameterTypes25 = new String[] { "java.io.Serializable" };
 
-		_methodName28 = "fetchCalendarNotificationTemplate";
+		_methodName27 = "setBeanIdentifier";
+
+		_methodParameterTypes27 = new String[] { "java.lang.String" };
+
+		_methodName28 = "updateCalendarNotificationTemplate";
 
 		_methodParameterTypes28 = new String[] {
-				"long", "com.liferay.calendar.notification.NotificationType",
-				"com.liferay.calendar.notification.NotificationTemplateType"
+				"com.liferay.calendar.model.CalendarNotificationTemplate"
 			};
 
 		_methodName29 = "updateCalendarNotificationTemplate";
@@ -207,17 +213,43 @@ public class CalendarNotificationTemplateLocalServiceClp
 	}
 
 	@Override
-	public com.liferay.calendar.model.CalendarNotificationTemplate createCalendarNotificationTemplate(
-		long calendarNotificationTemplateId) {
+	public com.liferay.calendar.model.CalendarNotificationTemplate addCalendarNotificationTemplate(
+		long userId, long calendarId,
+		com.liferay.calendar.notification.NotificationType notificationType,
+		java.lang.String notificationTypeSettings,
+		com.liferay.calendar.notification.NotificationTemplateType notificationTemplateType,
+		java.lang.String subject, java.lang.String body,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName1,
 					_methodParameterTypes1,
-					new Object[] { calendarNotificationTemplateId });
+					new Object[] {
+						userId,
+						
+					calendarId,
+						
+					ClpSerializer.translateInput(notificationType),
+						
+					ClpSerializer.translateInput(notificationTypeSettings),
+						
+					ClpSerializer.translateInput(notificationTemplateType),
+						
+					ClpSerializer.translateInput(subject),
+						
+					ClpSerializer.translateInput(body),
+						
+					ClpSerializer.translateInput(serviceContext)
+					});
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -232,9 +264,8 @@ public class CalendarNotificationTemplateLocalServiceClp
 	}
 
 	@Override
-	public com.liferay.calendar.model.CalendarNotificationTemplate deleteCalendarNotificationTemplate(
-		long calendarNotificationTemplateId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public com.liferay.calendar.model.CalendarNotificationTemplate createCalendarNotificationTemplate(
+		long calendarNotificationTemplateId) {
 		Object returnObj = null;
 
 		try {
@@ -244,10 +275,6 @@ public class CalendarNotificationTemplateLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -290,12 +317,91 @@ public class CalendarNotificationTemplateLocalServiceClp
 	}
 
 	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+	public com.liferay.calendar.model.CalendarNotificationTemplate deleteCalendarNotificationTemplate(
+		long calendarNotificationTemplateId)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName4,
-					_methodParameterTypes4, new Object[] {  });
+					_methodParameterTypes4,
+					new Object[] { calendarNotificationTemplateId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.calendar.model.CalendarNotificationTemplate)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public void deleteCalendarNotificationTemplates(long calendarId) {
+		try {
+			_invokableLocalService.invokeMethod(_methodName5,
+				_methodParameterTypes5, new Object[] { calendarId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
+	@Override
+	public com.liferay.portal.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName6,
+					_methodParameterTypes6,
+					new Object[] { ClpSerializer.translateInput(persistedModel) });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.portal.model.PersistedModel)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName7,
+					_methodParameterTypes7, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -318,8 +424,8 @@ public class CalendarNotificationTemplateLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName5,
-					_methodParameterTypes5,
+			returnObj = _invokableLocalService.invokeMethod(_methodName8,
+					_methodParameterTypes8,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -344,8 +450,8 @@ public class CalendarNotificationTemplateLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName6,
-					_methodParameterTypes6,
+			returnObj = _invokableLocalService.invokeMethod(_methodName9,
+					_methodParameterTypes9,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -377,8 +483,8 @@ public class CalendarNotificationTemplateLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName7,
-					_methodParameterTypes7,
+			returnObj = _invokableLocalService.invokeMethod(_methodName10,
+					_methodParameterTypes10,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -410,8 +516,8 @@ public class CalendarNotificationTemplateLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName8,
-					_methodParameterTypes8,
+			returnObj = _invokableLocalService.invokeMethod(_methodName11,
+					_methodParameterTypes11,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -436,8 +542,8 @@ public class CalendarNotificationTemplateLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName9,
-					_methodParameterTypes9,
+			returnObj = _invokableLocalService.invokeMethod(_methodName12,
+					_methodParameterTypes12,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -461,13 +567,21 @@ public class CalendarNotificationTemplateLocalServiceClp
 
 	@Override
 	public com.liferay.calendar.model.CalendarNotificationTemplate fetchCalendarNotificationTemplate(
-		long calendarNotificationTemplateId) {
+		long calendarId,
+		com.liferay.calendar.notification.NotificationType notificationType,
+		com.liferay.calendar.notification.NotificationTemplateType notificationTemplateType) {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName10,
-					_methodParameterTypes10,
-					new Object[] { calendarNotificationTemplateId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName13,
+					_methodParameterTypes13,
+					new Object[] {
+						calendarId,
+						
+					ClpSerializer.translateInput(notificationType),
+						
+					ClpSerializer.translateInput(notificationTemplateType)
+					});
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -485,14 +599,14 @@ public class CalendarNotificationTemplateLocalServiceClp
 	}
 
 	@Override
-	public com.liferay.calendar.model.CalendarNotificationTemplate fetchCalendarNotificationTemplateByUuidAndCompanyId(
-		java.lang.String uuid, long companyId) {
+	public com.liferay.calendar.model.CalendarNotificationTemplate fetchCalendarNotificationTemplate(
+		long calendarNotificationTemplateId) {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName11,
-					_methodParameterTypes11,
-					new Object[] { ClpSerializer.translateInput(uuid), companyId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName14,
+					_methodParameterTypes14,
+					new Object[] { calendarNotificationTemplateId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -515,8 +629,8 @@ public class CalendarNotificationTemplateLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName12,
-					_methodParameterTypes12,
+			returnObj = _invokableLocalService.invokeMethod(_methodName15,
+					_methodParameterTypes15,
 					new Object[] { ClpSerializer.translateInput(uuid), groupId });
 		}
 		catch (Throwable t) {
@@ -535,42 +649,12 @@ public class CalendarNotificationTemplateLocalServiceClp
 	}
 
 	@Override
-	public com.liferay.calendar.model.CalendarNotificationTemplate getCalendarNotificationTemplate(
-		long calendarNotificationTemplateId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName13,
-					_methodParameterTypes13,
-					new Object[] { calendarNotificationTemplateId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.calendar.model.CalendarNotificationTemplate)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName14,
-					_methodParameterTypes14, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName16,
+					_methodParameterTypes16, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -588,79 +672,15 @@ public class CalendarNotificationTemplateLocalServiceClp
 	}
 
 	@Override
-	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		com.liferay.portal.kernel.lar.PortletDataContext portletDataContext) {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName15,
-					_methodParameterTypes15,
-					new Object[] {
-						ClpSerializer.translateInput(portletDataContext)
-					});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName16,
-					_methodParameterTypes16,
-					new Object[] { ClpSerializer.translateInput(persistedModel) });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.portal.model.PersistedModel)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public java.lang.String getBeanIdentifier() {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName17,
-					_methodParameterTypes17,
-					new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
+					_methodParameterTypes17, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -671,19 +691,19 @@ public class CalendarNotificationTemplateLocalServiceClp
 			}
 		}
 
-		return (com.liferay.portal.model.PersistedModel)ClpSerializer.translateOutput(returnObj);
+		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
 	}
 
 	@Override
-	public com.liferay.calendar.model.CalendarNotificationTemplate getCalendarNotificationTemplateByUuidAndCompanyId(
-		java.lang.String uuid, long companyId)
+	public com.liferay.calendar.model.CalendarNotificationTemplate getCalendarNotificationTemplate(
+		long calendarNotificationTemplateId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName18,
 					_methodParameterTypes18,
-					new Object[] { ClpSerializer.translateInput(uuid), companyId });
+					new Object[] { calendarNotificationTemplateId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -759,12 +779,14 @@ public class CalendarNotificationTemplateLocalServiceClp
 	}
 
 	@Override
-	public int getCalendarNotificationTemplatesCount() {
+	public java.util.List<com.liferay.calendar.model.CalendarNotificationTemplate> getCalendarNotificationTemplatesByUuidAndCompanyId(
+		java.lang.String uuid, long companyId) {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName21,
-					_methodParameterTypes21, new Object[] {  });
+					_methodParameterTypes21,
+					new Object[] { ClpSerializer.translateInput(uuid), companyId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -778,20 +800,28 @@ public class CalendarNotificationTemplateLocalServiceClp
 			}
 		}
 
-		return ((Integer)returnObj).intValue();
+		return (java.util.List<com.liferay.calendar.model.CalendarNotificationTemplate>)ClpSerializer.translateOutput(returnObj);
 	}
 
 	@Override
-	public com.liferay.calendar.model.CalendarNotificationTemplate updateCalendarNotificationTemplate(
-		com.liferay.calendar.model.CalendarNotificationTemplate calendarNotificationTemplate) {
+	public java.util.List<com.liferay.calendar.model.CalendarNotificationTemplate> getCalendarNotificationTemplatesByUuidAndCompanyId(
+		java.lang.String uuid, long companyId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.calendar.model.CalendarNotificationTemplate> orderByComparator) {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName22,
 					_methodParameterTypes22,
 					new Object[] {
-						ClpSerializer.translateInput(
-							calendarNotificationTemplate)
+						ClpSerializer.translateInput(uuid),
+						
+					companyId,
+						
+					start,
+						
+					end,
+						
+					ClpSerializer.translateInput(orderByComparator)
 					});
 		}
 		catch (Throwable t) {
@@ -806,11 +836,11 @@ public class CalendarNotificationTemplateLocalServiceClp
 			}
 		}
 
-		return (com.liferay.calendar.model.CalendarNotificationTemplate)ClpSerializer.translateOutput(returnObj);
+		return (java.util.List<com.liferay.calendar.model.CalendarNotificationTemplate>)ClpSerializer.translateOutput(returnObj);
 	}
 
 	@Override
-	public java.lang.String getBeanIdentifier() {
+	public int getCalendarNotificationTemplatesCount() {
 		Object returnObj = null;
 
 		try {
@@ -829,15 +859,20 @@ public class CalendarNotificationTemplateLocalServiceClp
 			}
 		}
 
-		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
+		return ((Integer)returnObj).intValue();
 	}
 
 	@Override
-	public void setBeanIdentifier(java.lang.String beanIdentifier) {
+	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
+		com.liferay.portal.kernel.lar.PortletDataContext portletDataContext) {
+		Object returnObj = null;
+
 		try {
-			_invokableLocalService.invokeMethod(_methodName24,
-				_methodParameterTypes24,
-				new Object[] { ClpSerializer.translateInput(beanIdentifier) });
+			returnObj = _invokableLocalService.invokeMethod(_methodName24,
+					_methodParameterTypes24,
+					new Object[] {
+						ClpSerializer.translateInput(portletDataContext)
+					});
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -850,46 +885,20 @@ public class CalendarNotificationTemplateLocalServiceClp
 					" is not a valid exception");
 			}
 		}
+
+		return (com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery)ClpSerializer.translateOutput(returnObj);
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public com.liferay.calendar.model.CalendarNotificationTemplate addCalendarNotificationTemplate(
-		long userId, long calendarId,
-		com.liferay.calendar.notification.NotificationType notificationType,
-		java.lang.String notificationTypeSettings,
-		com.liferay.calendar.notification.NotificationTemplateType notificationTemplateType,
-		java.lang.String subject, java.lang.String body,
-		com.liferay.portal.service.ServiceContext serviceContext)
+	public com.liferay.portal.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName26,
-					_methodParameterTypes26,
-					new Object[] {
-						userId,
-						
-					calendarId,
-						
-					ClpSerializer.translateInput(notificationType),
-						
-					ClpSerializer.translateInput(notificationTypeSettings),
-						
-					ClpSerializer.translateInput(notificationTemplateType),
-						
-					ClpSerializer.translateInput(subject),
-						
-					ClpSerializer.translateInput(body),
-						
-					ClpSerializer.translateInput(serviceContext)
-					});
+			returnObj = _invokableLocalService.invokeMethod(_methodName25,
+					_methodParameterTypes25,
+					new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -907,14 +916,22 @@ public class CalendarNotificationTemplateLocalServiceClp
 			}
 		}
 
-		return (com.liferay.calendar.model.CalendarNotificationTemplate)ClpSerializer.translateOutput(returnObj);
+		return (com.liferay.portal.model.PersistedModel)ClpSerializer.translateOutput(returnObj);
 	}
 
 	@Override
-	public void deleteCalendarNotificationTemplates(long calendarId) {
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void setBeanIdentifier(java.lang.String beanIdentifier) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName27,
-				_methodParameterTypes27, new Object[] { calendarId });
+				_methodParameterTypes27,
+				new Object[] { ClpSerializer.translateInput(beanIdentifier) });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -930,21 +947,16 @@ public class CalendarNotificationTemplateLocalServiceClp
 	}
 
 	@Override
-	public com.liferay.calendar.model.CalendarNotificationTemplate fetchCalendarNotificationTemplate(
-		long calendarId,
-		com.liferay.calendar.notification.NotificationType notificationType,
-		com.liferay.calendar.notification.NotificationTemplateType notificationTemplateType) {
+	public com.liferay.calendar.model.CalendarNotificationTemplate updateCalendarNotificationTemplate(
+		com.liferay.calendar.model.CalendarNotificationTemplate calendarNotificationTemplate) {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName28,
 					_methodParameterTypes28,
 					new Object[] {
-						calendarId,
-						
-					ClpSerializer.translateInput(notificationType),
-						
-					ClpSerializer.translateInput(notificationTemplateType)
+						ClpSerializer.translateInput(
+							calendarNotificationTemplate)
 					});
 		}
 		catch (Throwable t) {
@@ -1056,8 +1068,8 @@ public class CalendarNotificationTemplateLocalServiceClp
 	private String[] _methodParameterTypes23;
 	private String _methodName24;
 	private String[] _methodParameterTypes24;
-	private String _methodName26;
-	private String[] _methodParameterTypes26;
+	private String _methodName25;
+	private String[] _methodParameterTypes25;
 	private String _methodName27;
 	private String[] _methodParameterTypes27;
 	private String _methodName28;

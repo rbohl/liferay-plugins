@@ -25,18 +25,15 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import com.liferay.samplelar.NoSuchBookingException;
@@ -47,7 +44,6 @@ import com.liferay.samplelar.service.persistence.SampleLARBookingPersistence;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -156,7 +152,7 @@ public class SampleLARBookingPersistenceImpl extends BasePersistenceImpl<SampleL
 	 */
 	@Override
 	public List<SampleLARBooking> findByUuid(String uuid, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<SampleLARBooking> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -276,7 +272,8 @@ public class SampleLARBookingPersistenceImpl extends BasePersistenceImpl<SampleL
 	 */
 	@Override
 	public SampleLARBooking findByUuid_First(String uuid,
-		OrderByComparator orderByComparator) throws NoSuchBookingException {
+		OrderByComparator<SampleLARBooking> orderByComparator)
+		throws NoSuchBookingException {
 		SampleLARBooking sampleLARBooking = fetchByUuid_First(uuid,
 				orderByComparator);
 
@@ -305,7 +302,7 @@ public class SampleLARBookingPersistenceImpl extends BasePersistenceImpl<SampleL
 	 */
 	@Override
 	public SampleLARBooking fetchByUuid_First(String uuid,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<SampleLARBooking> orderByComparator) {
 		List<SampleLARBooking> list = findByUuid(uuid, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -325,7 +322,8 @@ public class SampleLARBookingPersistenceImpl extends BasePersistenceImpl<SampleL
 	 */
 	@Override
 	public SampleLARBooking findByUuid_Last(String uuid,
-		OrderByComparator orderByComparator) throws NoSuchBookingException {
+		OrderByComparator<SampleLARBooking> orderByComparator)
+		throws NoSuchBookingException {
 		SampleLARBooking sampleLARBooking = fetchByUuid_Last(uuid,
 				orderByComparator);
 
@@ -354,7 +352,7 @@ public class SampleLARBookingPersistenceImpl extends BasePersistenceImpl<SampleL
 	 */
 	@Override
 	public SampleLARBooking fetchByUuid_Last(String uuid,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<SampleLARBooking> orderByComparator) {
 		int count = countByUuid(uuid);
 
 		if (count == 0) {
@@ -382,7 +380,7 @@ public class SampleLARBookingPersistenceImpl extends BasePersistenceImpl<SampleL
 	 */
 	@Override
 	public SampleLARBooking[] findByUuid_PrevAndNext(long sampleLARBookingId,
-		String uuid, OrderByComparator orderByComparator)
+		String uuid, OrderByComparator<SampleLARBooking> orderByComparator)
 		throws NoSuchBookingException {
 		SampleLARBooking sampleLARBooking = findByPrimaryKey(sampleLARBookingId);
 
@@ -413,7 +411,7 @@ public class SampleLARBookingPersistenceImpl extends BasePersistenceImpl<SampleL
 
 	protected SampleLARBooking getByUuid_PrevAndNext(Session session,
 		SampleLARBooking sampleLARBooking, String uuid,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<SampleLARBooking> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -941,7 +939,8 @@ public class SampleLARBookingPersistenceImpl extends BasePersistenceImpl<SampleL
 	 */
 	@Override
 	public List<SampleLARBooking> findByUuid_C(String uuid, long companyId,
-		int start, int end, OrderByComparator orderByComparator) {
+		int start, int end,
+		OrderByComparator<SampleLARBooking> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1071,7 +1070,8 @@ public class SampleLARBookingPersistenceImpl extends BasePersistenceImpl<SampleL
 	 */
 	@Override
 	public SampleLARBooking findByUuid_C_First(String uuid, long companyId,
-		OrderByComparator orderByComparator) throws NoSuchBookingException {
+		OrderByComparator<SampleLARBooking> orderByComparator)
+		throws NoSuchBookingException {
 		SampleLARBooking sampleLARBooking = fetchByUuid_C_First(uuid,
 				companyId, orderByComparator);
 
@@ -1104,7 +1104,7 @@ public class SampleLARBookingPersistenceImpl extends BasePersistenceImpl<SampleL
 	 */
 	@Override
 	public SampleLARBooking fetchByUuid_C_First(String uuid, long companyId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<SampleLARBooking> orderByComparator) {
 		List<SampleLARBooking> list = findByUuid_C(uuid, companyId, 0, 1,
 				orderByComparator);
 
@@ -1126,7 +1126,8 @@ public class SampleLARBookingPersistenceImpl extends BasePersistenceImpl<SampleL
 	 */
 	@Override
 	public SampleLARBooking findByUuid_C_Last(String uuid, long companyId,
-		OrderByComparator orderByComparator) throws NoSuchBookingException {
+		OrderByComparator<SampleLARBooking> orderByComparator)
+		throws NoSuchBookingException {
 		SampleLARBooking sampleLARBooking = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -1159,7 +1160,7 @@ public class SampleLARBookingPersistenceImpl extends BasePersistenceImpl<SampleL
 	 */
 	@Override
 	public SampleLARBooking fetchByUuid_C_Last(String uuid, long companyId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<SampleLARBooking> orderByComparator) {
 		int count = countByUuid_C(uuid, companyId);
 
 		if (count == 0) {
@@ -1189,7 +1190,8 @@ public class SampleLARBookingPersistenceImpl extends BasePersistenceImpl<SampleL
 	@Override
 	public SampleLARBooking[] findByUuid_C_PrevAndNext(
 		long sampleLARBookingId, String uuid, long companyId,
-		OrderByComparator orderByComparator) throws NoSuchBookingException {
+		OrderByComparator<SampleLARBooking> orderByComparator)
+		throws NoSuchBookingException {
 		SampleLARBooking sampleLARBooking = findByPrimaryKey(sampleLARBookingId);
 
 		Session session = null;
@@ -1219,7 +1221,7 @@ public class SampleLARBookingPersistenceImpl extends BasePersistenceImpl<SampleL
 
 	protected SampleLARBooking getByUuid_C_PrevAndNext(Session session,
 		SampleLARBooking sampleLARBooking, String uuid, long companyId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<SampleLARBooking> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -1495,7 +1497,7 @@ public class SampleLARBookingPersistenceImpl extends BasePersistenceImpl<SampleL
 	 */
 	@Override
 	public List<SampleLARBooking> findByGroupId(long groupId, int start,
-		int end, OrderByComparator orderByComparator) {
+		int end, OrderByComparator<SampleLARBooking> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1601,7 +1603,8 @@ public class SampleLARBookingPersistenceImpl extends BasePersistenceImpl<SampleL
 	 */
 	@Override
 	public SampleLARBooking findByGroupId_First(long groupId,
-		OrderByComparator orderByComparator) throws NoSuchBookingException {
+		OrderByComparator<SampleLARBooking> orderByComparator)
+		throws NoSuchBookingException {
 		SampleLARBooking sampleLARBooking = fetchByGroupId_First(groupId,
 				orderByComparator);
 
@@ -1630,7 +1633,7 @@ public class SampleLARBookingPersistenceImpl extends BasePersistenceImpl<SampleL
 	 */
 	@Override
 	public SampleLARBooking fetchByGroupId_First(long groupId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<SampleLARBooking> orderByComparator) {
 		List<SampleLARBooking> list = findByGroupId(groupId, 0, 1,
 				orderByComparator);
 
@@ -1651,7 +1654,8 @@ public class SampleLARBookingPersistenceImpl extends BasePersistenceImpl<SampleL
 	 */
 	@Override
 	public SampleLARBooking findByGroupId_Last(long groupId,
-		OrderByComparator orderByComparator) throws NoSuchBookingException {
+		OrderByComparator<SampleLARBooking> orderByComparator)
+		throws NoSuchBookingException {
 		SampleLARBooking sampleLARBooking = fetchByGroupId_Last(groupId,
 				orderByComparator);
 
@@ -1680,7 +1684,7 @@ public class SampleLARBookingPersistenceImpl extends BasePersistenceImpl<SampleL
 	 */
 	@Override
 	public SampleLARBooking fetchByGroupId_Last(long groupId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<SampleLARBooking> orderByComparator) {
 		int count = countByGroupId(groupId);
 
 		if (count == 0) {
@@ -1709,7 +1713,8 @@ public class SampleLARBookingPersistenceImpl extends BasePersistenceImpl<SampleL
 	@Override
 	public SampleLARBooking[] findByGroupId_PrevAndNext(
 		long sampleLARBookingId, long groupId,
-		OrderByComparator orderByComparator) throws NoSuchBookingException {
+		OrderByComparator<SampleLARBooking> orderByComparator)
+		throws NoSuchBookingException {
 		SampleLARBooking sampleLARBooking = findByPrimaryKey(sampleLARBookingId);
 
 		Session session = null;
@@ -1739,7 +1744,7 @@ public class SampleLARBookingPersistenceImpl extends BasePersistenceImpl<SampleL
 
 	protected SampleLARBooking getByGroupId_PrevAndNext(Session session,
 		SampleLARBooking sampleLARBooking, long groupId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<SampleLARBooking> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -2522,7 +2527,7 @@ public class SampleLARBookingPersistenceImpl extends BasePersistenceImpl<SampleL
 	 */
 	@Override
 	public List<SampleLARBooking> findAll(int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<SampleLARBooking> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -2658,25 +2663,6 @@ public class SampleLARBookingPersistenceImpl extends BasePersistenceImpl<SampleL
 	 * Initializes the sample l a r booking persistence.
 	 */
 	public void afterPropertiesSet() {
-		String[] listenerClassNames = StringUtil.split(GetterUtil.getString(
-					com.liferay.util.service.ServiceProps.get(
-						"value.object.listener.com.liferay.samplelar.model.SampleLARBooking")));
-
-		if (listenerClassNames.length > 0) {
-			try {
-				List<ModelListener<SampleLARBooking>> listenersList = new ArrayList<ModelListener<SampleLARBooking>>();
-
-				for (String listenerClassName : listenerClassNames) {
-					listenersList.add((ModelListener<SampleLARBooking>)InstanceFactory.newInstance(
-							getClassLoader(), listenerClassName));
-				}
-
-				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
-			}
-			catch (Exception e) {
-				_log.error(e);
-			}
-		}
 	}
 
 	public void destroy() {

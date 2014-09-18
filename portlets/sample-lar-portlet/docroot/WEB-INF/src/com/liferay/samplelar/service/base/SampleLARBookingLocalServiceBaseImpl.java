@@ -106,12 +106,11 @@ public abstract class SampleLARBookingLocalServiceBaseImpl
 	 * @param sampleLARBookingId the primary key of the sample l a r booking
 	 * @return the sample l a r booking that was removed
 	 * @throws PortalException if a sample l a r booking with the primary key could not be found
-	 * @throws SystemException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public SampleLARBooking deleteSampleLARBooking(long sampleLARBookingId)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return sampleLARBookingPersistence.remove(sampleLARBookingId);
 	}
 
@@ -120,12 +119,11 @@ public abstract class SampleLARBookingLocalServiceBaseImpl
 	 *
 	 * @param sampleLARBooking the sample l a r booking
 	 * @return the sample l a r booking that was removed
-	 * @throws SystemException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public SampleLARBooking deleteSampleLARBooking(
-		SampleLARBooking sampleLARBooking) throws SystemException {
+		SampleLARBooking sampleLARBooking) {
 		return sampleLARBookingPersistence.remove(sampleLARBooking);
 	}
 
@@ -144,8 +142,7 @@ public abstract class SampleLARBookingLocalServiceBaseImpl
 	 * @return the matching rows
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery) {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return sampleLARBookingPersistence.findWithDynamicQuery(dynamicQuery);
 	}
 
@@ -162,8 +159,8 @@ public abstract class SampleLARBookingLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end) {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
 		return sampleLARBookingPersistence.findWithDynamicQuery(dynamicQuery,
 			start, end);
 	}
@@ -182,9 +179,8 @@ public abstract class SampleLARBookingLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator orderByComparator) {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
 		return sampleLARBookingPersistence.findWithDynamicQuery(dynamicQuery,
 			start, end, orderByComparator);
 	}
@@ -217,20 +213,6 @@ public abstract class SampleLARBookingLocalServiceBaseImpl
 	@Override
 	public SampleLARBooking fetchSampleLARBooking(long sampleLARBookingId) {
 		return sampleLARBookingPersistence.fetchByPrimaryKey(sampleLARBookingId);
-	}
-
-	/**
-	 * Returns the sample l a r booking with the matching UUID and company.
-	 *
-	 * @param uuid the sample l a r booking's UUID
-	 * @param  companyId the primary key of the company
-	 * @return the matching sample l a r booking, or <code>null</code> if a matching sample l a r booking could not be found
-	 */
-	@Override
-	public SampleLARBooking fetchSampleLARBookingByUuidAndCompanyId(
-		String uuid, long companyId) {
-		return sampleLARBookingPersistence.fetchByUuid_C_First(uuid, companyId,
-			null);
 	}
 
 	/**
@@ -351,19 +333,18 @@ public abstract class SampleLARBookingLocalServiceBaseImpl
 		return sampleLARBookingPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
-	/**
-	 * Returns the sample l a r booking with the matching UUID and company.
-	 *
-	 * @param uuid the sample l a r booking's UUID
-	 * @param  companyId the primary key of the company
-	 * @return the matching sample l a r booking
-	 * @throws PortalException if a matching sample l a r booking could not be found
-	 */
 	@Override
-	public SampleLARBooking getSampleLARBookingByUuidAndCompanyId(String uuid,
-		long companyId) throws PortalException {
-		return sampleLARBookingPersistence.findByUuid_C_First(uuid, companyId,
-			null);
+	public List<SampleLARBooking> getSampleLARBookingsByUuidAndCompanyId(
+		String uuid, long companyId) {
+		return sampleLARBookingPersistence.findByUuid_C(uuid, companyId);
+	}
+
+	@Override
+	public List<SampleLARBooking> getSampleLARBookingsByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<SampleLARBooking> orderByComparator) {
+		return sampleLARBookingPersistence.findByUuid_C(uuid, companyId, start,
+			end, orderByComparator);
 	}
 
 	/**

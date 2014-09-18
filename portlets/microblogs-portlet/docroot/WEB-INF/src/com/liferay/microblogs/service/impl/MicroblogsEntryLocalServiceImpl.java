@@ -200,7 +200,7 @@ public class MicroblogsEntryLocalServiceImpl
 
 	public List<MicroblogsEntry> getReceiverMicroblogsEntryMicroblogsEntries(
 		int type, long receiverMicroblogsEntryId, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<MicroblogsEntry> orderByComparator) {
 
 		return microblogsEntryPersistence.findByT_RMEI(
 			type, receiverMicroblogsEntryId, start, end, orderByComparator);
@@ -323,23 +323,23 @@ public class MicroblogsEntryLocalServiceImpl
 		notificationEventJSONObject.put("userId", microblogsEntry.getUserId());
 
 		if (UserNotificationManagerUtil.isDeliver(
-				microblogsEntry.getUserId(), PortletKeys.MICROBLOGS, 0,
+				microblogsEntry.getReceiverUserId(), PortletKeys.MICROBLOGS, 0,
 			MicroblogsEntryConstants.TYPE_REPLY,
 			UserNotificationDeliveryConstants.TYPE_PUSH)) {
 
 			UserNotificationEventLocalServiceUtil.sendUserNotificationEvents(
-				microblogsEntry.getUserId(), PortletKeys.MICROBLOGS,
+				microblogsEntry.getReceiverUserId(), PortletKeys.MICROBLOGS,
 				UserNotificationDeliveryConstants.TYPE_PUSH,
 				notificationEventJSONObject);
 		}
 
 		if (UserNotificationManagerUtil.isDeliver(
-				microblogsEntry.getUserId(), PortletKeys.MICROBLOGS, 0,
+				microblogsEntry.getReceiverUserId(), PortletKeys.MICROBLOGS, 0,
 			MicroblogsEntryConstants.TYPE_REPLY,
 			UserNotificationDeliveryConstants.TYPE_WEBSITE)) {
 
 			UserNotificationEventLocalServiceUtil.sendUserNotificationEvents(
-				microblogsEntry.getUserId(), PortletKeys.MICROBLOGS,
+				microblogsEntry.getReceiverUserId(), PortletKeys.MICROBLOGS,
 				UserNotificationDeliveryConstants.TYPE_WEBSITE,
 				notificationEventJSONObject);
 		}

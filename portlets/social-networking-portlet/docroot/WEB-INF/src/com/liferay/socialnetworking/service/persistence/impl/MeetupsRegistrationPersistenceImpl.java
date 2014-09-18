@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -33,7 +32,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import com.liferay.socialnetworking.NoSuchMeetupsRegistrationException;
@@ -44,7 +42,6 @@ import com.liferay.socialnetworking.service.persistence.MeetupsRegistrationPersi
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -157,7 +154,8 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	 */
 	@Override
 	public List<MeetupsRegistration> findByMeetupsEntryId(long meetupsEntryId,
-		int start, int end, OrderByComparator orderByComparator) {
+		int start, int end,
+		OrderByComparator<MeetupsRegistration> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -267,7 +265,7 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	 */
 	@Override
 	public MeetupsRegistration findByMeetupsEntryId_First(long meetupsEntryId,
-		OrderByComparator orderByComparator)
+		OrderByComparator<MeetupsRegistration> orderByComparator)
 		throws NoSuchMeetupsRegistrationException {
 		MeetupsRegistration meetupsRegistration = fetchByMeetupsEntryId_First(meetupsEntryId,
 				orderByComparator);
@@ -297,7 +295,8 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	 */
 	@Override
 	public MeetupsRegistration fetchByMeetupsEntryId_First(
-		long meetupsEntryId, OrderByComparator orderByComparator) {
+		long meetupsEntryId,
+		OrderByComparator<MeetupsRegistration> orderByComparator) {
 		List<MeetupsRegistration> list = findByMeetupsEntryId(meetupsEntryId,
 				0, 1, orderByComparator);
 
@@ -318,7 +317,7 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	 */
 	@Override
 	public MeetupsRegistration findByMeetupsEntryId_Last(long meetupsEntryId,
-		OrderByComparator orderByComparator)
+		OrderByComparator<MeetupsRegistration> orderByComparator)
 		throws NoSuchMeetupsRegistrationException {
 		MeetupsRegistration meetupsRegistration = fetchByMeetupsEntryId_Last(meetupsEntryId,
 				orderByComparator);
@@ -348,7 +347,7 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	 */
 	@Override
 	public MeetupsRegistration fetchByMeetupsEntryId_Last(long meetupsEntryId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<MeetupsRegistration> orderByComparator) {
 		int count = countByMeetupsEntryId(meetupsEntryId);
 
 		if (count == 0) {
@@ -377,7 +376,7 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	@Override
 	public MeetupsRegistration[] findByMeetupsEntryId_PrevAndNext(
 		long meetupsRegistrationId, long meetupsEntryId,
-		OrderByComparator orderByComparator)
+		OrderByComparator<MeetupsRegistration> orderByComparator)
 		throws NoSuchMeetupsRegistrationException {
 		MeetupsRegistration meetupsRegistration = findByPrimaryKey(meetupsRegistrationId);
 
@@ -409,7 +408,8 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 
 	protected MeetupsRegistration getByMeetupsEntryId_PrevAndNext(
 		Session session, MeetupsRegistration meetupsRegistration,
-		long meetupsEntryId, OrderByComparator orderByComparator,
+		long meetupsEntryId,
+		OrderByComparator<MeetupsRegistration> orderByComparator,
 		boolean previous) {
 		StringBundler query = null;
 
@@ -885,7 +885,8 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	 */
 	@Override
 	public List<MeetupsRegistration> findByME_S(long meetupsEntryId,
-		int status, int start, int end, OrderByComparator orderByComparator) {
+		int status, int start, int end,
+		OrderByComparator<MeetupsRegistration> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1001,7 +1002,7 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	 */
 	@Override
 	public MeetupsRegistration findByME_S_First(long meetupsEntryId,
-		int status, OrderByComparator orderByComparator)
+		int status, OrderByComparator<MeetupsRegistration> orderByComparator)
 		throws NoSuchMeetupsRegistrationException {
 		MeetupsRegistration meetupsRegistration = fetchByME_S_First(meetupsEntryId,
 				status, orderByComparator);
@@ -1035,7 +1036,7 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	 */
 	@Override
 	public MeetupsRegistration fetchByME_S_First(long meetupsEntryId,
-		int status, OrderByComparator orderByComparator) {
+		int status, OrderByComparator<MeetupsRegistration> orderByComparator) {
 		List<MeetupsRegistration> list = findByME_S(meetupsEntryId, status, 0,
 				1, orderByComparator);
 
@@ -1057,7 +1058,7 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	 */
 	@Override
 	public MeetupsRegistration findByME_S_Last(long meetupsEntryId, int status,
-		OrderByComparator orderByComparator)
+		OrderByComparator<MeetupsRegistration> orderByComparator)
 		throws NoSuchMeetupsRegistrationException {
 		MeetupsRegistration meetupsRegistration = fetchByME_S_Last(meetupsEntryId,
 				status, orderByComparator);
@@ -1091,7 +1092,7 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	 */
 	@Override
 	public MeetupsRegistration fetchByME_S_Last(long meetupsEntryId,
-		int status, OrderByComparator orderByComparator) {
+		int status, OrderByComparator<MeetupsRegistration> orderByComparator) {
 		int count = countByME_S(meetupsEntryId, status);
 
 		if (count == 0) {
@@ -1121,7 +1122,7 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	@Override
 	public MeetupsRegistration[] findByME_S_PrevAndNext(
 		long meetupsRegistrationId, long meetupsEntryId, int status,
-		OrderByComparator orderByComparator)
+		OrderByComparator<MeetupsRegistration> orderByComparator)
 		throws NoSuchMeetupsRegistrationException {
 		MeetupsRegistration meetupsRegistration = findByPrimaryKey(meetupsRegistrationId);
 
@@ -1152,7 +1153,8 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 
 	protected MeetupsRegistration getByME_S_PrevAndNext(Session session,
 		MeetupsRegistration meetupsRegistration, long meetupsEntryId,
-		int status, OrderByComparator orderByComparator, boolean previous) {
+		int status, OrderByComparator<MeetupsRegistration> orderByComparator,
+		boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -1932,7 +1934,7 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	 */
 	@Override
 	public List<MeetupsRegistration> findAll(int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<MeetupsRegistration> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -2063,25 +2065,6 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	 * Initializes the meetups registration persistence.
 	 */
 	public void afterPropertiesSet() {
-		String[] listenerClassNames = StringUtil.split(GetterUtil.getString(
-					com.liferay.util.service.ServiceProps.get(
-						"value.object.listener.com.liferay.socialnetworking.model.MeetupsRegistration")));
-
-		if (listenerClassNames.length > 0) {
-			try {
-				List<ModelListener<MeetupsRegistration>> listenersList = new ArrayList<ModelListener<MeetupsRegistration>>();
-
-				for (String listenerClassName : listenerClassNames) {
-					listenersList.add((ModelListener<MeetupsRegistration>)InstanceFactory.newInstance(
-							getClassLoader(), listenerClassName));
-				}
-
-				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
-			}
-			catch (Exception e) {
-				_log.error(e);
-			}
-		}
 	}
 
 	public void destroy() {

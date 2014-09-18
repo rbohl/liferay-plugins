@@ -14,6 +14,8 @@
 
 package com.liferay.calendar.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 import com.liferay.portal.service.InvokableService;
@@ -32,37 +34,13 @@ import com.liferay.portal.service.InvokableService;
  * @see com.liferay.calendar.service.impl.CalendarResourceServiceImpl
  * @generated
  */
+@ProviderType
 public class CalendarResourceServiceUtil {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.calendar.service.impl.CalendarResourceServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-
-	/**
-	* Returns the Spring bean ID for this bean.
-	*
-	* @return the Spring bean ID for this bean
-	*/
-	public static java.lang.String getBeanIdentifier() {
-		return getService().getBeanIdentifier();
-	}
-
-	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	public static void setBeanIdentifier(java.lang.String beanIdentifier) {
-		getService().setBeanIdentifier(beanIdentifier);
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static com.liferay.calendar.model.CalendarResource addCalendarResource(
 		long groupId, long classNameId, long classPK,
 		java.lang.String classUuid, java.lang.String code,
@@ -87,20 +65,25 @@ public class CalendarResourceServiceUtil {
 		return getService().fetchCalendarResource(classNameId, classPK);
 	}
 
+	/**
+	* Returns the Spring bean ID for this bean.
+	*
+	* @return the Spring bean ID for this bean
+	*/
+	public static java.lang.String getBeanIdentifier() {
+		return getService().getBeanIdentifier();
+	}
+
 	public static com.liferay.calendar.model.CalendarResource getCalendarResource(
 		long calendarResourceId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getCalendarResource(calendarResourceId);
 	}
 
-	public static java.util.List<com.liferay.calendar.model.CalendarResource> search(
-		long companyId, long[] groupIds, long[] classNameIds,
-		java.lang.String keywords, boolean active, boolean andOperator,
-		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
-		return getService()
-				   .search(companyId, groupIds, classNameIds, keywords, active,
-			andOperator, start, end, orderByComparator);
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	public static java.util.List<com.liferay.calendar.model.CalendarResource> search(
@@ -108,10 +91,28 @@ public class CalendarResourceServiceUtil {
 		java.lang.String code, java.lang.String name,
 		java.lang.String description, boolean active, boolean andOperator,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.calendar.model.CalendarResource> orderByComparator) {
 		return getService()
 				   .search(companyId, groupIds, classNameIds, code, name,
 			description, active, andOperator, start, end, orderByComparator);
+	}
+
+	public static java.util.List<com.liferay.calendar.model.CalendarResource> search(
+		long companyId, long[] groupIds, long[] classNameIds,
+		java.lang.String keywords, boolean active, boolean andOperator,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.calendar.model.CalendarResource> orderByComparator) {
+		return getService()
+				   .search(companyId, groupIds, classNameIds, keywords, active,
+			andOperator, start, end, orderByComparator);
+	}
+
+	public static int searchCount(long companyId, long[] groupIds,
+		long[] classNameIds, java.lang.String code, java.lang.String name,
+		java.lang.String description, boolean active, boolean andOperator) {
+		return getService()
+				   .searchCount(companyId, groupIds, classNameIds, code, name,
+			description, active, andOperator);
 	}
 
 	public static int searchCount(long companyId, long[] groupIds,
@@ -121,12 +122,13 @@ public class CalendarResourceServiceUtil {
 			active);
 	}
 
-	public static int searchCount(long companyId, long[] groupIds,
-		long[] classNameIds, java.lang.String code, java.lang.String name,
-		java.lang.String description, boolean active, boolean andOperator) {
-		return getService()
-				   .searchCount(companyId, groupIds, classNameIds, code, name,
-			description, active, andOperator);
+	/**
+	* Sets the Spring bean ID for this bean.
+	*
+	* @param beanIdentifier the Spring bean ID for this bean
+	*/
+	public static void setBeanIdentifier(java.lang.String beanIdentifier) {
+		getService().setBeanIdentifier(beanIdentifier);
 	}
 
 	public static com.liferay.calendar.model.CalendarResource updateCalendarResource(

@@ -5,6 +5,7 @@ AUI.add(
 		var AObject = A.Object;
 		var DateMath = A.DataType.DateMath;
 		var Lang = A.Lang;
+		var LString = Lang.String;
 
 		var RecurrenceUtil = Liferay.RecurrenceUtil;
 		var Workflow = Liferay.Workflow;
@@ -127,7 +128,7 @@ AUI.add(
 							startTimeMonth: startDate.getMonth(),
 							startTimeYear: startDate.getFullYear(),
 							timeZoneId: instance.USER_TIME_ZONE,
-							titleMap: instance.getLocalizationMap(Liferay.Util.unescapeHTML(schedulerEvent.get('content')))
+							titleMap: instance.getLocalizationMap(LString.unescapeHTML(schedulerEvent.get('content')))
 						}
 					},
 					{
@@ -255,6 +256,8 @@ AUI.add(
 						endDate: endDate.getTime(),
 						firstReminder: calendarBooking.firstReminder,
 						firstReminderType: calendarBooking.firstReminderType,
+						hasChildCalendarBookings: calendarBooking.hasChildCalendarBookings,
+						instanceIndex: calendarBooking.instanceIndex,
 						location: calendarBooking.location,
 						parentCalendarBookingId: calendarBooking.parentCalendarBookingId,
 						recurrence: calendarBooking.recurrence,
@@ -431,6 +434,7 @@ AUI.add(
 				var instance = this;
 
 				var map = {};
+
 				map[themeDisplay.getLanguageId()] = value;
 
 				return A.JSON.stringify(map);
@@ -445,23 +449,6 @@ AUI.add(
 						calendarResourceId: calendarResourceId
 					},
 					callback
-				);
-			},
-
-			hasChildCalendarBookings: function(schedulerEvent, callback) {
-				var instance = this;
-
-				instance.invokeService(
-					{
-						'/calendar-portlet/calendarbooking/has-child-calendar-bookings': {
-							parentCalendarBookingId: schedulerEvent.get('calendarBookingId')
-						}
-					},
-					{
-						success: function() {
-							callback(this.get('responseData'));
-						}
-					}
 				);
 			},
 
@@ -674,7 +661,7 @@ AUI.add(
 							secondReminder: schedulerEvent.get('secondReminder'),
 							secondReminderType: schedulerEvent.get('secondReminderType'),
 							status: schedulerEvent.get('status'),
-							titleMap: instance.getLocalizationMap(Liferay.Util.unescapeHTML(schedulerEvent.get('content')))
+							titleMap: instance.getLocalizationMap(LString.unescapeHTML(schedulerEvent.get('content')))
 						}
 					},
 					{
@@ -726,6 +713,7 @@ AUI.add(
 							endTimeYear: endDate.getFullYear(),
 							firstReminder: schedulerEvent.get('firstReminder'),
 							firstReminderType: schedulerEvent.get('firstReminderType'),
+							instanceIndex: schedulerEvent.get('instanceIndex'),
 							location: schedulerEvent.get('location'),
 							recurrence: schedulerEvent.get('recurrence'),
 							secondReminder: schedulerEvent.get('secondReminder'),
@@ -737,7 +725,7 @@ AUI.add(
 							startTimeYear: startDate.getFullYear(),
 							status: schedulerEvent.get('status'),
 							timeZoneId: instance.USER_TIME_ZONE,
-							titleMap: instance.getLocalizationMap(Liferay.Util.unescapeHTML(schedulerEvent.get('content')))
+							titleMap: instance.getLocalizationMap(LString.unescapeHTML(schedulerEvent.get('content')))
 						}
 					},
 					{
@@ -823,7 +811,7 @@ AUI.add(
 					content: {
 						getter: function(val) {
 							if (val) {
-								val = Liferay.Util.escapeHTML(val);
+								val = LString.escapeHTML(val);
 							}
 
 							return val;
@@ -850,6 +838,16 @@ AUI.add(
 						setter: String,
 						validator: isValue,
 						value: CalendarUtil.NOTIFICATION_DEFAULT_TYPE
+					},
+
+					hasChildCalendarBookings: {
+						validator: isBoolean,
+						value: false
+					},
+
+					instanceIndex: {
+						setter: toInt,
+						value: 0
 					},
 
 					loading: {
@@ -1395,16 +1393,6 @@ AUI.add(
 						return offset;
 					},
 
-					_hasChildCalendarBookingsPromise: function(schedulerEvent) {
-						var instance = this;
-
-						return A.Promise(
-							function(resolve) {
-								CalendarUtil.hasChildCalendarBookings(schedulerEvent, resolve);
-							}
-						);
-					},
-
 					_onClickAddEvent: function(event) {
 						var instance = this;
 
@@ -1494,7 +1482,6 @@ AUI.add(
 					_promptSchedulerEventUpdate: function(data) {
 						var instance = this;
 
-						var hasChild = data[3];
 						var schedulerEvent = data[0];
 
 						instance.queue = new A.AsyncQueue();
@@ -1512,7 +1499,7 @@ AUI.add(
 						}
 
 						if (schedulerEvent.isMasterBooking()) {
-							if (hasChild) {
+							if (schedulerEvent.get('hasChildCalendarBookings')) {
 								instance.queue.add(
 									{
 										args: [data],
@@ -1561,7 +1548,7 @@ AUI.add(
 					_queueableQuestionResolver: function(data) {
 						var instance = this;
 
-						var answers = data[4];
+						var answers = data[3];
 						var duration = data[2];
 						var offset = data[1];
 						var schedulerEvent = data[0];
@@ -1582,7 +1569,7 @@ AUI.add(
 					_queueableQuestionUpdateAllInvited: function(data) {
 						var instance = this;
 
-						var answers = data[4];
+						var answers = data[3];
 
 						var showNextQuestion = A.bind(instance.queue.run, instance.queue);
 
@@ -1609,7 +1596,7 @@ AUI.add(
 					_queueableQuestionUpdateRecurring: function(data) {
 						var instance = this;
 
-						var answers = data[4];
+						var answers = data[3];
 
 						var showNextQuestion = A.bind(instance.queue.run, instance.queue);
 
@@ -1645,7 +1632,7 @@ AUI.add(
 					_queueableQuestionUserCalendarOnly: function(data) {
 						var instance = this;
 
-						var answers = data[4];
+						var answers = data[3];
 						var schedulerEvent = data[0];
 
 						var showNextQuestion = A.bind(instance.queue.run, instance.queue);
@@ -1660,7 +1647,7 @@ AUI.add(
 								'<p class="calendar-portlet-confirmation-text">',
 								Lang.sub(
 									Liferay.Language.get('you-are-about-to-make-changes-that-will-only-effect-your-calendar-x'),
-									[Liferay.Util.escapeHTML(calendar.get('name'))]
+									[LString.escapeHTML(calendar.get('name'))]
 								),
 								'</p>'
 							].join(STR_BLANK);
@@ -1691,7 +1678,6 @@ AUI.add(
 							schedulerEvent,
 							instance._getCalendarBookingOffset(schedulerEvent, changedAttributes),
 							instance._getCalendarBookingDuration(schedulerEvent),
-							instance._hasChildCalendarBookingsPromise(schedulerEvent),
 							answers
 						)
 						.then(
@@ -1795,6 +1781,7 @@ AUI.add(
 								declineLinkEnabled: instance._hasWorkflowStatusPermission(schedulerEvent, CalendarWorkflow.STATUS_DENIED),
 								editing: editing,
 								endTime: templateData.endDate,
+								instanceIndex: schedulerEvent.get('instanceIndex'),
 								maybeLinkEnabled: instance._hasWorkflowStatusPermission(schedulerEvent, CalendarWorkflow.STATUS_MAYBE),
 								permissions: permissions,
 								startTime: templateData.startDate,
@@ -2231,6 +2218,6 @@ AUI.add(
 	},
 	'',
 	{
-		requires: ['aui-datatype', 'aui-io', 'aui-scheduler', 'aui-toolbar', 'async-queue', 'autocomplete', 'autocomplete-highlighters', 'dd-plugin', 'liferay-calendar-message-util', 'liferay-calendar-recurrence-util', 'liferay-node', 'liferay-portlet-url', 'liferay-store', 'promise', 'resize-plugin']
+		requires: ['async-queue', 'aui-datatype', 'aui-io', 'aui-scheduler', 'aui-toolbar', 'autocomplete', 'autocomplete-highlighters', 'dd-plugin', 'liferay-calendar-message-util', 'liferay-calendar-recurrence-util', 'liferay-node', 'liferay-portlet-url', 'liferay-store', 'promise', 'resize-plugin']
 	}
 );

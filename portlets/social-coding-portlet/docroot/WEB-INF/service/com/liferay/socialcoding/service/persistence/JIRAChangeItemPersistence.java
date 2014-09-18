@@ -14,6 +14,8 @@
 
 package com.liferay.socialcoding.service.persistence;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.service.persistence.BasePersistence;
 
 import com.liferay.socialcoding.model.JIRAChangeItem;
@@ -30,6 +32,7 @@ import com.liferay.socialcoding.model.JIRAChangeItem;
  * @see JIRAChangeItemUtil
  * @generated
  */
+@ProviderType
 public interface JIRAChangeItemPersistence extends BasePersistence<JIRAChangeItem> {
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -76,7 +79,7 @@ public interface JIRAChangeItemPersistence extends BasePersistence<JIRAChangeIte
 	*/
 	public java.util.List<com.liferay.socialcoding.model.JIRAChangeItem> findByJiraChangeGroupId(
 		long jiraChangeGroupId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAChangeItem> orderByComparator);
 
 	/**
 	* Returns the first j i r a change item in the ordered set where jiraChangeGroupId = &#63;.
@@ -88,7 +91,7 @@ public interface JIRAChangeItemPersistence extends BasePersistence<JIRAChangeIte
 	*/
 	public com.liferay.socialcoding.model.JIRAChangeItem findByJiraChangeGroupId_First(
 		long jiraChangeGroupId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAChangeItem> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchJIRAChangeItemException;
 
 	/**
@@ -100,7 +103,7 @@ public interface JIRAChangeItemPersistence extends BasePersistence<JIRAChangeIte
 	*/
 	public com.liferay.socialcoding.model.JIRAChangeItem fetchByJiraChangeGroupId_First(
 		long jiraChangeGroupId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAChangeItem> orderByComparator);
 
 	/**
 	* Returns the last j i r a change item in the ordered set where jiraChangeGroupId = &#63;.
@@ -112,7 +115,7 @@ public interface JIRAChangeItemPersistence extends BasePersistence<JIRAChangeIte
 	*/
 	public com.liferay.socialcoding.model.JIRAChangeItem findByJiraChangeGroupId_Last(
 		long jiraChangeGroupId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAChangeItem> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchJIRAChangeItemException;
 
 	/**
@@ -124,7 +127,7 @@ public interface JIRAChangeItemPersistence extends BasePersistence<JIRAChangeIte
 	*/
 	public com.liferay.socialcoding.model.JIRAChangeItem fetchByJiraChangeGroupId_Last(
 		long jiraChangeGroupId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAChangeItem> orderByComparator);
 
 	/**
 	* Returns the j i r a change items before and after the current j i r a change item in the ordered set where jiraChangeGroupId = &#63;.
@@ -137,7 +140,7 @@ public interface JIRAChangeItemPersistence extends BasePersistence<JIRAChangeIte
 	*/
 	public com.liferay.socialcoding.model.JIRAChangeItem[] findByJiraChangeGroupId_PrevAndNext(
 		long jiraChangeItemId, long jiraChangeGroupId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAChangeItem> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchJIRAChangeItemException;
 
 	/**
@@ -253,7 +256,7 @@ public interface JIRAChangeItemPersistence extends BasePersistence<JIRAChangeIte
 	*/
 	public java.util.List<com.liferay.socialcoding.model.JIRAChangeItem> findAll(
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAChangeItem> orderByComparator);
 
 	/**
 	* Removes all the j i r a change items from the database.

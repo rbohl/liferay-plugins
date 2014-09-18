@@ -14,6 +14,8 @@
 
 package com.liferay.pushnotifications.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.log.Log;
@@ -36,6 +38,7 @@ import java.util.List;
 /**
  * @author Silvio Santos
  */
+@ProviderType
 public class ClpSerializer {
 	public static String getServletContextName() {
 		if (Validator.isNotNull(_servletContextName)) {
@@ -165,7 +168,7 @@ public class ClpSerializer {
 				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
 						BaseModel.class);
 
-				Class<?> oldModelModelClass = (Class<?>)oldModel.getModelClass();
+				Class<?> oldModelModelClass = oldModel.getModelClass();
 
 				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
 						oldModelModelClass.getSimpleName() + "RemoteModel");

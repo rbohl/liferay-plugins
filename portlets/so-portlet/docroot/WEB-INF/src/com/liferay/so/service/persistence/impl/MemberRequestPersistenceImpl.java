@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -35,7 +34,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import com.liferay.so.NoSuchMemberRequestException;
@@ -46,7 +44,6 @@ import com.liferay.so.service.persistence.MemberRequestPersistence;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -400,7 +397,7 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 	 */
 	@Override
 	public List<MemberRequest> findByReceiverUserId(long receiverUserId,
-		int start, int end, OrderByComparator orderByComparator) {
+		int start, int end, OrderByComparator<MemberRequest> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -510,7 +507,7 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 	 */
 	@Override
 	public MemberRequest findByReceiverUserId_First(long receiverUserId,
-		OrderByComparator orderByComparator)
+		OrderByComparator<MemberRequest> orderByComparator)
 		throws NoSuchMemberRequestException {
 		MemberRequest memberRequest = fetchByReceiverUserId_First(receiverUserId,
 				orderByComparator);
@@ -540,7 +537,7 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 	 */
 	@Override
 	public MemberRequest fetchByReceiverUserId_First(long receiverUserId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<MemberRequest> orderByComparator) {
 		List<MemberRequest> list = findByReceiverUserId(receiverUserId, 0, 1,
 				orderByComparator);
 
@@ -561,7 +558,7 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 	 */
 	@Override
 	public MemberRequest findByReceiverUserId_Last(long receiverUserId,
-		OrderByComparator orderByComparator)
+		OrderByComparator<MemberRequest> orderByComparator)
 		throws NoSuchMemberRequestException {
 		MemberRequest memberRequest = fetchByReceiverUserId_Last(receiverUserId,
 				orderByComparator);
@@ -591,7 +588,7 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 	 */
 	@Override
 	public MemberRequest fetchByReceiverUserId_Last(long receiverUserId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<MemberRequest> orderByComparator) {
 		int count = countByReceiverUserId(receiverUserId);
 
 		if (count == 0) {
@@ -620,7 +617,7 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 	@Override
 	public MemberRequest[] findByReceiverUserId_PrevAndNext(
 		long memberRequestId, long receiverUserId,
-		OrderByComparator orderByComparator)
+		OrderByComparator<MemberRequest> orderByComparator)
 		throws NoSuchMemberRequestException {
 		MemberRequest memberRequest = findByPrimaryKey(memberRequestId);
 
@@ -651,7 +648,7 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 
 	protected MemberRequest getByReceiverUserId_PrevAndNext(Session session,
 		MemberRequest memberRequest, long receiverUserId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<MemberRequest> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -891,7 +888,7 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 	 */
 	@Override
 	public List<MemberRequest> findByR_S(long receiverUserId, int status,
-		int start, int end, OrderByComparator orderByComparator) {
+		int start, int end, OrderByComparator<MemberRequest> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1007,7 +1004,7 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 	 */
 	@Override
 	public MemberRequest findByR_S_First(long receiverUserId, int status,
-		OrderByComparator orderByComparator)
+		OrderByComparator<MemberRequest> orderByComparator)
 		throws NoSuchMemberRequestException {
 		MemberRequest memberRequest = fetchByR_S_First(receiverUserId, status,
 				orderByComparator);
@@ -1041,7 +1038,7 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 	 */
 	@Override
 	public MemberRequest fetchByR_S_First(long receiverUserId, int status,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<MemberRequest> orderByComparator) {
 		List<MemberRequest> list = findByR_S(receiverUserId, status, 0, 1,
 				orderByComparator);
 
@@ -1063,7 +1060,7 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 	 */
 	@Override
 	public MemberRequest findByR_S_Last(long receiverUserId, int status,
-		OrderByComparator orderByComparator)
+		OrderByComparator<MemberRequest> orderByComparator)
 		throws NoSuchMemberRequestException {
 		MemberRequest memberRequest = fetchByR_S_Last(receiverUserId, status,
 				orderByComparator);
@@ -1097,7 +1094,7 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 	 */
 	@Override
 	public MemberRequest fetchByR_S_Last(long receiverUserId, int status,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<MemberRequest> orderByComparator) {
 		int count = countByR_S(receiverUserId, status);
 
 		if (count == 0) {
@@ -1126,7 +1123,8 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 	 */
 	@Override
 	public MemberRequest[] findByR_S_PrevAndNext(long memberRequestId,
-		long receiverUserId, int status, OrderByComparator orderByComparator)
+		long receiverUserId, int status,
+		OrderByComparator<MemberRequest> orderByComparator)
 		throws NoSuchMemberRequestException {
 		MemberRequest memberRequest = findByPrimaryKey(memberRequestId);
 
@@ -1157,7 +1155,7 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 
 	protected MemberRequest getByR_S_PrevAndNext(Session session,
 		MemberRequest memberRequest, long receiverUserId, int status,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<MemberRequest> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -2224,7 +2222,7 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 	 */
 	@Override
 	public List<MemberRequest> findAll(int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<MemberRequest> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -2360,25 +2358,6 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 	 * Initializes the member request persistence.
 	 */
 	public void afterPropertiesSet() {
-		String[] listenerClassNames = StringUtil.split(GetterUtil.getString(
-					com.liferay.util.service.ServiceProps.get(
-						"value.object.listener.com.liferay.so.model.MemberRequest")));
-
-		if (listenerClassNames.length > 0) {
-			try {
-				List<ModelListener<MemberRequest>> listenersList = new ArrayList<ModelListener<MemberRequest>>();
-
-				for (String listenerClassName : listenerClassNames) {
-					listenersList.add((ModelListener<MemberRequest>)InstanceFactory.newInstance(
-							getClassLoader(), listenerClassName));
-				}
-
-				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
-			}
-			catch (Exception e) {
-				_log.error(e);
-			}
-		}
 	}
 
 	public void destroy() {

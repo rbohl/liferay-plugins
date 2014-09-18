@@ -32,24 +32,20 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -154,7 +150,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public List<Gadget> findByUuid(String uuid, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Gadget> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -274,7 +270,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public Gadget findByUuid_First(String uuid,
-		OrderByComparator orderByComparator) throws NoSuchGadgetException {
+		OrderByComparator<Gadget> orderByComparator)
+		throws NoSuchGadgetException {
 		Gadget gadget = fetchByUuid_First(uuid, orderByComparator);
 
 		if (gadget != null) {
@@ -302,7 +299,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public Gadget fetchByUuid_First(String uuid,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Gadget> orderByComparator) {
 		List<Gadget> list = findByUuid(uuid, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -322,7 +319,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public Gadget findByUuid_Last(String uuid,
-		OrderByComparator orderByComparator) throws NoSuchGadgetException {
+		OrderByComparator<Gadget> orderByComparator)
+		throws NoSuchGadgetException {
 		Gadget gadget = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (gadget != null) {
@@ -350,7 +348,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public Gadget fetchByUuid_Last(String uuid,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Gadget> orderByComparator) {
 		int count = countByUuid(uuid);
 
 		if (count == 0) {
@@ -377,7 +375,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public Gadget[] findByUuid_PrevAndNext(long gadgetId, String uuid,
-		OrderByComparator orderByComparator) throws NoSuchGadgetException {
+		OrderByComparator<Gadget> orderByComparator)
+		throws NoSuchGadgetException {
 		Gadget gadget = findByPrimaryKey(gadgetId);
 
 		Session session = null;
@@ -406,7 +405,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	}
 
 	protected Gadget getByUuid_PrevAndNext(Session session, Gadget gadget,
-		String uuid, OrderByComparator orderByComparator, boolean previous) {
+		String uuid, OrderByComparator<Gadget> orderByComparator,
+		boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -566,7 +566,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public List<Gadget> filterFindByUuid(String uuid, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Gadget> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByUuid(uuid, start, end, orderByComparator);
 		}
@@ -669,7 +669,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public Gadget[] filterFindByUuid_PrevAndNext(long gadgetId, String uuid,
-		OrderByComparator orderByComparator) throws NoSuchGadgetException {
+		OrderByComparator<Gadget> orderByComparator)
+		throws NoSuchGadgetException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByUuid_PrevAndNext(gadgetId, uuid, orderByComparator);
 		}
@@ -702,8 +703,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	}
 
 	protected Gadget filterGetByUuid_PrevAndNext(Session session,
-		Gadget gadget, String uuid, OrderByComparator orderByComparator,
-		boolean previous) {
+		Gadget gadget, String uuid,
+		OrderByComparator<Gadget> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -1070,7 +1071,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public List<Gadget> findByUuid_C(String uuid, long companyId, int start,
-		int end, OrderByComparator orderByComparator) {
+		int end, OrderByComparator<Gadget> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1200,7 +1201,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public Gadget findByUuid_C_First(String uuid, long companyId,
-		OrderByComparator orderByComparator) throws NoSuchGadgetException {
+		OrderByComparator<Gadget> orderByComparator)
+		throws NoSuchGadgetException {
 		Gadget gadget = fetchByUuid_C_First(uuid, companyId, orderByComparator);
 
 		if (gadget != null) {
@@ -1232,7 +1234,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public Gadget fetchByUuid_C_First(String uuid, long companyId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Gadget> orderByComparator) {
 		List<Gadget> list = findByUuid_C(uuid, companyId, 0, 1,
 				orderByComparator);
 
@@ -1254,7 +1256,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public Gadget findByUuid_C_Last(String uuid, long companyId,
-		OrderByComparator orderByComparator) throws NoSuchGadgetException {
+		OrderByComparator<Gadget> orderByComparator)
+		throws NoSuchGadgetException {
 		Gadget gadget = fetchByUuid_C_Last(uuid, companyId, orderByComparator);
 
 		if (gadget != null) {
@@ -1286,7 +1289,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public Gadget fetchByUuid_C_Last(String uuid, long companyId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Gadget> orderByComparator) {
 		int count = countByUuid_C(uuid, companyId);
 
 		if (count == 0) {
@@ -1315,7 +1318,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public Gadget[] findByUuid_C_PrevAndNext(long gadgetId, String uuid,
-		long companyId, OrderByComparator orderByComparator)
+		long companyId, OrderByComparator<Gadget> orderByComparator)
 		throws NoSuchGadgetException {
 		Gadget gadget = findByPrimaryKey(gadgetId);
 
@@ -1345,8 +1348,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	}
 
 	protected Gadget getByUuid_C_PrevAndNext(Session session, Gadget gadget,
-		String uuid, long companyId, OrderByComparator orderByComparator,
-		boolean previous) {
+		String uuid, long companyId,
+		OrderByComparator<Gadget> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -1515,7 +1518,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public List<Gadget> filterFindByUuid_C(String uuid, long companyId,
-		int start, int end, OrderByComparator orderByComparator) {
+		int start, int end, OrderByComparator<Gadget> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByUuid_C(uuid, companyId, start, end, orderByComparator);
 		}
@@ -1623,7 +1626,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public Gadget[] filterFindByUuid_C_PrevAndNext(long gadgetId, String uuid,
-		long companyId, OrderByComparator orderByComparator)
+		long companyId, OrderByComparator<Gadget> orderByComparator)
 		throws NoSuchGadgetException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByUuid_C_PrevAndNext(gadgetId, uuid, companyId,
@@ -1659,7 +1662,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 
 	protected Gadget filterGetByUuid_C_PrevAndNext(Session session,
 		Gadget gadget, String uuid, long companyId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<Gadget> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -2038,7 +2041,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public List<Gadget> findByCompanyId(long companyId, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Gadget> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -2144,7 +2147,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public Gadget findByCompanyId_First(long companyId,
-		OrderByComparator orderByComparator) throws NoSuchGadgetException {
+		OrderByComparator<Gadget> orderByComparator)
+		throws NoSuchGadgetException {
 		Gadget gadget = fetchByCompanyId_First(companyId, orderByComparator);
 
 		if (gadget != null) {
@@ -2172,7 +2176,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public Gadget fetchByCompanyId_First(long companyId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Gadget> orderByComparator) {
 		List<Gadget> list = findByCompanyId(companyId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -2192,7 +2196,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public Gadget findByCompanyId_Last(long companyId,
-		OrderByComparator orderByComparator) throws NoSuchGadgetException {
+		OrderByComparator<Gadget> orderByComparator)
+		throws NoSuchGadgetException {
 		Gadget gadget = fetchByCompanyId_Last(companyId, orderByComparator);
 
 		if (gadget != null) {
@@ -2220,7 +2225,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public Gadget fetchByCompanyId_Last(long companyId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Gadget> orderByComparator) {
 		int count = countByCompanyId(companyId);
 
 		if (count == 0) {
@@ -2248,7 +2253,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public Gadget[] findByCompanyId_PrevAndNext(long gadgetId, long companyId,
-		OrderByComparator orderByComparator) throws NoSuchGadgetException {
+		OrderByComparator<Gadget> orderByComparator)
+		throws NoSuchGadgetException {
 		Gadget gadget = findByPrimaryKey(gadgetId);
 
 		Session session = null;
@@ -2277,7 +2283,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	}
 
 	protected Gadget getByCompanyId_PrevAndNext(Session session, Gadget gadget,
-		long companyId, OrderByComparator orderByComparator, boolean previous) {
+		long companyId, OrderByComparator<Gadget> orderByComparator,
+		boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -2424,7 +2431,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public List<Gadget> filterFindByCompanyId(long companyId, int start,
-		int end, OrderByComparator orderByComparator) {
+		int end, OrderByComparator<Gadget> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByCompanyId(companyId, start, end, orderByComparator);
 		}
@@ -2513,7 +2520,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public Gadget[] filterFindByCompanyId_PrevAndNext(long gadgetId,
-		long companyId, OrderByComparator orderByComparator)
+		long companyId, OrderByComparator<Gadget> orderByComparator)
 		throws NoSuchGadgetException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByCompanyId_PrevAndNext(gadgetId, companyId,
@@ -2548,8 +2555,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	}
 
 	protected Gadget filterGetByCompanyId_PrevAndNext(Session session,
-		Gadget gadget, long companyId, OrderByComparator orderByComparator,
-		boolean previous) {
+		Gadget gadget, long companyId,
+		OrderByComparator<Gadget> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -3647,7 +3654,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public List<Gadget> findAll(int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Gadget> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -3783,25 +3790,6 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 * Initializes the gadget persistence.
 	 */
 	public void afterPropertiesSet() {
-		String[] listenerClassNames = StringUtil.split(GetterUtil.getString(
-					com.liferay.util.service.ServiceProps.get(
-						"value.object.listener.com.liferay.opensocial.model.Gadget")));
-
-		if (listenerClassNames.length > 0) {
-			try {
-				List<ModelListener<Gadget>> listenersList = new ArrayList<ModelListener<Gadget>>();
-
-				for (String listenerClassName : listenerClassNames) {
-					listenersList.add((ModelListener<Gadget>)InstanceFactory.newInstance(
-							getClassLoader(), listenerClassName));
-				}
-
-				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
-			}
-			catch (Exception e) {
-				_log.error(e);
-			}
-		}
 	}
 
 	public void destroy() {

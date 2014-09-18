@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -34,7 +33,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import com.liferay.privatemessaging.NoSuchUserThreadException;
@@ -45,7 +43,6 @@ import com.liferay.privatemessaging.service.persistence.UserThreadPersistence;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -153,7 +150,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public List<UserThread> findByMBThreadId(long mbThreadId, int start,
-		int end, OrderByComparator orderByComparator) {
+		int end, OrderByComparator<UserThread> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -259,7 +256,8 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public UserThread findByMBThreadId_First(long mbThreadId,
-		OrderByComparator orderByComparator) throws NoSuchUserThreadException {
+		OrderByComparator<UserThread> orderByComparator)
+		throws NoSuchUserThreadException {
 		UserThread userThread = fetchByMBThreadId_First(mbThreadId,
 				orderByComparator);
 
@@ -288,7 +286,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public UserThread fetchByMBThreadId_First(long mbThreadId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<UserThread> orderByComparator) {
 		List<UserThread> list = findByMBThreadId(mbThreadId, 0, 1,
 				orderByComparator);
 
@@ -309,7 +307,8 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public UserThread findByMBThreadId_Last(long mbThreadId,
-		OrderByComparator orderByComparator) throws NoSuchUserThreadException {
+		OrderByComparator<UserThread> orderByComparator)
+		throws NoSuchUserThreadException {
 		UserThread userThread = fetchByMBThreadId_Last(mbThreadId,
 				orderByComparator);
 
@@ -338,7 +337,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public UserThread fetchByMBThreadId_Last(long mbThreadId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<UserThread> orderByComparator) {
 		int count = countByMBThreadId(mbThreadId);
 
 		if (count == 0) {
@@ -366,7 +365,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public UserThread[] findByMBThreadId_PrevAndNext(long userThreadId,
-		long mbThreadId, OrderByComparator orderByComparator)
+		long mbThreadId, OrderByComparator<UserThread> orderByComparator)
 		throws NoSuchUserThreadException {
 		UserThread userThread = findByPrimaryKey(userThreadId);
 
@@ -397,7 +396,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 
 	protected UserThread getByMBThreadId_PrevAndNext(Session session,
 		UserThread userThread, long mbThreadId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<UserThread> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -630,7 +629,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public List<UserThread> findByUserId(long userId, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<UserThread> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -736,7 +735,8 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public UserThread findByUserId_First(long userId,
-		OrderByComparator orderByComparator) throws NoSuchUserThreadException {
+		OrderByComparator<UserThread> orderByComparator)
+		throws NoSuchUserThreadException {
 		UserThread userThread = fetchByUserId_First(userId, orderByComparator);
 
 		if (userThread != null) {
@@ -764,7 +764,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public UserThread fetchByUserId_First(long userId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<UserThread> orderByComparator) {
 		List<UserThread> list = findByUserId(userId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -784,7 +784,8 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public UserThread findByUserId_Last(long userId,
-		OrderByComparator orderByComparator) throws NoSuchUserThreadException {
+		OrderByComparator<UserThread> orderByComparator)
+		throws NoSuchUserThreadException {
 		UserThread userThread = fetchByUserId_Last(userId, orderByComparator);
 
 		if (userThread != null) {
@@ -812,7 +813,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public UserThread fetchByUserId_Last(long userId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<UserThread> orderByComparator) {
 		int count = countByUserId(userId);
 
 		if (count == 0) {
@@ -840,7 +841,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public UserThread[] findByUserId_PrevAndNext(long userThreadId,
-		long userId, OrderByComparator orderByComparator)
+		long userId, OrderByComparator<UserThread> orderByComparator)
 		throws NoSuchUserThreadException {
 		UserThread userThread = findByPrimaryKey(userThreadId);
 
@@ -871,7 +872,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 
 	protected UserThread getByUserId_PrevAndNext(Session session,
 		UserThread userThread, long userId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<UserThread> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -1341,7 +1342,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public List<UserThread> findByU_D(long userId, boolean deleted, int start,
-		int end, OrderByComparator orderByComparator) {
+		int end, OrderByComparator<UserThread> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1457,7 +1458,8 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public UserThread findByU_D_First(long userId, boolean deleted,
-		OrderByComparator orderByComparator) throws NoSuchUserThreadException {
+		OrderByComparator<UserThread> orderByComparator)
+		throws NoSuchUserThreadException {
 		UserThread userThread = fetchByU_D_First(userId, deleted,
 				orderByComparator);
 
@@ -1490,7 +1492,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public UserThread fetchByU_D_First(long userId, boolean deleted,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<UserThread> orderByComparator) {
 		List<UserThread> list = findByU_D(userId, deleted, 0, 1,
 				orderByComparator);
 
@@ -1512,7 +1514,8 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public UserThread findByU_D_Last(long userId, boolean deleted,
-		OrderByComparator orderByComparator) throws NoSuchUserThreadException {
+		OrderByComparator<UserThread> orderByComparator)
+		throws NoSuchUserThreadException {
 		UserThread userThread = fetchByU_D_Last(userId, deleted,
 				orderByComparator);
 
@@ -1545,7 +1548,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public UserThread fetchByU_D_Last(long userId, boolean deleted,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<UserThread> orderByComparator) {
 		int count = countByU_D(userId, deleted);
 
 		if (count == 0) {
@@ -1574,7 +1577,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public UserThread[] findByU_D_PrevAndNext(long userThreadId, long userId,
-		boolean deleted, OrderByComparator orderByComparator)
+		boolean deleted, OrderByComparator<UserThread> orderByComparator)
 		throws NoSuchUserThreadException {
 		UserThread userThread = findByPrimaryKey(userThreadId);
 
@@ -1605,7 +1608,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 
 	protected UserThread getByU_D_PrevAndNext(Session session,
 		UserThread userThread, long userId, boolean deleted,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<UserThread> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -1866,7 +1869,8 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public List<UserThread> findByU_R_D(long userId, boolean read,
-		boolean deleted, int start, int end, OrderByComparator orderByComparator) {
+		boolean deleted, int start, int end,
+		OrderByComparator<UserThread> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1988,7 +1992,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public UserThread findByU_R_D_First(long userId, boolean read,
-		boolean deleted, OrderByComparator orderByComparator)
+		boolean deleted, OrderByComparator<UserThread> orderByComparator)
 		throws NoSuchUserThreadException {
 		UserThread userThread = fetchByU_R_D_First(userId, read, deleted,
 				orderByComparator);
@@ -2026,7 +2030,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public UserThread fetchByU_R_D_First(long userId, boolean read,
-		boolean deleted, OrderByComparator orderByComparator) {
+		boolean deleted, OrderByComparator<UserThread> orderByComparator) {
 		List<UserThread> list = findByU_R_D(userId, read, deleted, 0, 1,
 				orderByComparator);
 
@@ -2049,7 +2053,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public UserThread findByU_R_D_Last(long userId, boolean read,
-		boolean deleted, OrderByComparator orderByComparator)
+		boolean deleted, OrderByComparator<UserThread> orderByComparator)
 		throws NoSuchUserThreadException {
 		UserThread userThread = fetchByU_R_D_Last(userId, read, deleted,
 				orderByComparator);
@@ -2087,7 +2091,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public UserThread fetchByU_R_D_Last(long userId, boolean read,
-		boolean deleted, OrderByComparator orderByComparator) {
+		boolean deleted, OrderByComparator<UserThread> orderByComparator) {
 		int count = countByU_R_D(userId, read, deleted);
 
 		if (count == 0) {
@@ -2117,7 +2121,8 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public UserThread[] findByU_R_D_PrevAndNext(long userThreadId, long userId,
-		boolean read, boolean deleted, OrderByComparator orderByComparator)
+		boolean read, boolean deleted,
+		OrderByComparator<UserThread> orderByComparator)
 		throws NoSuchUserThreadException {
 		UserThread userThread = findByPrimaryKey(userThreadId);
 
@@ -2148,7 +2153,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 
 	protected UserThread getByU_R_D_PrevAndNext(Session session,
 		UserThread userThread, long userId, boolean read, boolean deleted,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<UserThread> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -2960,7 +2965,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 */
 	@Override
 	public List<UserThread> findAll(int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<UserThread> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -3096,25 +3101,6 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 * Initializes the user thread persistence.
 	 */
 	public void afterPropertiesSet() {
-		String[] listenerClassNames = StringUtil.split(GetterUtil.getString(
-					com.liferay.util.service.ServiceProps.get(
-						"value.object.listener.com.liferay.privatemessaging.model.UserThread")));
-
-		if (listenerClassNames.length > 0) {
-			try {
-				List<ModelListener<UserThread>> listenersList = new ArrayList<ModelListener<UserThread>>();
-
-				for (String listenerClassName : listenerClassNames) {
-					listenersList.add((ModelListener<UserThread>)InstanceFactory.newInstance(
-							getClassLoader(), listenerClassName));
-				}
-
-				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
-			}
-			catch (Exception e) {
-				_log.error(e);
-			}
-		}
 	}
 
 	public void destroy() {

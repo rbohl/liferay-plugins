@@ -20,11 +20,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
-import com.liferay.pushnotifications.sender.PushNotificationsSender;
 import com.liferay.pushnotifications.service.PushNotificationsDeviceLocalServiceUtil;
-
-import java.util.List;
-import java.util.Map;
+import com.liferay.pushnotifications.util.PushNotificationsConstants;
 
 /**
  * @author Silvio Santos
@@ -32,55 +29,31 @@ import java.util.Map;
  */
 public class PushNotificationsMessageListener implements MessageListener {
 
-	public Map<String, PushNotificationsSender> getPushNotificationsSenders() {
-		return _pushNotificationsSenders;
-	}
-
 	@Override
 	public void receive(Message message) {
 		JSONObject jsonObject = (JSONObject)message.getPayload();
 
-		long userId = jsonObject.getLong("userId");
+		JSONObject toUserJSONObject = jsonObject.getJSONObject(
+			PushNotificationsConstants.TO_USER);
+
+		long toUserId = toUserJSONObject.getLong(
+			PushNotificationsConstants.USER_ID);
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
-				"Received message " + jsonObject + " for user " + userId);
+				"Sending message " + jsonObject + " to user " + toUserId);
 		}
 
 		try {
-			for (Map.Entry<String, PushNotificationsSender> entry :
-					_pushNotificationsSenders.entrySet()) {
-
-				String platform = entry.getKey();
-
-				List<String> tokens =
-					PushNotificationsDeviceLocalServiceUtil.getTokens(
-						userId, platform, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-
-				if (tokens.isEmpty()) {
-					continue;
-				}
-
-				PushNotificationsSender pushNotificationsSender =
-					entry.getValue();
-
-				pushNotificationsSender.send(tokens, jsonObject);
-			}
+			PushNotificationsDeviceLocalServiceUtil.sendPushNotification(
+				toUserId, jsonObject, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 		}
 		catch (Exception e) {
 			_log.error("Unable to send notification", e);
 		}
 	}
 
-	public void setPushNotificationsSenders(
-		Map<String, PushNotificationsSender> pushNotificationSenders) {
-
-		_pushNotificationsSenders = pushNotificationSenders;
-	}
-
 	private static Log _log = LogFactoryUtil.getLog(
 		PushNotificationsMessageListener.class);
-
-	private Map<String, PushNotificationsSender> _pushNotificationsSenders;
 
 }

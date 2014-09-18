@@ -14,6 +14,8 @@
 
 package com.liferay.knowledgebase.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.knowledgebase.service.KBTemplateLocalServiceUtil;
 
 import java.util.Arrays;
@@ -22,6 +24,7 @@ import java.util.Arrays;
  * @author Brian Wing Shun Chan
  * @generated
  */
+@ProviderType
 public class KBTemplateLocalServiceClpInvoker {
 	public KBTemplateLocalServiceClpInvoker() {
 		_methodName0 = "addKBTemplate";
@@ -84,41 +87,44 @@ public class KBTemplateLocalServiceClpInvoker {
 
 		_methodParameterTypes10 = new String[] { "long" };
 
-		_methodName11 = "fetchKBTemplateByUuidAndCompanyId";
+		_methodName11 = "fetchKBTemplateByUuidAndGroupId";
 
 		_methodParameterTypes11 = new String[] { "java.lang.String", "long" };
 
-		_methodName12 = "fetchKBTemplateByUuidAndGroupId";
+		_methodName12 = "getKBTemplate";
 
-		_methodParameterTypes12 = new String[] { "java.lang.String", "long" };
+		_methodParameterTypes12 = new String[] { "long" };
 
-		_methodName13 = "getKBTemplate";
+		_methodName13 = "getActionableDynamicQuery";
 
-		_methodParameterTypes13 = new String[] { "long" };
+		_methodParameterTypes13 = new String[] {  };
 
-		_methodName14 = "getActionableDynamicQuery";
+		_methodName15 = "getExportActionableDynamicQuery";
 
-		_methodParameterTypes14 = new String[] {  };
-
-		_methodName16 = "getExportActionableDynamicQuery";
-
-		_methodParameterTypes16 = new String[] {
+		_methodParameterTypes15 = new String[] {
 				"com.liferay.portal.kernel.lar.PortletDataContext"
 			};
 
-		_methodName17 = "deletePersistedModel";
+		_methodName16 = "deletePersistedModel";
 
-		_methodParameterTypes17 = new String[] {
+		_methodParameterTypes16 = new String[] {
 				"com.liferay.portal.model.PersistedModel"
 			};
 
-		_methodName18 = "getPersistedModel";
+		_methodName17 = "getPersistedModel";
 
-		_methodParameterTypes18 = new String[] { "java.io.Serializable" };
+		_methodParameterTypes17 = new String[] { "java.io.Serializable" };
 
-		_methodName19 = "getKBTemplateByUuidAndCompanyId";
+		_methodName18 = "getKBTemplatesByUuidAndCompanyId";
 
-		_methodParameterTypes19 = new String[] { "java.lang.String", "long" };
+		_methodParameterTypes18 = new String[] { "java.lang.String", "long" };
+
+		_methodName19 = "getKBTemplatesByUuidAndCompanyId";
+
+		_methodParameterTypes19 = new String[] {
+				"java.lang.String", "long", "int", "int",
+				"com.liferay.portal.kernel.util.OrderByComparator"
+			};
 
 		_methodName20 = "getKBTemplateByUuidAndGroupId";
 
@@ -249,7 +255,7 @@ public class KBTemplateLocalServiceClpInvoker {
 			return KBTemplateLocalServiceUtil.dynamicQuery((com.liferay.portal.kernel.dao.orm.DynamicQuery)arguments[0],
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue(),
-				(com.liferay.portal.kernel.util.OrderByComparator)arguments[3]);
+				(com.liferay.portal.kernel.util.OrderByComparator<?>)arguments[3]);
 		}
 
 		if (_methodName8.equals(name) &&
@@ -270,45 +276,48 @@ public class KBTemplateLocalServiceClpInvoker {
 
 		if (_methodName11.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes11, parameterTypes)) {
-			return KBTemplateLocalServiceUtil.fetchKBTemplateByUuidAndCompanyId((java.lang.String)arguments[0],
+			return KBTemplateLocalServiceUtil.fetchKBTemplateByUuidAndGroupId((java.lang.String)arguments[0],
 				((Long)arguments[1]).longValue());
 		}
 
 		if (_methodName12.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes12, parameterTypes)) {
-			return KBTemplateLocalServiceUtil.fetchKBTemplateByUuidAndGroupId((java.lang.String)arguments[0],
-				((Long)arguments[1]).longValue());
+			return KBTemplateLocalServiceUtil.getKBTemplate(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName13.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes13, parameterTypes)) {
-			return KBTemplateLocalServiceUtil.getKBTemplate(((Long)arguments[0]).longValue());
+			return KBTemplateLocalServiceUtil.getActionableDynamicQuery();
 		}
 
-		if (_methodName14.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes14, parameterTypes)) {
-			return KBTemplateLocalServiceUtil.getActionableDynamicQuery();
+		if (_methodName15.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes15, parameterTypes)) {
+			return KBTemplateLocalServiceUtil.getExportActionableDynamicQuery((com.liferay.portal.kernel.lar.PortletDataContext)arguments[0]);
 		}
 
 		if (_methodName16.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes16, parameterTypes)) {
-			return KBTemplateLocalServiceUtil.getExportActionableDynamicQuery((com.liferay.portal.kernel.lar.PortletDataContext)arguments[0]);
+			return KBTemplateLocalServiceUtil.deletePersistedModel((com.liferay.portal.model.PersistedModel)arguments[0]);
 		}
 
 		if (_methodName17.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes17, parameterTypes)) {
-			return KBTemplateLocalServiceUtil.deletePersistedModel((com.liferay.portal.model.PersistedModel)arguments[0]);
+			return KBTemplateLocalServiceUtil.getPersistedModel((java.io.Serializable)arguments[0]);
 		}
 
 		if (_methodName18.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes18, parameterTypes)) {
-			return KBTemplateLocalServiceUtil.getPersistedModel((java.io.Serializable)arguments[0]);
+			return KBTemplateLocalServiceUtil.getKBTemplatesByUuidAndCompanyId((java.lang.String)arguments[0],
+				((Long)arguments[1]).longValue());
 		}
 
 		if (_methodName19.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes19, parameterTypes)) {
-			return KBTemplateLocalServiceUtil.getKBTemplateByUuidAndCompanyId((java.lang.String)arguments[0],
-				((Long)arguments[1]).longValue());
+			return KBTemplateLocalServiceUtil.getKBTemplatesByUuidAndCompanyId((java.lang.String)arguments[0],
+				((Long)arguments[1]).longValue(),
+				((Integer)arguments[2]).intValue(),
+				((Integer)arguments[3]).intValue(),
+				(com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate>)arguments[4]);
 		}
 
 		if (_methodName20.equals(name) &&
@@ -381,7 +390,7 @@ public class KBTemplateLocalServiceClpInvoker {
 			return KBTemplateLocalServiceUtil.getGroupKBTemplates(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue(),
-				(com.liferay.portal.kernel.util.OrderByComparator)arguments[3]);
+				(com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate>)arguments[3]);
 		}
 
 		if (_methodName84.equals(name) &&
@@ -397,7 +406,7 @@ public class KBTemplateLocalServiceClpInvoker {
 				((Boolean)arguments[5]).booleanValue(),
 				((Integer)arguments[6]).intValue(),
 				((Integer)arguments[7]).intValue(),
-				(com.liferay.portal.kernel.util.OrderByComparator)arguments[8]);
+				(com.liferay.portal.kernel.util.OrderByComparator<com.liferay.knowledgebase.model.KBTemplate>)arguments[8]);
 		}
 
 		if (_methodName86.equals(name) &&
@@ -447,8 +456,8 @@ public class KBTemplateLocalServiceClpInvoker {
 	private String[] _methodParameterTypes12;
 	private String _methodName13;
 	private String[] _methodParameterTypes13;
-	private String _methodName14;
-	private String[] _methodParameterTypes14;
+	private String _methodName15;
+	private String[] _methodParameterTypes15;
 	private String _methodName16;
 	private String[] _methodParameterTypes16;
 	private String _methodName17;

@@ -25,18 +25,15 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import com.liferay.wsrp.NoSuchConsumerException;
@@ -47,7 +44,6 @@ import com.liferay.wsrp.service.persistence.WSRPConsumerPersistence;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -152,7 +148,7 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	 */
 	@Override
 	public List<WSRPConsumer> findByUuid(String uuid, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<WSRPConsumer> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -272,7 +268,8 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	 */
 	@Override
 	public WSRPConsumer findByUuid_First(String uuid,
-		OrderByComparator orderByComparator) throws NoSuchConsumerException {
+		OrderByComparator<WSRPConsumer> orderByComparator)
+		throws NoSuchConsumerException {
 		WSRPConsumer wsrpConsumer = fetchByUuid_First(uuid, orderByComparator);
 
 		if (wsrpConsumer != null) {
@@ -300,7 +297,7 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	 */
 	@Override
 	public WSRPConsumer fetchByUuid_First(String uuid,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<WSRPConsumer> orderByComparator) {
 		List<WSRPConsumer> list = findByUuid(uuid, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -320,7 +317,8 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	 */
 	@Override
 	public WSRPConsumer findByUuid_Last(String uuid,
-		OrderByComparator orderByComparator) throws NoSuchConsumerException {
+		OrderByComparator<WSRPConsumer> orderByComparator)
+		throws NoSuchConsumerException {
 		WSRPConsumer wsrpConsumer = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (wsrpConsumer != null) {
@@ -348,7 +346,7 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	 */
 	@Override
 	public WSRPConsumer fetchByUuid_Last(String uuid,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<WSRPConsumer> orderByComparator) {
 		int count = countByUuid(uuid);
 
 		if (count == 0) {
@@ -376,7 +374,7 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	 */
 	@Override
 	public WSRPConsumer[] findByUuid_PrevAndNext(long wsrpConsumerId,
-		String uuid, OrderByComparator orderByComparator)
+		String uuid, OrderByComparator<WSRPConsumer> orderByComparator)
 		throws NoSuchConsumerException {
 		WSRPConsumer wsrpConsumer = findByPrimaryKey(wsrpConsumerId);
 
@@ -407,7 +405,7 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 
 	protected WSRPConsumer getByUuid_PrevAndNext(Session session,
 		WSRPConsumer wsrpConsumer, String uuid,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<WSRPConsumer> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -676,7 +674,7 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	 */
 	@Override
 	public List<WSRPConsumer> findByUuid_C(String uuid, long companyId,
-		int start, int end, OrderByComparator orderByComparator) {
+		int start, int end, OrderByComparator<WSRPConsumer> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -806,7 +804,8 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	 */
 	@Override
 	public WSRPConsumer findByUuid_C_First(String uuid, long companyId,
-		OrderByComparator orderByComparator) throws NoSuchConsumerException {
+		OrderByComparator<WSRPConsumer> orderByComparator)
+		throws NoSuchConsumerException {
 		WSRPConsumer wsrpConsumer = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -839,7 +838,7 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	 */
 	@Override
 	public WSRPConsumer fetchByUuid_C_First(String uuid, long companyId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<WSRPConsumer> orderByComparator) {
 		List<WSRPConsumer> list = findByUuid_C(uuid, companyId, 0, 1,
 				orderByComparator);
 
@@ -861,7 +860,8 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	 */
 	@Override
 	public WSRPConsumer findByUuid_C_Last(String uuid, long companyId,
-		OrderByComparator orderByComparator) throws NoSuchConsumerException {
+		OrderByComparator<WSRPConsumer> orderByComparator)
+		throws NoSuchConsumerException {
 		WSRPConsumer wsrpConsumer = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -894,7 +894,7 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	 */
 	@Override
 	public WSRPConsumer fetchByUuid_C_Last(String uuid, long companyId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<WSRPConsumer> orderByComparator) {
 		int count = countByUuid_C(uuid, companyId);
 
 		if (count == 0) {
@@ -923,7 +923,8 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	 */
 	@Override
 	public WSRPConsumer[] findByUuid_C_PrevAndNext(long wsrpConsumerId,
-		String uuid, long companyId, OrderByComparator orderByComparator)
+		String uuid, long companyId,
+		OrderByComparator<WSRPConsumer> orderByComparator)
 		throws NoSuchConsumerException {
 		WSRPConsumer wsrpConsumer = findByPrimaryKey(wsrpConsumerId);
 
@@ -954,7 +955,7 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 
 	protected WSRPConsumer getByUuid_C_PrevAndNext(Session session,
 		WSRPConsumer wsrpConsumer, String uuid, long companyId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<WSRPConsumer> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -1230,7 +1231,7 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	 */
 	@Override
 	public List<WSRPConsumer> findByCompanyId(long companyId, int start,
-		int end, OrderByComparator orderByComparator) {
+		int end, OrderByComparator<WSRPConsumer> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1336,7 +1337,8 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	 */
 	@Override
 	public WSRPConsumer findByCompanyId_First(long companyId,
-		OrderByComparator orderByComparator) throws NoSuchConsumerException {
+		OrderByComparator<WSRPConsumer> orderByComparator)
+		throws NoSuchConsumerException {
 		WSRPConsumer wsrpConsumer = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -1365,7 +1367,7 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	 */
 	@Override
 	public WSRPConsumer fetchByCompanyId_First(long companyId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<WSRPConsumer> orderByComparator) {
 		List<WSRPConsumer> list = findByCompanyId(companyId, 0, 1,
 				orderByComparator);
 
@@ -1386,7 +1388,8 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	 */
 	@Override
 	public WSRPConsumer findByCompanyId_Last(long companyId,
-		OrderByComparator orderByComparator) throws NoSuchConsumerException {
+		OrderByComparator<WSRPConsumer> orderByComparator)
+		throws NoSuchConsumerException {
 		WSRPConsumer wsrpConsumer = fetchByCompanyId_Last(companyId,
 				orderByComparator);
 
@@ -1415,7 +1418,7 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	 */
 	@Override
 	public WSRPConsumer fetchByCompanyId_Last(long companyId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<WSRPConsumer> orderByComparator) {
 		int count = countByCompanyId(companyId);
 
 		if (count == 0) {
@@ -1443,7 +1446,7 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	 */
 	@Override
 	public WSRPConsumer[] findByCompanyId_PrevAndNext(long wsrpConsumerId,
-		long companyId, OrderByComparator orderByComparator)
+		long companyId, OrderByComparator<WSRPConsumer> orderByComparator)
 		throws NoSuchConsumerException {
 		WSRPConsumer wsrpConsumer = findByPrimaryKey(wsrpConsumerId);
 
@@ -1474,7 +1477,7 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 
 	protected WSRPConsumer getByCompanyId_PrevAndNext(Session session,
 		WSRPConsumer wsrpConsumer, long companyId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<WSRPConsumer> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -2195,7 +2198,7 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	 */
 	@Override
 	public List<WSRPConsumer> findAll(int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<WSRPConsumer> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -2331,25 +2334,6 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	 * Initializes the w s r p consumer persistence.
 	 */
 	public void afterPropertiesSet() {
-		String[] listenerClassNames = StringUtil.split(GetterUtil.getString(
-					com.liferay.util.service.ServiceProps.get(
-						"value.object.listener.com.liferay.wsrp.model.WSRPConsumer")));
-
-		if (listenerClassNames.length > 0) {
-			try {
-				List<ModelListener<WSRPConsumer>> listenersList = new ArrayList<ModelListener<WSRPConsumer>>();
-
-				for (String listenerClassName : listenerClassNames) {
-					listenersList.add((ModelListener<WSRPConsumer>)InstanceFactory.newInstance(
-							getClassLoader(), listenerClassName));
-				}
-
-				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
-			}
-			catch (Exception e) {
-				_log.error(e);
-			}
-		}
 	}
 
 	public void destroy() {

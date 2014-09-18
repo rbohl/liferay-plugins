@@ -14,6 +14,8 @@
 
 package com.liferay.socialcoding.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.IdentifiableBean;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -46,6 +48,7 @@ import com.liferay.socialcoding.service.persistence.JIRAChangeGroupPersistence;
 import com.liferay.socialcoding.service.persistence.JIRAChangeItemPersistence;
 import com.liferay.socialcoding.service.persistence.JIRAIssueFinder;
 import com.liferay.socialcoding.service.persistence.JIRAIssuePersistence;
+import com.liferay.socialcoding.service.persistence.JIRAProjectPersistence;
 import com.liferay.socialcoding.service.persistence.SVNRepositoryPersistence;
 import com.liferay.socialcoding.service.persistence.SVNRevisionPersistence;
 
@@ -67,6 +70,7 @@ import javax.sql.DataSource;
  * @see com.liferay.socialcoding.service.JIRAChangeGroupLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class JIRAChangeGroupLocalServiceBaseImpl
 	extends BaseLocalServiceImpl implements JIRAChangeGroupLocalService,
 		IdentifiableBean {
@@ -143,8 +147,7 @@ public abstract class JIRAChangeGroupLocalServiceBaseImpl
 	 * @return the matching rows
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery) {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return jiraChangeGroupPersistence.findWithDynamicQuery(dynamicQuery);
 	}
 
@@ -161,8 +164,8 @@ public abstract class JIRAChangeGroupLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end) {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
 		return jiraChangeGroupPersistence.findWithDynamicQuery(dynamicQuery,
 			start, end);
 	}
@@ -181,9 +184,8 @@ public abstract class JIRAChangeGroupLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator orderByComparator) {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
 		return jiraChangeGroupPersistence.findWithDynamicQuery(dynamicQuery,
 			start, end, orderByComparator);
 	}
@@ -224,11 +226,10 @@ public abstract class JIRAChangeGroupLocalServiceBaseImpl
 	 * @param jiraChangeGroupId the primary key of the j i r a change group
 	 * @return the j i r a change group
 	 * @throws PortalException if a j i r a change group with the primary key could not be found
-	 * @throws SystemException
 	 */
 	@Override
 	public JIRAChangeGroup getJIRAChangeGroup(long jiraChangeGroupId)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return jiraChangeGroupPersistence.findByPrimaryKey(jiraChangeGroupId);
 	}
 
@@ -513,6 +514,44 @@ public abstract class JIRAChangeGroupLocalServiceBaseImpl
 	 */
 	public void setJIRAIssueFinder(JIRAIssueFinder jiraIssueFinder) {
 		this.jiraIssueFinder = jiraIssueFinder;
+	}
+
+	/**
+	 * Returns the j i r a project local service.
+	 *
+	 * @return the j i r a project local service
+	 */
+	public com.liferay.socialcoding.service.JIRAProjectLocalService getJIRAProjectLocalService() {
+		return jiraProjectLocalService;
+	}
+
+	/**
+	 * Sets the j i r a project local service.
+	 *
+	 * @param jiraProjectLocalService the j i r a project local service
+	 */
+	public void setJIRAProjectLocalService(
+		com.liferay.socialcoding.service.JIRAProjectLocalService jiraProjectLocalService) {
+		this.jiraProjectLocalService = jiraProjectLocalService;
+	}
+
+	/**
+	 * Returns the j i r a project persistence.
+	 *
+	 * @return the j i r a project persistence
+	 */
+	public JIRAProjectPersistence getJIRAProjectPersistence() {
+		return jiraProjectPersistence;
+	}
+
+	/**
+	 * Sets the j i r a project persistence.
+	 *
+	 * @param jiraProjectPersistence the j i r a project persistence
+	 */
+	public void setJIRAProjectPersistence(
+		JIRAProjectPersistence jiraProjectPersistence) {
+		this.jiraProjectPersistence = jiraProjectPersistence;
 	}
 
 	/**
@@ -851,6 +890,10 @@ public abstract class JIRAChangeGroupLocalServiceBaseImpl
 	protected JIRAIssuePersistence jiraIssuePersistence;
 	@BeanReference(type = JIRAIssueFinder.class)
 	protected JIRAIssueFinder jiraIssueFinder;
+	@BeanReference(type = com.liferay.socialcoding.service.JIRAProjectLocalService.class)
+	protected com.liferay.socialcoding.service.JIRAProjectLocalService jiraProjectLocalService;
+	@BeanReference(type = JIRAProjectPersistence.class)
+	protected JIRAProjectPersistence jiraProjectPersistence;
 	@BeanReference(type = com.liferay.socialcoding.service.SVNRepositoryLocalService.class)
 	protected com.liferay.socialcoding.service.SVNRepositoryLocalService svnRepositoryLocalService;
 	@BeanReference(type = SVNRepositoryPersistence.class)

@@ -14,6 +14,8 @@
 
 package com.liferay.marketplace.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.marketplace.service.AppLocalServiceUtil;
 import com.liferay.marketplace.service.ClpSerializer;
 
@@ -41,6 +43,7 @@ import java.util.Map;
 /**
  * @author Ryan Park
  */
+@ProviderType
 public class AppClp extends BaseModelImpl<App> implements App {
 	public AppClp() {
 	}
@@ -499,25 +502,6 @@ public class AppClp extends BaseModelImpl<App> implements App {
 	}
 
 	@Override
-	public boolean isDownloaded() {
-		try {
-			String methodName = "isDownloaded";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			Boolean returnObj = (Boolean)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
 	public java.lang.String getFileDir() {
 		try {
 			String methodName = "getFileDir";
@@ -556,9 +540,9 @@ public class AppClp extends BaseModelImpl<App> implements App {
 	}
 
 	@Override
-	public boolean isInstalled() {
+	public boolean isDownloaded() {
 		try {
-			String methodName = "isInstalled";
+			String methodName = "isDownloaded";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 
@@ -584,6 +568,25 @@ public class AppClp extends BaseModelImpl<App> implements App {
 			Object[] parameterValues = new Object[] { contextName };
 
 			java.lang.String[] returnObj = (java.lang.String[])invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public boolean isInstalled() {
+		try {
+			String methodName = "isInstalled";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			Boolean returnObj = (Boolean)invokeOnRemoteModel(methodName,
 					parameterTypes, parameterValues);
 
 			return returnObj;

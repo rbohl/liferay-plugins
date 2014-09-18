@@ -14,6 +14,8 @@
 
 package com.liferay.socialcoding.service.persistence;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.service.persistence.BasePersistence;
 
 import com.liferay.socialcoding.model.JIRAChangeGroup;
@@ -30,6 +32,7 @@ import com.liferay.socialcoding.model.JIRAChangeGroup;
  * @see JIRAChangeGroupUtil
  * @generated
  */
+@ProviderType
 public interface JIRAChangeGroupPersistence extends BasePersistence<JIRAChangeGroup> {
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -76,7 +79,7 @@ public interface JIRAChangeGroupPersistence extends BasePersistence<JIRAChangeGr
 	*/
 	public java.util.List<com.liferay.socialcoding.model.JIRAChangeGroup> findByJiraUserId(
 		java.lang.String jiraUserId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAChangeGroup> orderByComparator);
 
 	/**
 	* Returns the first j i r a change group in the ordered set where jiraUserId = &#63;.
@@ -88,7 +91,7 @@ public interface JIRAChangeGroupPersistence extends BasePersistence<JIRAChangeGr
 	*/
 	public com.liferay.socialcoding.model.JIRAChangeGroup findByJiraUserId_First(
 		java.lang.String jiraUserId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAChangeGroup> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchJIRAChangeGroupException;
 
 	/**
@@ -100,7 +103,7 @@ public interface JIRAChangeGroupPersistence extends BasePersistence<JIRAChangeGr
 	*/
 	public com.liferay.socialcoding.model.JIRAChangeGroup fetchByJiraUserId_First(
 		java.lang.String jiraUserId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAChangeGroup> orderByComparator);
 
 	/**
 	* Returns the last j i r a change group in the ordered set where jiraUserId = &#63;.
@@ -112,7 +115,7 @@ public interface JIRAChangeGroupPersistence extends BasePersistence<JIRAChangeGr
 	*/
 	public com.liferay.socialcoding.model.JIRAChangeGroup findByJiraUserId_Last(
 		java.lang.String jiraUserId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAChangeGroup> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchJIRAChangeGroupException;
 
 	/**
@@ -124,7 +127,7 @@ public interface JIRAChangeGroupPersistence extends BasePersistence<JIRAChangeGr
 	*/
 	public com.liferay.socialcoding.model.JIRAChangeGroup fetchByJiraUserId_Last(
 		java.lang.String jiraUserId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAChangeGroup> orderByComparator);
 
 	/**
 	* Returns the j i r a change groups before and after the current j i r a change group in the ordered set where jiraUserId = &#63;.
@@ -137,7 +140,7 @@ public interface JIRAChangeGroupPersistence extends BasePersistence<JIRAChangeGr
 	*/
 	public com.liferay.socialcoding.model.JIRAChangeGroup[] findByJiraUserId_PrevAndNext(
 		long jiraChangeGroupId, java.lang.String jiraUserId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAChangeGroup> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchJIRAChangeGroupException;
 
 	/**
@@ -194,7 +197,7 @@ public interface JIRAChangeGroupPersistence extends BasePersistence<JIRAChangeGr
 	*/
 	public java.util.List<com.liferay.socialcoding.model.JIRAChangeGroup> findByJiraIssueId(
 		long jiraIssueId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAChangeGroup> orderByComparator);
 
 	/**
 	* Returns the first j i r a change group in the ordered set where jiraIssueId = &#63;.
@@ -206,7 +209,7 @@ public interface JIRAChangeGroupPersistence extends BasePersistence<JIRAChangeGr
 	*/
 	public com.liferay.socialcoding.model.JIRAChangeGroup findByJiraIssueId_First(
 		long jiraIssueId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAChangeGroup> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchJIRAChangeGroupException;
 
 	/**
@@ -218,7 +221,7 @@ public interface JIRAChangeGroupPersistence extends BasePersistence<JIRAChangeGr
 	*/
 	public com.liferay.socialcoding.model.JIRAChangeGroup fetchByJiraIssueId_First(
 		long jiraIssueId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAChangeGroup> orderByComparator);
 
 	/**
 	* Returns the last j i r a change group in the ordered set where jiraIssueId = &#63;.
@@ -230,7 +233,7 @@ public interface JIRAChangeGroupPersistence extends BasePersistence<JIRAChangeGr
 	*/
 	public com.liferay.socialcoding.model.JIRAChangeGroup findByJiraIssueId_Last(
 		long jiraIssueId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAChangeGroup> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchJIRAChangeGroupException;
 
 	/**
@@ -242,7 +245,7 @@ public interface JIRAChangeGroupPersistence extends BasePersistence<JIRAChangeGr
 	*/
 	public com.liferay.socialcoding.model.JIRAChangeGroup fetchByJiraIssueId_Last(
 		long jiraIssueId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAChangeGroup> orderByComparator);
 
 	/**
 	* Returns the j i r a change groups before and after the current j i r a change group in the ordered set where jiraIssueId = &#63;.
@@ -255,7 +258,7 @@ public interface JIRAChangeGroupPersistence extends BasePersistence<JIRAChangeGr
 	*/
 	public com.liferay.socialcoding.model.JIRAChangeGroup[] findByJiraIssueId_PrevAndNext(
 		long jiraChangeGroupId, long jiraIssueId,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAChangeGroup> orderByComparator)
 		throws com.liferay.socialcoding.NoSuchJIRAChangeGroupException;
 
 	/**
@@ -371,7 +374,7 @@ public interface JIRAChangeGroupPersistence extends BasePersistence<JIRAChangeGr
 	*/
 	public java.util.List<com.liferay.socialcoding.model.JIRAChangeGroup> findAll(
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.socialcoding.model.JIRAChangeGroup> orderByComparator);
 
 	/**
 	* Removes all the j i r a change groups from the database.

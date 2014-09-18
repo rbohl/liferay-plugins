@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -40,12 +39,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -153,7 +150,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	 */
 	@Override
 	public List<Message> findByCompanyId(long companyId, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Message> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -259,7 +256,8 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	 */
 	@Override
 	public Message findByCompanyId_First(long companyId,
-		OrderByComparator orderByComparator) throws NoSuchMessageException {
+		OrderByComparator<Message> orderByComparator)
+		throws NoSuchMessageException {
 		Message message = fetchByCompanyId_First(companyId, orderByComparator);
 
 		if (message != null) {
@@ -287,7 +285,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	 */
 	@Override
 	public Message fetchByCompanyId_First(long companyId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Message> orderByComparator) {
 		List<Message> list = findByCompanyId(companyId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -307,7 +305,8 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	 */
 	@Override
 	public Message findByCompanyId_Last(long companyId,
-		OrderByComparator orderByComparator) throws NoSuchMessageException {
+		OrderByComparator<Message> orderByComparator)
+		throws NoSuchMessageException {
 		Message message = fetchByCompanyId_Last(companyId, orderByComparator);
 
 		if (message != null) {
@@ -335,7 +334,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	 */
 	@Override
 	public Message fetchByCompanyId_Last(long companyId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Message> orderByComparator) {
 		int count = countByCompanyId(companyId);
 
 		if (count == 0) {
@@ -363,7 +362,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	 */
 	@Override
 	public Message[] findByCompanyId_PrevAndNext(long messageId,
-		long companyId, OrderByComparator orderByComparator)
+		long companyId, OrderByComparator<Message> orderByComparator)
 		throws NoSuchMessageException {
 		Message message = findByPrimaryKey(messageId);
 
@@ -393,8 +392,8 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	}
 
 	protected Message getByCompanyId_PrevAndNext(Session session,
-		Message message, long companyId, OrderByComparator orderByComparator,
-		boolean previous) {
+		Message message, long companyId,
+		OrderByComparator<Message> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -628,7 +627,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	 */
 	@Override
 	public List<Message> findByFolderId(long folderId, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Message> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -734,7 +733,8 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	 */
 	@Override
 	public Message findByFolderId_First(long folderId,
-		OrderByComparator orderByComparator) throws NoSuchMessageException {
+		OrderByComparator<Message> orderByComparator)
+		throws NoSuchMessageException {
 		Message message = fetchByFolderId_First(folderId, orderByComparator);
 
 		if (message != null) {
@@ -762,7 +762,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	 */
 	@Override
 	public Message fetchByFolderId_First(long folderId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Message> orderByComparator) {
 		List<Message> list = findByFolderId(folderId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -782,7 +782,8 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	 */
 	@Override
 	public Message findByFolderId_Last(long folderId,
-		OrderByComparator orderByComparator) throws NoSuchMessageException {
+		OrderByComparator<Message> orderByComparator)
+		throws NoSuchMessageException {
 		Message message = fetchByFolderId_Last(folderId, orderByComparator);
 
 		if (message != null) {
@@ -810,7 +811,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	 */
 	@Override
 	public Message fetchByFolderId_Last(long folderId,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Message> orderByComparator) {
 		int count = countByFolderId(folderId);
 
 		if (count == 0) {
@@ -838,7 +839,8 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	 */
 	@Override
 	public Message[] findByFolderId_PrevAndNext(long messageId, long folderId,
-		OrderByComparator orderByComparator) throws NoSuchMessageException {
+		OrderByComparator<Message> orderByComparator)
+		throws NoSuchMessageException {
 		Message message = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -867,8 +869,8 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	}
 
 	protected Message getByFolderId_PrevAndNext(Session session,
-		Message message, long folderId, OrderByComparator orderByComparator,
-		boolean previous) {
+		Message message, long folderId,
+		OrderByComparator<Message> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -1851,7 +1853,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	 */
 	@Override
 	public List<Message> findAll(int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Message> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1987,25 +1989,6 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	 * Initializes the message persistence.
 	 */
 	public void afterPropertiesSet() {
-		String[] listenerClassNames = StringUtil.split(GetterUtil.getString(
-					com.liferay.util.service.ServiceProps.get(
-						"value.object.listener.com.liferay.mail.model.Message")));
-
-		if (listenerClassNames.length > 0) {
-			try {
-				List<ModelListener<Message>> listenersList = new ArrayList<ModelListener<Message>>();
-
-				for (String listenerClassName : listenerClassNames) {
-					listenersList.add((ModelListener<Message>)InstanceFactory.newInstance(
-							getClassLoader(), listenerClassName));
-				}
-
-				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
-			}
-			catch (Exception e) {
-				_log.error(e);
-			}
-		}
 	}
 
 	public void destroy() {

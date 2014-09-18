@@ -31,21 +31,17 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -151,7 +147,7 @@ public class BBBServerPersistenceImpl extends BasePersistenceImpl<BBBServer>
 	 */
 	@Override
 	public List<BBBServer> findByActive(boolean active, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<BBBServer> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -257,7 +253,8 @@ public class BBBServerPersistenceImpl extends BasePersistenceImpl<BBBServer>
 	 */
 	@Override
 	public BBBServer findByActive_First(boolean active,
-		OrderByComparator orderByComparator) throws NoSuchServerException {
+		OrderByComparator<BBBServer> orderByComparator)
+		throws NoSuchServerException {
 		BBBServer bbbServer = fetchByActive_First(active, orderByComparator);
 
 		if (bbbServer != null) {
@@ -285,7 +282,7 @@ public class BBBServerPersistenceImpl extends BasePersistenceImpl<BBBServer>
 	 */
 	@Override
 	public BBBServer fetchByActive_First(boolean active,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<BBBServer> orderByComparator) {
 		List<BBBServer> list = findByActive(active, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -305,7 +302,8 @@ public class BBBServerPersistenceImpl extends BasePersistenceImpl<BBBServer>
 	 */
 	@Override
 	public BBBServer findByActive_Last(boolean active,
-		OrderByComparator orderByComparator) throws NoSuchServerException {
+		OrderByComparator<BBBServer> orderByComparator)
+		throws NoSuchServerException {
 		BBBServer bbbServer = fetchByActive_Last(active, orderByComparator);
 
 		if (bbbServer != null) {
@@ -333,7 +331,7 @@ public class BBBServerPersistenceImpl extends BasePersistenceImpl<BBBServer>
 	 */
 	@Override
 	public BBBServer fetchByActive_Last(boolean active,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<BBBServer> orderByComparator) {
 		int count = countByActive(active);
 
 		if (count == 0) {
@@ -361,7 +359,7 @@ public class BBBServerPersistenceImpl extends BasePersistenceImpl<BBBServer>
 	 */
 	@Override
 	public BBBServer[] findByActive_PrevAndNext(long bbbServerId,
-		boolean active, OrderByComparator orderByComparator)
+		boolean active, OrderByComparator<BBBServer> orderByComparator)
 		throws NoSuchServerException {
 		BBBServer bbbServer = findByPrimaryKey(bbbServerId);
 
@@ -392,7 +390,7 @@ public class BBBServerPersistenceImpl extends BasePersistenceImpl<BBBServer>
 
 	protected BBBServer getByActive_PrevAndNext(Session session,
 		BBBServer bbbServer, boolean active,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<BBBServer> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -1057,7 +1055,7 @@ public class BBBServerPersistenceImpl extends BasePersistenceImpl<BBBServer>
 	 */
 	@Override
 	public List<BBBServer> findAll(int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<BBBServer> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1193,25 +1191,6 @@ public class BBBServerPersistenceImpl extends BasePersistenceImpl<BBBServer>
 	 * Initializes the b b b server persistence.
 	 */
 	public void afterPropertiesSet() {
-		String[] listenerClassNames = StringUtil.split(GetterUtil.getString(
-					com.liferay.util.service.ServiceProps.get(
-						"value.object.listener.com.liferay.bbb.model.BBBServer")));
-
-		if (listenerClassNames.length > 0) {
-			try {
-				List<ModelListener<BBBServer>> listenersList = new ArrayList<ModelListener<BBBServer>>();
-
-				for (String listenerClassName : listenerClassNames) {
-					listenersList.add((ModelListener<BBBServer>)InstanceFactory.newInstance(
-							getClassLoader(), listenerClassName));
-				}
-
-				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
-			}
-			catch (Exception e) {
-				_log.error(e);
-			}
-		}
 	}
 
 	public void destroy() {

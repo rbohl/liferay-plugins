@@ -203,7 +203,7 @@ public class BBBServerLocalServiceClpInvoker {
 			return BBBServerLocalServiceUtil.dynamicQuery((com.liferay.portal.kernel.dao.orm.DynamicQuery)arguments[0],
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue(),
-				(com.liferay.portal.kernel.util.OrderByComparator)arguments[3]);
+				(com.liferay.portal.kernel.util.OrderByComparator<?>)arguments[3]);
 		}
 
 		if (_methodName8.equals(name) &&
@@ -304,7 +304,7 @@ public class BBBServerLocalServiceClpInvoker {
 				Arrays.deepEquals(_methodParameterTypes64, parameterTypes)) {
 			return BBBServerLocalServiceUtil.getBBBServers(((Integer)arguments[0]).intValue(),
 				((Integer)arguments[1]).intValue(),
-				(com.liferay.portal.kernel.util.OrderByComparator)arguments[2]);
+				(com.liferay.portal.kernel.util.OrderByComparator<com.liferay.bbb.model.BBBServer>)arguments[2]);
 		}
 
 		if (_methodName65.equals(name) &&

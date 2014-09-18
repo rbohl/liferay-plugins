@@ -14,6 +14,8 @@
 
 package com.liferay.calendar.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.calendar.model.CalendarBooking;
 import com.liferay.calendar.service.CalendarBookingLocalService;
 import com.liferay.calendar.service.persistence.CalendarBookingFinder;
@@ -85,6 +87,7 @@ import javax.sql.DataSource;
  * @see com.liferay.calendar.service.CalendarBookingLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class CalendarBookingLocalServiceBaseImpl
 	extends BaseLocalServiceImpl implements CalendarBookingLocalService,
 		IdentifiableBean {
@@ -236,20 +239,6 @@ public abstract class CalendarBookingLocalServiceBaseImpl
 	}
 
 	/**
-	 * Returns the calendar booking with the matching UUID and company.
-	 *
-	 * @param uuid the calendar booking's UUID
-	 * @param  companyId the primary key of the company
-	 * @return the matching calendar booking, or <code>null</code> if a matching calendar booking could not be found
-	 */
-	@Override
-	public CalendarBooking fetchCalendarBookingByUuidAndCompanyId(String uuid,
-		long companyId) {
-		return calendarBookingPersistence.fetchByUuid_C_First(uuid, companyId,
-			null);
-	}
-
-	/**
 	 * Returns the calendar booking matching the UUID and group.
 	 *
 	 * @param uuid the calendar booking's UUID
@@ -375,19 +364,18 @@ public abstract class CalendarBookingLocalServiceBaseImpl
 		return calendarBookingPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
-	/**
-	 * Returns the calendar booking with the matching UUID and company.
-	 *
-	 * @param uuid the calendar booking's UUID
-	 * @param  companyId the primary key of the company
-	 * @return the matching calendar booking
-	 * @throws PortalException if a matching calendar booking could not be found
-	 */
 	@Override
-	public CalendarBooking getCalendarBookingByUuidAndCompanyId(String uuid,
-		long companyId) throws PortalException {
-		return calendarBookingPersistence.findByUuid_C_First(uuid, companyId,
-			null);
+	public List<CalendarBooking> getCalendarBookingsByUuidAndCompanyId(
+		String uuid, long companyId) {
+		return calendarBookingPersistence.findByUuid_C(uuid, companyId);
+	}
+
+	@Override
+	public List<CalendarBooking> getCalendarBookingsByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CalendarBooking> orderByComparator) {
+		return calendarBookingPersistence.findByUuid_C(uuid, companyId, start,
+			end, orderByComparator);
 	}
 
 	/**

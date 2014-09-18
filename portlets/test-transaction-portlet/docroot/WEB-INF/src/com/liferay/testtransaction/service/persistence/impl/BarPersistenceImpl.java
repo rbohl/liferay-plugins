@@ -25,17 +25,14 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import com.liferay.testtransaction.NoSuchBarException;
@@ -46,7 +43,6 @@ import com.liferay.testtransaction.service.persistence.BarPersistence;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -150,7 +146,7 @@ public class BarPersistenceImpl extends BasePersistenceImpl<Bar>
 	 */
 	@Override
 	public List<Bar> findByText(String text, int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Bar> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -268,8 +264,8 @@ public class BarPersistenceImpl extends BasePersistenceImpl<Bar>
 	 * @throws com.liferay.testtransaction.NoSuchBarException if a matching bar could not be found
 	 */
 	@Override
-	public Bar findByText_First(String text, OrderByComparator orderByComparator)
-		throws NoSuchBarException {
+	public Bar findByText_First(String text,
+		OrderByComparator<Bar> orderByComparator) throws NoSuchBarException {
 		Bar bar = fetchByText_First(text, orderByComparator);
 
 		if (bar != null) {
@@ -297,7 +293,7 @@ public class BarPersistenceImpl extends BasePersistenceImpl<Bar>
 	 */
 	@Override
 	public Bar fetchByText_First(String text,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Bar> orderByComparator) {
 		List<Bar> list = findByText(text, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -316,8 +312,8 @@ public class BarPersistenceImpl extends BasePersistenceImpl<Bar>
 	 * @throws com.liferay.testtransaction.NoSuchBarException if a matching bar could not be found
 	 */
 	@Override
-	public Bar findByText_Last(String text, OrderByComparator orderByComparator)
-		throws NoSuchBarException {
+	public Bar findByText_Last(String text,
+		OrderByComparator<Bar> orderByComparator) throws NoSuchBarException {
 		Bar bar = fetchByText_Last(text, orderByComparator);
 
 		if (bar != null) {
@@ -344,7 +340,8 @@ public class BarPersistenceImpl extends BasePersistenceImpl<Bar>
 	 * @return the last matching bar, or <code>null</code> if a matching bar could not be found
 	 */
 	@Override
-	public Bar fetchByText_Last(String text, OrderByComparator orderByComparator) {
+	public Bar fetchByText_Last(String text,
+		OrderByComparator<Bar> orderByComparator) {
 		int count = countByText(text);
 
 		if (count == 0) {
@@ -371,7 +368,7 @@ public class BarPersistenceImpl extends BasePersistenceImpl<Bar>
 	 */
 	@Override
 	public Bar[] findByText_PrevAndNext(long barId, String text,
-		OrderByComparator orderByComparator) throws NoSuchBarException {
+		OrderByComparator<Bar> orderByComparator) throws NoSuchBarException {
 		Bar bar = findByPrimaryKey(barId);
 
 		Session session = null;
@@ -400,7 +397,7 @@ public class BarPersistenceImpl extends BasePersistenceImpl<Bar>
 	}
 
 	protected Bar getByText_PrevAndNext(Session session, Bar bar, String text,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<Bar> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -1079,7 +1076,7 @@ public class BarPersistenceImpl extends BasePersistenceImpl<Bar>
 	 */
 	@Override
 	public List<Bar> findAll(int start, int end,
-		OrderByComparator orderByComparator) {
+		OrderByComparator<Bar> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1214,25 +1211,6 @@ public class BarPersistenceImpl extends BasePersistenceImpl<Bar>
 	 * Initializes the bar persistence.
 	 */
 	public void afterPropertiesSet() {
-		String[] listenerClassNames = StringUtil.split(GetterUtil.getString(
-					com.liferay.util.service.ServiceProps.get(
-						"value.object.listener.com.liferay.testtransaction.model.Bar")));
-
-		if (listenerClassNames.length > 0) {
-			try {
-				List<ModelListener<Bar>> listenersList = new ArrayList<ModelListener<Bar>>();
-
-				for (String listenerClassName : listenerClassNames) {
-					listenersList.add((ModelListener<Bar>)InstanceFactory.newInstance(
-							getClassLoader(), listenerClassName));
-				}
-
-				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
-			}
-			catch (Exception e) {
-				_log.error(e);
-			}
-		}
 	}
 
 	public void destroy() {
