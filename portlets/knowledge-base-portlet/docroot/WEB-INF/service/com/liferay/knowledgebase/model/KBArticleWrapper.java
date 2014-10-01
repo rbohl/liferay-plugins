@@ -290,6 +290,11 @@ public class KBArticleWrapper implements KBArticle, ModelWrapper<KBArticle> {
 	}
 
 	@Override
+	public long getClassNameId() {
+		return _kbArticle.getClassNameId();
+	}
+
+	@Override
 	public long getClassPK() {
 		return _kbArticle.getClassPK();
 	}
@@ -413,6 +418,12 @@ public class KBArticleWrapper implements KBArticle, ModelWrapper<KBArticle> {
 	@Override
 	public long getParentResourcePrimKey() {
 		return _kbArticle.getParentResourcePrimKey();
+	}
+
+	@Override
+	public java.lang.String getParentTitle(java.util.Locale locale, int status)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _kbArticle.getParentTitle(locale, status);
 	}
 
 	/**

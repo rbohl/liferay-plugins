@@ -22,7 +22,7 @@ int status = (Integer)request.getAttribute(WebKeys.KNOWLEDGE_BASE_STATUS);
 KBArticle kbArticle = (KBArticle)request.getAttribute(WebKeys.KNOWLEDGE_BASE_KB_ARTICLE);
 
 long resourcePrimKey = BeanParamUtil.getLong(kbArticle, request, "resourcePrimKey");
-
+long parentResourceClassNameId = BeanParamUtil.getLong(kbArticle, request, "parentResourceClassNameId");
 long parentResourcePrimKey = BeanParamUtil.getLong(kbArticle, request, "parentResourcePrimKey");
 double priority = BeanParamUtil.getDouble(kbArticle, request, "priority");
 %>
@@ -39,6 +39,7 @@ double priority = BeanParamUtil.getDouble(kbArticle, request, "priority");
 	<aui:input name="mvcPath" type="hidden" value='<%= templatePath + "move_article.jsp" %>' />
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="resourcePrimKey" type="hidden" value="<%= String.valueOf(resourcePrimKey) %>" />
+	<aui:input name="parentResourceClassNameId" type="hidden" value="<%= parentResourceClassNameId %>" />
 	<aui:input name="parentResourcePrimKey" type="hidden" value="<%= parentResourcePrimKey %>" />
 	<aui:input name="status" type="hidden" value="<%= String.valueOf(status) %>" />
 
@@ -46,7 +47,7 @@ double priority = BeanParamUtil.getDouble(kbArticle, request, "priority");
 
 	<aui:fieldset>
 		<div class="form-group">
-			<aui:input name="currentParent" type="resource" value='<%= !kbArticle.isRoot() ? BeanPropertiesUtil.getString(KBArticleServiceUtil.getLatestKBArticle(kbArticle.getParentResourcePrimKey(), status), "title") : "(" + LanguageUtil.get(request, "none") + ")" %>' />
+			<aui:input name="currentParent" type="resource" value="<%= kbArticle.getParentTitle(locale, status) %>" />
 
 			<aui:input cssClass="input-mini" label="" name="priority" type="resource" value="<%= BigDecimal.valueOf(priority).toPlainString() %>" />
 		</div>
@@ -66,8 +67,10 @@ double priority = BeanParamUtil.getDouble(kbArticle, request, "priority");
 </aui:form>
 
 <aui:script>
-	function <portlet:namespace />selectKBArticle(parentResourcePrimKey, html) {
+	function <portlet:namespace />selectKBArticle(parentTitle, parentPriority, parentResourcePrimKey, parentResourceClassNameId, html) {
+		document.<portlet:namespace />fm.<portlet:namespace />parentPriority.value = parentPriority;
+		document.<portlet:namespace />fm.<portlet:namespace />parentResource.value = parentTitle;
+		document.<portlet:namespace />fm.<portlet:namespace />parentResourceClassNameId.value = parentResourceClassNameId;
 		document.<portlet:namespace />fm.<portlet:namespace />parentResourcePrimKey.value = parentResourcePrimKey;
-		document.getElementById('<portlet:namespace />newParent').innerHTML = html;
 	}
 </aui:script>

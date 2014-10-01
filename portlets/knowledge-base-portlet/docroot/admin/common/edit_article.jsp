@@ -22,8 +22,9 @@ KBArticle kbArticle = (KBArticle)request.getAttribute(WebKeys.KNOWLEDGE_BASE_KB_
 KBTemplate kbTemplate = (KBTemplate)request.getAttribute(WebKeys.KNOWLEDGE_BASE_KB_TEMPLATE);
 
 long resourcePrimKey = BeanParamUtil.getLong(kbArticle, request, "resourcePrimKey");
+long parentResourceClassNameId = BeanParamUtil.getLong(kbArticle, request, "parentResourceClassNameId", PortalUtil.getClassNameId(KBFolderConstants.getClassName()));
+long parentResourcePrimKey = BeanParamUtil.getLong(kbArticle, request, "parentResourcePrimKey", KBFolderConstants.DEFAULT_PARENT_FOLDER_ID);
 
-long parentResourcePrimKey = BeanParamUtil.getLong(kbArticle, request, "parentResourcePrimKey", KBArticleConstants.DEFAULT_PARENT_RESOURCE_PRIM_KEY);
 String content = BeanParamUtil.getString(kbArticle, request, "content", BeanPropertiesUtil.getString(kbTemplate, "content"));
 String[] sections = AdminUtil.unescapeSections(BeanPropertiesUtil.getString(kbArticle, "sections", StringUtil.merge(PortletPropsValues.ADMIN_KB_ARTICLE_DEFAULT_SECTIONS)));
 %>
@@ -41,6 +42,7 @@ String[] sections = AdminUtil.unescapeSections(BeanPropertiesUtil.getString(kbAr
 	<aui:input name="<%= Constants.CMD %>" type="hidden" />
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="resourcePrimKey" type="hidden" value="<%= String.valueOf(resourcePrimKey) %>" />
+	<aui:input name="parentResourceClassNameId" type="hidden" value="<%= parentResourceClassNameId %>" />
 	<aui:input name="parentResourcePrimKey" type="hidden" value="<%= parentResourcePrimKey %>" />
 	<aui:input name="workflowAction" type="hidden" value="<%= WorkflowConstants.ACTION_SAVE_DRAFT %>" />
 
@@ -136,7 +138,7 @@ String[] sections = AdminUtil.unescapeSections(BeanPropertiesUtil.getString(kbAr
 		</c:if>
 
 		<c:if test="<%= kbArticle == null %>">
-			<aui:field-wrapper cssClass='<%= (parentResourcePrimKey != KBArticleConstants.DEFAULT_PARENT_RESOURCE_PRIM_KEY) ? "hide" : StringPool.BLANK %>' label="permissions">
+			<aui:field-wrapper cssClass='<%= (parentResourcePrimKey != KBFolderConstants.DEFAULT_PARENT_FOLDER_ID) ? "hide" : StringPool.BLANK %>' label="permissions">
 				<liferay-ui:input-permissions
 					modelName="<%= KBArticle.class.getName() %>"
 				/>
@@ -167,11 +169,11 @@ String[] sections = AdminUtil.unescapeSections(BeanPropertiesUtil.getString(kbAr
 		</liferay-ui:panel>
 
 		<aui:button-row cssClass="kb-submit-buttons">
-			<aui:button type="submit" value='<%= ((kbArticle == null) || kbArticle.isApproved() || kbArticle.isDraft()) ? "save-as-draft" : "save" %>' />
-
 			<c:if test="<%= (kbArticle == null) || !kbArticle.isPending() %>">
-				<aui:button onClick='<%= renderResponse.getNamespace() + "publishKBArticle();" %>' value='<%= WorkflowDefinitionLinkLocalServiceUtil.hasWorkflowDefinitionLink(themeDisplay.getCompanyId(), scopeGroupId, KBArticle.class.getName()) ? "submit-for-publication" : "publish" %>' />
+				<aui:button onClick='<%= renderResponse.getNamespace() + "publishKBArticle();" %>' type="submit" value='<%= WorkflowDefinitionLinkLocalServiceUtil.hasWorkflowDefinitionLink(themeDisplay.getCompanyId(), scopeGroupId, KBArticle.class.getName()) ? "submit-for-publication" : "publish" %>' />
 			</c:if>
+
+			<aui:button primary="<%= false %>" type="submit" value='<%= (kbArticle == null) || kbArticle.isApproved() || kbArticle.isDraft() ? "save-as-draft" : "save" %>' />
 
 			<aui:button href="<%= redirect %>" type="cancel" />
 		</aui:button-row>
