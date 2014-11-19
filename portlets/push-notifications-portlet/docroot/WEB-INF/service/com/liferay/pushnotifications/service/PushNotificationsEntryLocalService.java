@@ -60,8 +60,8 @@ public interface PushNotificationsEntryLocalService extends BaseLocalService,
 		com.liferay.pushnotifications.model.PushNotificationsEntry pushNotificationsEntry);
 
 	public com.liferay.pushnotifications.model.PushNotificationsEntry addPushNotificationsEntry(
-		long userId, long parentPushNotificationsEntryId,
-		com.liferay.portal.kernel.json.JSONObject payloadJSONObject);
+		long userId, com.liferay.portal.kernel.json.JSONObject payloadJSONObject)
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	/**
 	* Creates a new push notifications entry with the primary key. Does not add the push notifications entry to the database.
@@ -148,20 +148,20 @@ public interface PushNotificationsEntryLocalService extends BaseLocalService,
 		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator);
 
 	/**
-	* Returns the number of rows that match the dynamic query.
+	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
-	* @return the number of rows that match the dynamic query
+	* @return the number of rows matching the dynamic query
 	*/
 	public long dynamicQueryCount(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery);
 
 	/**
-	* Returns the number of rows that match the dynamic query.
+	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
 	* @param projection the projection to apply to the query
-	* @return the number of rows that match the dynamic query
+	* @return the number of rows matching the dynamic query
 	*/
 	public long dynamicQueryCount(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
@@ -232,12 +232,12 @@ public interface PushNotificationsEntryLocalService extends BaseLocalService,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable;
 
-	public void sendPushNotification(
-		com.liferay.portal.kernel.json.JSONObject jsonObject, int start, int end)
+	public void sendPushNotification(long fromUserId,
+		com.liferay.portal.kernel.json.JSONObject payloadJSONObject)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public void sendPushNotification(long toUserId,
-		com.liferay.portal.kernel.json.JSONObject jsonObject, int start, int end)
+	public void sendPushNotification(long fromUserId, long toUserId,
+		com.liferay.portal.kernel.json.JSONObject payloadJSONObject)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	/**
