@@ -105,6 +105,14 @@ public class PushNotificationsEntryLocalServiceUtil {
 				   .deletePushNotificationsEntry(pushNotificationsEntryId);
 	}
 
+	public static com.liferay.pushnotifications.model.PushNotificationsEntry dislikePushNotificationsEntry(
+		long userId, long pushNotificationsEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .dislikePushNotificationsEntry(userId,
+			pushNotificationsEntryId);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
@@ -259,6 +267,13 @@ public class PushNotificationsEntryLocalServiceUtil {
 		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
+	public static com.liferay.pushnotifications.model.PushNotificationsEntry likePushNotificationsEntry(
+		long userId, long pushNotificationsEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .likePushNotificationsEntry(userId, pushNotificationsEntryId);
+	}
+
 	public static void sendPushNotification(long fromUserId,
 		com.liferay.portal.kernel.json.JSONObject payloadJSONObject)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -279,6 +294,13 @@ public class PushNotificationsEntryLocalServiceUtil {
 	*/
 	public static void setBeanIdentifier(java.lang.String beanIdentifier) {
 		getService().setBeanIdentifier(beanIdentifier);
+	}
+
+	public static com.liferay.pushnotifications.model.PushNotificationsEntry updateChildrenPushNotificationsEntriesCount(
+		long parentPushNotificationsEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateChildrenPushNotificationsEntriesCount(parentPushNotificationsEntryId);
 	}
 
 	/**
