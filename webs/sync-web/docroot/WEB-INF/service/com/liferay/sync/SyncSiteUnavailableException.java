@@ -12,20 +12,28 @@
  * details.
  */
 
-package com.liferay.knowledgebase.service.persistence;
+package com.liferay.sync;
 
-import aQute.bnd.annotation.ProviderType;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Brian Wing Shun Chan
- * @generated
  */
-@ProviderType
-public interface KBArticleFinder {
-	public int countByUrlTitle(long groupId, java.lang.String kbFolderUrlTitle,
-		java.lang.String kbArticleUrlTitle, int[] status);
+public class SyncSiteUnavailableException extends PortalException {
 
-	public java.util.List<com.liferay.knowledgebase.model.KBArticle> findByUrlTitle(
-		long groupId, java.lang.String kbFolderUrlTitle,
-		java.lang.String kbArticleUrlTitle, int[] status, int start, int end);
+	public SyncSiteUnavailableException() {
+	}
+
+	public SyncSiteUnavailableException(String msg) {
+		super(msg);
+	}
+
+	public SyncSiteUnavailableException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
+
+	public SyncSiteUnavailableException(Throwable cause) {
+		super(cause);
+	}
+
 }
