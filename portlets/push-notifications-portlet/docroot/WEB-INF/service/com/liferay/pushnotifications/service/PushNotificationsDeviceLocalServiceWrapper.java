@@ -273,6 +273,11 @@ public class PushNotificationsDeviceLocalServiceWrapper
 	}
 
 	@Override
+	public void resetPushNotificationSenders() {
+		_pushNotificationsDeviceLocalService.resetPushNotificationSenders();
+	}
+
+	@Override
 	public void sendPushNotification(long fromUserId,
 		com.liferay.portal.kernel.json.JSONObject jsonObject)
 		throws com.liferay.portal.kernel.exception.PortalException {

@@ -205,6 +205,30 @@ Error-Prone was automatically installed. Please rerun your task.
 		</sequential>
 	</macrodef>
 
+	<macrodef name="gradle-execute">
+		<attribute name="task" />
+ 
+		<sequential>
+			<if>
+				<os family="unix" />
+				<then>
+					<property name="gradlew.suffix" value="" />
+
+					<chmod file="${sdk.dir}/tools/gradle/gradlew${gradlew.suffix}" perm="a+x" />
+				</then>
+				<else>
+					<property name="gradlew.suffix" value=".bat" />
+				</else>
+			</if>
+ 
+			<exec executable="${sdk.dir}/tools/gradle/gradlew${gradlew.suffix}" failonerror="true">
+				<arg value="-PpluginsExcludes=${plugins.excludes}" />
+				<arg value="-PpluginsIncludes=${plugins.includes}" />
+				<arg value="@{task}" />
+			</exec>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="loop-macrodef-or-target">
 		<attribute name="module.dirs" />
 		<attribute name="target.name" />
@@ -2128,7 +2152,7 @@ Please find a solution that does not require portal-impl.jar.
 			<test-cmd
 				junit.forkmode="once"
 				module.dir="@{module.dir}"
-				test.class="${test.class}"
+				test.class="**/${test.class}.class"
 				test.type="${test.type}"
 			/>
 		</sequential>
@@ -2172,14 +2196,17 @@ Please find a solution that does not require portal-impl.jar.
 								<jvmarg value="-Dexternal-properties=${test.properties}" />
 								<jvmarg value="-Dfile.encoding=UTF-8" />
 								<jvmarg value="-Djava.net.preferIPv4Stack=true" />
+								<jvmarg value="-Dliferay.mode=test" />
 								<jvmarg value="-Dsdk.dir=${sdk.dir}" />
+								<jvmarg value="-Dtest.class.group.index=${test.class.group.index}" />
+								<jvmarg value="-Dtest.class.groups=${TEST_CLASS_GROUPS}" />
 								<jvmarg value="-Duser.timezone=GMT" />
 								<classpath location="@{module.dir}/test-coverage" />
 								<classpath refid="test.classpath" />
 								<formatter type="brief" usefile="false" />
 								<formatter type="xml" />
 								<batchtest todir="@{module.dir}/test-results/@{test.type}">
-									<fileset dir="@{module.dir}/test-classes/@{test.type}" includes="**/@{test.class}.class">
+									<fileset dir="@{module.dir}/test-classes/@{test.type}" includes="@{test.class}">
 										<filename regex="${junit.test.excludes}" negate="true" />
 									</fileset>
 								</batchtest>
@@ -2200,7 +2227,7 @@ Please find a solution that does not require portal-impl.jar.
 			<test-cmd
 				junit.forkmode="once"
 				module.dir="@{module.dir}"
-				test.class="*Test"
+				test.class="**/*Test.class"
 				test.type="integration"
 			/>
 		</sequential>
@@ -2213,7 +2240,7 @@ Please find a solution that does not require portal-impl.jar.
 			<test-cmd
 				junit.forkmode="perTest"
 				module.dir="@{module.dir}"
-				test.class="*Test"
+				test.class="**/*Test.class"
 				test.type="unit"
 			/>
 		</sequential>
@@ -2646,6 +2673,10 @@ for (String path : paths) {
 		</java>
 
 		<delete file="ServiceBuilder.temp" />
+	</target>
+
+	<target name="hello">
+		<gradle-execute task="hello" />
 	</target>
 
 	<target name="jar">
