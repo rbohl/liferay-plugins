@@ -124,12 +124,27 @@ public class SyncDLObjectLocalServiceImpl
 		syncDLObject.setLockUserId(lockUserId);
 		syncDLObject.setLockUserName(lockUserName);
 
-		return syncDLObjectPersistence.update(syncDLObject);
+		syncDLObject = syncDLObjectPersistence.update(syncDLObject);
+
+		if ((event.equals(SyncConstants.EVENT_DELETE) ||
+			 event.equals(SyncConstants.EVENT_TRASH)) &&
+			!type.equals(SyncConstants.TYPE_FOLDER)) {
+
+			syncDLFileVersionDiffLocalService.deleteSyncDLFileVersionDiffs(
+				typePK);
+		}
+
+		return syncDLObject;
 	}
 
 	@Override
 	public void deleteSyncDLObjects(String version, String type) {
 		syncDLObjectPersistence.removeByV_T(version, type);
+	}
+
+	@Override
+	public SyncDLObject fetchSyncDLObject(String type, long typePK) {
+		return syncDLObjectPersistence.fetchByT_T(type, typePK);
 	}
 
 	@Override
@@ -149,13 +164,6 @@ public class SyncDLObjectLocalServiceImpl
 		}
 
 		return modifiedTimes.get(0);
-	}
-
-	@Override
-	public SyncDLObject getSyncDLObject(String type, long typePK)
-		throws PortalException {
-
-		return syncDLObjectPersistence.findByT_T(type, typePK);
 	}
 
 	protected boolean isDefaultRepository(long folderId)
