@@ -253,13 +253,16 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 	@Override
 	public int addKBArticlesMarkdown(
 			long userId, long groupId, long parentKbFolderId, String fileName,
-			InputStream inputStream, ServiceContext serviceContext)
+			boolean prioritizeUpdatedKBArticles,
+			boolean prioritizeByNumericalPrefix, InputStream inputStream,
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		KBArticleImporter kbArticleImporter = new KBArticleImporter();
 
 		return kbArticleImporter.processZipFile(
-			userId, groupId, parentKbFolderId, inputStream, serviceContext);
+			userId, groupId, parentKbFolderId, prioritizeUpdatedKBArticles,
+			prioritizeByNumericalPrefix, inputStream, serviceContext);
 	}
 
 	@Override
@@ -732,6 +735,14 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 	}
 
 	@Override
+	public int getKBFolderKBArticlesCount(
+		long groupId, long kbFolderId, int status) {
+
+		return kbArticlePersistence.countByG_KBFI_S(
+			groupId, kbFolderId, status);
+	}
+
+	@Override
 	public KBArticle getLatestKBArticle(long resourcePrimKey, int status)
 		throws PortalException {
 
@@ -907,10 +918,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 				parentResourceClassNameId);
 			curKBArticle.setParentResourcePrimKey(parentResourcePrimKey);
 
-			if (parentResourceClassNameId == kbFolderClassNameId) {
-				curKBArticle.setKbFolderId(kbFolderId);
-			}
-
+			curKBArticle.setKbFolderId(kbFolderId);
 			curKBArticle.setPriority(priority);
 
 			kbArticlePersistence.update(curKBArticle);
@@ -1273,7 +1281,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 
 		// Subscriptions
 
-		notifySubscribers(kbArticle, serviceContext);
+		notifySubscribers(userId, kbArticle, serviceContext);
 
 		return kbArticle;
 	}
@@ -1672,13 +1680,13 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 		String uniqueUrlTitle = urlTitle;
 
 		if (kbFolderId == KBFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
-			int kbArticleCount = kbArticlePersistence.countByG_KBFI_UT_ST(
+			int kbArticlesCount = kbArticlePersistence.countByG_KBFI_UT_ST(
 				groupId, kbFolderId, uniqueUrlTitle, _STATUSES);
 
-			for (int i = 1; kbArticleCount > 0; i++) {
+			for (int i = 1; kbArticlesCount > 0; i++) {
 				uniqueUrlTitle = urlTitle + StringPool.DASH + i;
 
-				kbArticleCount = kbArticlePersistence.countByG_KBFI_UT_ST(
+				kbArticlesCount = kbArticlePersistence.countByG_KBFI_UT_ST(
 					groupId, kbFolderId, uniqueUrlTitle, _STATUSES);
 			}
 
@@ -1687,13 +1695,13 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 
 		KBFolder kbFolder = kbFolderPersistence.findByPrimaryKey(kbFolderId);
 
-		int kbArticleCount = kbArticleFinder.countByUrlTitle(
+		int kbArticlesCount = kbArticleFinder.countByUrlTitle(
 			groupId, kbFolder.getUrlTitle(), uniqueUrlTitle, _STATUSES);
 
-		for (int i = 1; kbArticleCount > 0; i++) {
+		for (int i = 1; kbArticlesCount > 0; i++) {
 			uniqueUrlTitle = urlTitle + StringPool.DASH + i;
 
-			kbArticleCount = kbArticleFinder.countByUrlTitle(
+			kbArticlesCount = kbArticleFinder.countByUrlTitle(
 				groupId, kbFolder.getUrlTitle(), uniqueUrlTitle, _STATUSES);
 		}
 
@@ -1723,7 +1731,8 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 	}
 
 	protected void notifySubscribers(
-			KBArticle kbArticle, ServiceContext serviceContext)
+			long contextUserId, KBArticle kbArticle,
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		if (Validator.isNull(serviceContext.getLayoutFullURL())) {
@@ -1805,6 +1814,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 			"[$ARTICLE_TITLE$]", kbArticle.getTitle(), false);
 		subscriptionSender.setContextAttribute(
 			"[$ARTICLE_TITLE_DIFF$]", kbArticleDiffs.get("title"), false);
+		subscriptionSender.setContextUserId(contextUserId);
 		subscriptionSender.setContextUserPrefix("ARTICLE");
 		subscriptionSender.setFrom(fromAddress, fromName);
 		subscriptionSender.setHtmlFormat(true);

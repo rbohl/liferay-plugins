@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Company;
 import com.liferay.portal.model.ModelHintsUtil;
@@ -388,16 +389,16 @@ public class CalendarICalDataHandler implements CalendarDataHandler {
 
 		CalendarBooking calendarBooking = null;
 
-		String uuid = null;
+		String vEventUidValue = null;
 
 		Uid uid = vEvent.getUid();
 
 		if (uid != null) {
-			uuid = uid.getValue();
+			vEventUidValue = uid.getValue();
 
 			calendarBooking =
 				CalendarBookingLocalServiceUtil.fetchCalendarBooking(
-					uuid, calendar.getGroupId());
+					calendarId, vEventUidValue);
 		}
 
 		ServiceContext serviceContext = new ServiceContext();
@@ -405,11 +406,10 @@ public class CalendarICalDataHandler implements CalendarDataHandler {
 		serviceContext.setAddGroupPermissions(true);
 		serviceContext.setAddGuestPermissions(true);
 		serviceContext.setAttribute("sendNotification", Boolean.FALSE);
+		serviceContext.setAttribute("vEventUid", vEventUidValue);
 		serviceContext.setScopeGroupId(calendar.getGroupId());
 
 		if (calendarBooking == null) {
-			serviceContext.setUuid(uuid);
-
 			CalendarBookingServiceUtil.addCalendarBooking(
 				calendarId, childCalendarIdsArray,
 				CalendarBookingConstants.PARENT_CALENDAR_BOOKING_ID_DEFAULT,
@@ -592,7 +592,7 @@ public class CalendarICalDataHandler implements CalendarDataHandler {
 
 		// UID
 
-		Uid uid = new Uid(calendarBooking.getUuid());
+		Uid uid = new Uid(calendarBooking.getVEventUid());
 
 		propertyList.add(uid);
 

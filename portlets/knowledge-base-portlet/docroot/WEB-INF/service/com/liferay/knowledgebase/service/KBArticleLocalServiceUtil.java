@@ -102,12 +102,14 @@ public class KBArticleLocalServiceUtil {
 
 	public static int addKBArticlesMarkdown(long userId, long groupId,
 		long parentKbFolderId, java.lang.String fileName,
-		java.io.InputStream inputStream,
+		boolean prioritizeUpdatedKBArticles,
+		boolean prioritizeByNumericalPrefix, java.io.InputStream inputStream,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addKBArticlesMarkdown(userId, groupId, parentKbFolderId,
-			fileName, inputStream, serviceContext);
+			fileName, prioritizeUpdatedKBArticles, prioritizeByNumericalPrefix,
+			inputStream, serviceContext);
 	}
 
 	public static void addTempAttachment(long groupId, long userId,
@@ -519,6 +521,12 @@ public class KBArticleLocalServiceUtil {
 		long parentResourcePrimKey, int status) {
 		return getService()
 				   .getKBArticlesCount(groupId, parentResourcePrimKey, status);
+	}
+
+	public static int getKBFolderKBArticlesCount(long groupId, long kbFolderId,
+		int status) {
+		return getService()
+				   .getKBFolderKBArticlesCount(groupId, kbFolderId, status);
 	}
 
 	public static com.liferay.knowledgebase.model.KBArticle getLatestKBArticle(
