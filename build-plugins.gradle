@@ -17,13 +17,13 @@ buildscript {
 }
 
 configurations {
-	portal
-
-	portalBuildCss {
-		extendsFrom portal
-	}
-
+	pluginRequiredLibraries
+	portalTools
+	portalToolsBuildCss
+	portalToolsBuildCssLegacy
 	portalWeb
+
+	portalToolsBuildCss.extendsFrom portalTools, portalToolsBuildCssLegacy
 }
 
 dependencies {
@@ -33,21 +33,19 @@ dependencies {
 		compile files(projectServiceJarFile)
 	}
 
-	Map projectCompileDependencies = gradle.compileDependencies.find {
-		project.path == it.projectPath
-	}
-
-	if (projectCompileDependencies) {
-		projectCompileDependencies["compile"].each {
-			compile project(it)
-		}
-	}
-
-	if (!name.endsWith("-layouttpl") && !name.equals("portal-compat-shared")) {
+	if (!name.endsWith("-layouttpl") && !name.endsWith("-theme") && !name.equals("portal-compat-shared")) {
 		compile project(":shared:portal-compat-shared")
 	}
 
-	portal(
+	pluginRequiredLibraries(
+		[group: "com.liferay.portal", name: "util-bridges", version: "7.0.0-SNAPSHOT"],
+		[group: "com.liferay.portal", name: "util-java", version: "7.0.0-SNAPSHOT"],
+		[group: "com.liferay.portal", name: "util-taglib", version: "7.0.0-SNAPSHOT"],
+		[group: "commons-logging", name: "commons-logging", version: "1.1.1"],
+		[group: "log4j", name: "log4j", version: "1.2.16"]
+	)
+
+	portalTools(
 		[group: "com.liferay.portal", name: "portal-impl", version: "7.0.0-SNAPSHOT"],
 		[group: "com.liferay.portal", name: "portal-service", version: "7.0.0-SNAPSHOT"],
 		[group: "com.liferay.portal", name: "util-java", version: "7.0.0-SNAPSHOT"],
@@ -58,12 +56,16 @@ dependencies {
 		[group: "javax.servlet", name: "javax.servlet-api", version: "3.0.1"]
 	)
 
-	portalBuildCss(
+	portalToolsBuildCss(
+		[group: "com.liferay", name: "com.liferay.sass.compiler", version: "1.0.0-SNAPSHOT"],
+		[group: "org.apache.ant", name: "ant", version: "1.8.2"],
+		[group: "org.mozilla", name: "rhino", version: "1.7R4"]
+	)
+
+	portalToolsBuildCssLegacy(
 		[group: "com.liferay", name: "com.liferay.ruby.gems", version: "1.0.0-SNAPSHOT"],
 		[group: "javax.portlet", name: "portlet-api", version: "2.0"],
-		[group: "org.apache.ant", name: "ant", version: "1.8.2"],
 		[group: "org.jruby", name: "jruby-complete", version: "1.6.5"],
-		[group: "org.mozilla", name: "rhino", version: "1.7R4"],
 		[group: "org.springframework", name: "spring-web", version: "3.2.10.RELEASE"],
 		[group: "struts", name: "struts", version: "1.2.9"]
 	)
@@ -73,10 +75,6 @@ dependencies {
 	providedCompile(
 		[group: "biz.aQute.bnd", name: "biz.aQute.bnd", version: "2.4.1"],
 		[group: "com.liferay.portal", name: "portal-service", version: "7.0.0-SNAPSHOT"],
-		[group: "com.liferay.portal", name: "util-bridges", version: "7.0.0-SNAPSHOT"],
-		[group: "com.liferay.portal", name: "util-java", version: "7.0.0-SNAPSHOT"],
-		[group: "com.liferay.portal", name: "util-taglib", version: "7.0.0-SNAPSHOT"],
-		[group: "commons-logging", name: "commons-logging", version: "1.1.1"],
 		[group: "hsqldb", name: "hsqldb", version: "1.8.0.7"],
 		[group: "javax.activation", name: "activation", version: "1.1"],
 		[group: "javax.ccpp", name: "ccpp", version: "1.0"],
@@ -85,13 +83,16 @@ dependencies {
 		[group: "javax.portlet", name: "portlet-api", version: "2.0"],
 		[group: "javax.servlet", name: "javax.servlet-api", version: "3.0.1"],
 		[group: "javax.servlet.jsp", name: "jsp-api", version: "2.1"],
-		[group: "log4j", name: "log4j", version: "1.2.16"],
 		[group: "mysql", name: "mysql-connector-java", version: "5.1.23"],
 		[group: "net.sf", name: "jargs", version: "1.0"],
 		[group: "net.sourceforge.jtds", name: "jtds", version: "1.2.6"],
 		[group: "org.eclipse.persistence", name: "javax.persistence", version: "2.0.0"],
 		[group: "postgresql", name: "postgresql", version: "9.2-1002.jdbc4"]
 	)
+
+	if (!name.endsWith("-theme")) {
+		providedCompile configurations.pluginRequiredLibraries
+	}
 }
 
 sourceSets {
@@ -120,11 +121,7 @@ else {
 	else {
 		String moduleIncrementalVersion = pluginPackageProperties["module-incremental-version"]
 
-		if (!moduleIncrementalVersion) {
-			moduleIncrementalVersion = getBuildXmlProperty("plugin.version")
-		}
-
-		version = getBuildXmlProperty("plugin.full.version", ReleaseInfo.version + "." + moduleIncrementalVersion)
+		version = ReleaseInfo.version + "." + moduleIncrementalVersion
 	}
 }
 
@@ -145,7 +142,7 @@ buildCss {
 		sassDocrootDir = file("docroot")
 	}
 
-	sassDocrootDirFileTree = fileTree(dir: sassDocrootDir, include: "**/*.css")
+	sassDocrootDirFileTree = fileTree(dir: sassDocrootDir, exclude: "**/.sass-cache/**", include: "**/*.css")
 
 	args(
 		"sass.dir=/",
@@ -153,7 +150,7 @@ buildCss {
 		"sass.portal.common.dir=${rootDir}/tmp/portal-web/html/css/common"
 	)
 
-	classpath configurations.portalBuildCss
+	classpath configurations.portalToolsBuildCss
 
 	doFirst {
 		if (!exists("${rootDir}/tmp/portal-web")) {
@@ -168,6 +165,8 @@ buildCss {
 			}
 		}
 	}
+
+	inputs.files sassDocrootDirFileTree
 
 	main = "com.liferay.portal.tools.SassToCssBuilder"
 
@@ -187,21 +186,17 @@ clean {
 		tasks.each {
 			dependsOn "clean" + it.name.capitalize()
 		}
-	}
 
-	Map projectCompileDependencies = gradle.compileDependencies.find {
-		project.path == it.projectPath
-	}
+		Set<ProjectDependency> projectDependencies = configurations.compile.allDependencies.withType(ProjectDependency)
 
-	if (projectCompileDependencies) {
-		projectCompileDependencies["compile"].each {
-			dependsOn "${it}:clean"
+		projectDependencies.each {
+			dependsOn "${it.dependencyProject.path}:clean"
 		}
 	}
 }
 
 compile {
-	dependsOn compileJava
+	dependsOn buildCss, compileJava
 }
 
 initGradle << {
@@ -209,16 +204,23 @@ initGradle << {
 	Closure getBuildGradleDependenciesCompile
 	Closure getBuildGradleDependenciesProvidedCompile
 	Closure getBuildGradleDependenciesTestCompile
+	Closure getBuildGradleExt
+	Closure getBuildXmlProperty
 	Closure getIndent
+	Closure readLegacyXmls
 	Closure wrapContents
 	Closure wrapDependency
+	Closure wrapProjectDependency
 	Closure wrapProperty
 	Closure wrapServiceJar
 	Closure writeBuildGradleFile
 	Closure writeDependencySettingsFile
 
+	Node buildXmlNode
+	Node ivyXmlNode
+
 	getBuildGradleDependencies = {
-		List contents = []
+		List<String> contents = []
 
 		contents.addAll(getBuildGradleDependenciesCompile())
 		contents.addAll(getBuildGradleDependenciesProvidedCompile())
@@ -228,11 +230,11 @@ initGradle << {
 	}
 
 	getBuildGradleDependenciesCompile = {
-		List contents = []
+		List<String> contents = []
 
 		if (ivyXmlNode) {
 			ivyXmlNode.dependencies.dependency.each {
-				if ((it.@conf == null) || (it.@conf == "default")) {
+				if (!it.@conf || (it.@conf == "default")) {
 					contents.addAll(wrapDependency(2, it.@org, it.@name, it.@rev))
 				}
 			}
@@ -246,7 +248,7 @@ initGradle << {
 			requiredDeploymentContextsArray.each {
 				String serviceJarFileName = "../../" + it.replaceFirst(".+-", "") + "s/${it}/docroot/WEB-INF/lib/${it}-service.jar"
 
-				File serviceJarFile = new File("${projectDir}", serviceJarFileName)
+				File serviceJarFile = file(serviceJarFileName)
 
 				if (serviceJarFile.exists()) {
 					contents.addAll(wrapServiceJar(2, serviceJarFileName))
@@ -254,11 +256,35 @@ initGradle << {
 			}
 		}
 
+		String importShared = getBuildXmlProperty("import.shared")
+
+		if (importShared) {
+			String[] importSharedArray = importShared.split(",")
+
+			importSharedArray.each {
+				String projectDependencyPath
+
+				if (exists("${rootDir}/shared/${it}/src")) {
+					projectDependencyPath = ":shared:${it}"
+				}
+				else if (exists("${projectDir}/../${it}/src")) {
+					projectDependencyPath = project.path.replaceFirst(project.name, it)
+				}
+				else {
+					println("Project dependency ${it} could not be found in the shared directory or this project's parent directory.")
+
+					return
+				}
+
+				contents.addAll(wrapProjectDependency(2, projectDependencyPath))
+			}
+		}
+
 		return wrapContents(contents, 1, "(", "compile", ")")
 	}
 
 	getBuildGradleDependenciesProvidedCompile = {
-		List contents = []
+		List<String> contents = []
 
 		String portalDependencyJars = pluginPackageProperties["portal-dependency-jars"]
 
@@ -273,9 +299,9 @@ initGradle << {
 			portalDependencyJarsArray.each {
 				String portalDependencyJar ->
 
-				Map portalDependencyJarMap = portalDependencies[portalDependencyJar]
+				Map<String, String> portalDependencyJarMap = portalDependencies[portalDependencyJar]
 
-				if (portalDependencyJarMap == null) {
+				if (!portalDependencyJarMap) {
 					println("Portal dependency " + portalDependencyJar + " is not defined in versions.gradle")
 				}
 				else {
@@ -289,7 +315,7 @@ initGradle << {
 	}
 
 	getBuildGradleDependenciesTestCompile = {
-		List contents = []
+		List<String> contents = []
 
 		if (ivyXmlNode) {
 			ivyXmlNode.dependencies.dependency.each {
@@ -300,6 +326,44 @@ initGradle << {
 		}
 
 		return wrapContents(contents, 1, "(", "testCompile", ")")
+	}
+
+	getBuildGradleExt = {
+		List<String> contents = []
+
+		if (project.name.endsWith("-theme")) {
+			String themeParent = getBuildXmlProperty("theme.parent")
+
+			if (themeParent) {
+				contents.add(wrapProperty(1, "themeParent", themeParent))
+			}
+
+			String themeType = getBuildXmlProperty("theme.type", "vm")
+
+			contents.add(wrapProperty(1, "themeType", themeType))
+		}
+
+		if (contents) {
+			contents = wrapContents(contents, 0, " {", "ext", "}")
+		}
+
+		return contents
+	}
+
+	getBuildXmlProperty = {
+		String key, String defaultValue = "" ->
+
+		String value = defaultValue
+
+		Node buildXmlPropertyNode = buildXmlNode.property.find {
+			it.@name == key
+		}
+
+		if (buildXmlPropertyNode) {
+			value = buildXmlPropertyNode.@value
+		}
+
+		return value
 	}
 
 	getIndent = {
@@ -313,8 +377,31 @@ initGradle << {
 		return indent
 	}
 
+	readLegacyXmls = {
+
+		// build.xml
+
+		XmlParser xmlParser = new XmlParser()
+
+		xmlParser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false)
+
+		File buildXmlFile = file("build.xml")
+
+		if (buildXmlFile.exists()) {
+			buildXmlNode = xmlParser.parse(buildXmlFile)
+		}
+
+		// ivy.xml
+
+		File ivyXmlFile = file("ivy.xml")
+
+		if (ivyXmlFile.exists()) {
+			ivyXmlNode = xmlParser.parse(ivyXmlFile)
+		}
+	}
+
 	wrapContents = {
-		List contents, int indentCount, String leftClose, String name, String rightClose ->
+		List<String> contents, int indentCount, String leftClose, String name, String rightClose ->
 
 		if (!contents) {
 			return contents
@@ -343,6 +430,12 @@ initGradle << {
 		return "${getIndent(indentCount)}[group: \"${group}\", name: \"${name}\", version: \"${version}\"],"
 	}
 
+	wrapProjectDependency = {
+		int indentCount, String projectDependencyPath ->
+
+		return "${getIndent(indentCount)}project(\"${projectDependencyPath}\"),"
+	}
+
 	wrapProperty = {
 		int indentCount, String name, String value = "" ->
 
@@ -360,61 +453,25 @@ initGradle << {
 	}
 
 	writeBuildGradleFile = {
-		List contents = []
+		List<String> contents = []
 
 		contents.addAll(getBuildGradleDependencies())
+		contents.addAll(getBuildGradleExt())
 
-		File buildGradleFile = new File("${projectDir}/build.gradle")
+		File buildGradleFile = file("build.gradle")
 
-		contents.each {
-			buildGradleFile << it + "\n"
-		}
-	}
-
-	writeDependencySettingsFile = {
-		File dependencySettingsFile = new File("${projectDir}/dependency-settings.gradle")
-
-		String importShared = getBuildXmlProperty("import.shared")
-
-		if (importShared) {
-			List contents = []
-
-			String[] importSharedArray = importShared.split(",")
-
-			importSharedArray.each {
-				String includeTransitivePath
-
-				if (exists("${rootDir}/shared/${it}/src")) {
-					includeTransitivePath = ":shared:${it}"
-				}
-				else if (exists("${projectDir}/../${it}/src")) {
-					includeTransitivePath = project.path.replaceFirst(project.name, it)
-				}
-				else {
-					println("Project dependency ${it} could not be found in the shared directory or this project's parent directory.")
-
-					return
-				}
-
-				contents << "includeTransitive \"${includeTransitivePath}\""
-			}
+		buildGradleFile.withWriter {
+			BufferedWriter bufferedWriter ->
 
 			contents.each {
-				dependencySettingsFile << it + "\n"
+				bufferedWriter.writeLine it
 			}
-		}
-		else {
-			dependencySettingsFile.delete()
 		}
 	}
 
-	// build.gradle
+	readLegacyXmls()
 
 	writeBuildGradleFile()
-
-	// dependency-settings.gradle
-
-	writeDependencySettingsFile()
 }
 
 war {
@@ -422,13 +479,13 @@ war {
 	Closure getNewDependencyNames
 	Closure setManifest
 
-	dependsOn buildCss
+	dependsOn compile
 
 	destinationDir = file("${rootDir}/dist2")
 
 	duplicatesStrategy "exclude"
 
-	exclude "_diffs.*", "_diffs/**", "WEB-INF/lib/*"
+	exclude "WEB-INF/lib/*"
 
 	filesMatching("WEB-INF/liferay-hook.xml") {
 		filter {
