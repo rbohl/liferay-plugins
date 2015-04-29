@@ -21,21 +21,36 @@ configurations {
 	portalTools
 	portalToolsBuildCss
 	portalToolsBuildCssLegacy
+	portalToolsFormatSource
 	portalWeb
 
 	portalToolsBuildCss.extendsFrom portalTools, portalToolsBuildCssLegacy
+	portalToolsFormatSource.extendsFrom portalTools
+
+	if (!name.endsWith("-theme")) {
+		providedCompile.extendsFrom pluginRequiredLibraries
+	}
 }
 
 dependencies {
-	File projectServiceJarFile = file("docroot/WEB-INF/lib/${name}-service.jar")
+	compile(
+		{
+			File projectServiceJarFile = file("docroot/WEB-INF/lib/${name}-service.jar")
 
-	if (projectServiceJarFile.exists()) {
-		compile files(projectServiceJarFile)
-	}
+			if (projectServiceJarFile.exists()) {
+				return [files(projectServiceJarFile)]
+			}
 
-	if (!name.endsWith("-layouttpl") && !name.endsWith("-theme") && !name.equals("portal-compat-shared")) {
-		compile project(":shared:portal-compat-shared")
-	}
+			return []
+		}(),
+		{
+			if (!name.endsWith("-layouttpl") && !name.endsWith("-theme") && !name.equals("portal-compat-shared")) {
+				return [project(":shared:portal-compat-shared")]
+			}
+
+			return []
+		}()
+	)
 
 	pluginRequiredLibraries(
 		[group: "com.liferay.portal", name: "util-bridges", version: "7.0.0-SNAPSHOT"],
@@ -57,7 +72,7 @@ dependencies {
 	)
 
 	portalToolsBuildCss(
-		[group: "com.liferay", name: "com.liferay.sass.compiler", version: "1.0.0-SNAPSHOT"],
+		[group: "com.liferay", name: "com.liferay.sass.compiler.jni", version: "1.0.0-SNAPSHOT"],
 		[group: "org.apache.ant", name: "ant", version: "1.8.2"],
 		[group: "org.mozilla", name: "rhino", version: "1.7R4"]
 	)
@@ -68,6 +83,13 @@ dependencies {
 		[group: "org.jruby", name: "jruby-complete", version: "1.6.5"],
 		[group: "org.springframework", name: "spring-web", version: "3.2.10.RELEASE"],
 		[group: "struts", name: "struts", version: "1.2.9"]
+	)
+
+	portalToolsFormatSource(
+		[group: "com.thoughtworks.qdox", name: "qdox", version: "1.12.1"],
+		[group: "dom4j", name: "dom4j", version: "1.6.1"],
+		[group: "org.apache.ant", name: "ant", version: "1.8.2"],
+		[group: "xerces", name: "xercesImpl", version: "2.11.0"]
 	)
 
 	portalWeb group: "com.liferay.portal", name: "portal-web", version: "7.0.0-SNAPSHOT"
@@ -89,10 +111,6 @@ dependencies {
 		[group: "org.eclipse.persistence", name: "javax.persistence", version: "2.0.0"],
 		[group: "postgresql", name: "postgresql", version: "9.2-1002.jdbc4"]
 	)
-
-	if (!name.endsWith("-theme")) {
-		providedCompile configurations.pluginRequiredLibraries
-	}
 }
 
 sourceSets {
@@ -107,40 +125,45 @@ sourceSets {
 	}
 }
 
-String moduleFullVersion = pluginPackageProperties["module-full-version"]
+version = {
+	String moduleFullVersion = pluginPackageProperties["module-full-version"]
 
-if (moduleFullVersion) {
-	version = moduleFullVersion
-}
-else {
-	String bundleVersion = bndProperties["Bundle-Version"]
-
-	if (bundleVersion) {
-		version = bundleVersion
+	if (moduleFullVersion) {
+		return moduleFullVersion
 	}
 	else {
-		String moduleIncrementalVersion = pluginPackageProperties["module-incremental-version"]
+		String bundleVersion = bndProperties["Bundle-Version"]
 
-		version = ReleaseInfo.version + "." + moduleIncrementalVersion
+		if (bundleVersion) {
+			return bundleVersion
+		}
+		else {
+			String moduleIncrementalVersion = pluginPackageProperties["module-incremental-version"]
+
+			return ReleaseInfo.version + "." + moduleIncrementalVersion
+		}
 	}
-}
+}()
 
 webAppDirName = "docroot"
 
 task buildCss(type: JavaExec)
 task compile
+task formatSource(type: JavaExec)
 task initGradle
 
 buildCss {
 	File sassDocrootDir
 	FileTree sassDocrootDirFileTree
 
-	if (osgiPlugin) {
-		sassDocrootDir = file("src/META-INF/resources")
-	}
-	else {
-		sassDocrootDir = file("docroot")
-	}
+	sassDocrootDir = {
+		if (osgiPlugin) {
+			return file("src/META-INF/resources")
+		}
+		else {
+			return file("docroot")
+		}
+	}()
 
 	sassDocrootDirFileTree = fileTree(dir: sassDocrootDir, exclude: "**/.sass-cache/**", include: "**/*.css")
 
@@ -175,10 +198,17 @@ buildCss {
 	}
 
 	outputs.dir "${rootDir}/tmp"
+	outputs.dir(
+		{
+			sassDocrootDirFileTree.each {
+				return "${it}/../.sass-cache"
+			}
+		}()
+	)
+}
 
-	sassDocrootDirFileTree.each {
-		outputs.dir "${it}/../.sass-cache"
-	}
+classes {
+	dependsOn buildCss
 }
 
 clean {
@@ -196,7 +226,19 @@ clean {
 }
 
 compile {
-	dependsOn buildCss, compileJava
+	dependsOn compileJava
+}
+
+formatSource {
+	classpath configurations.portalToolsFormatSource
+
+	main = "com.liferay.portal.tools.sourceformatter.SourceFormatter"
+
+	maxHeapSize = "512m"
+}
+
+formatSource << {
+	delete "ServiceBuilder.temp"
 }
 
 initGradle << {
@@ -478,8 +520,6 @@ war {
 	Closure getLanguageProperties
 	Closure getNewDependencyNames
 	Closure setManifest
-
-	dependsOn compile
 
 	destinationDir = file("${rootDir}/dist2")
 

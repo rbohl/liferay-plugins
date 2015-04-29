@@ -41,10 +41,10 @@ AUI.add(
 		var STR_SPACE = ' ';
 
 		var TPL_ICON_ADD_EVENT_NODE = '<div class="btn-group">' +
-										'<button type="button" class="btn btn-primary calendar-add-event-btn">' +
-											Liferay.Language.get('add-calendar-booking') +
-										'</div>' +
-									'</button>';
+				'<button type="button" class="btn btn-primary calendar-add-event-btn">' +
+					Liferay.Language.get('add-calendar-booking') +
+				'</div>' +
+			'</button>';
 
 		var USER_ID = toInt(themeDisplay.getUserId());
 
@@ -1022,6 +1022,14 @@ AUI.add(
 						instance.on('loadingChange', instance._onLoadingChange);
 						instance.on('startDateChange', instance._onStartDateChange);
 						instance.on('statusChange', instance._onStatusChange);
+					},
+
+					syncUI: function() {
+						var instance = this;
+
+						Liferay.SchedulerEvent.superclass.syncUI.apply(instance, arguments);
+
+						instance._uiSetStatus(instance.get('status'));
 					},
 
 					isMasterBooking: function() {
