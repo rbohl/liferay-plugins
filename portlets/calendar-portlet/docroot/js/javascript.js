@@ -43,8 +43,8 @@ AUI.add(
 		var TPL_ICON_ADD_EVENT_NODE = '<div class="btn-group">' +
 				'<button type="button" class="btn btn-primary calendar-add-event-btn">' +
 					Liferay.Language.get('add-calendar-booking') +
-				'</div>' +
-			'</button>';
+				'</button>' +
+			'</div>';
 
 		var USER_ID = toInt(themeDisplay.getUserId());
 
@@ -524,8 +524,16 @@ AUI.add(
 					'calendarBookings',
 					{
 						calendarIds: calendarIds.join(','),
-						endTime: endDate.getTime(),
-						startTime: startDate.getTime(),
+						endTimeDay: endDate.getDate(),
+						endTimeHour: endDate.getHours(),
+						endTimeMinute: endDate.getMinutes(),
+						endTimeMonth: endDate.getMonth(),
+						endTimeYear: endDate.getFullYear(),
+						startTimeDay: startDate.getDate(),
+						startTimeHour: startDate.getHours(),
+						startTimeMinute: startDate.getMinutes(),
+						startTimeMonth: startDate.getMonth(),
+						startTimeYear: startDate.getFullYear(),
 						statuses: status.join(',')
 					},
 					callback
@@ -1024,14 +1032,6 @@ AUI.add(
 						instance.on('statusChange', instance._onStatusChange);
 					},
 
-					syncUI: function() {
-						var instance = this;
-
-						Liferay.SchedulerEvent.superclass.syncUI.apply(instance, arguments);
-
-						instance._uiSetStatus(instance.get('status'));
-					},
-
 					isMasterBooking: function() {
 						var instance = this;
 
@@ -1066,6 +1066,14 @@ AUI.add(
 								);
 							}
 						}
+					},
+
+					syncUI: function() {
+						var instance = this;
+
+						Liferay.SchedulerEvent.superclass.syncUI.apply(instance, arguments);
+
+						instance._uiSetStatus(instance.get('status'));
 					},
 
 					_onLoadingChange: function(event) {
@@ -1252,7 +1260,7 @@ AUI.add(
 						date = DateMath.add(date, DateMath.WEEK, 1);
 					}
 
-					return CalendarUtil.toUTC(date);
+					return date;
 				},
 
 				getLoadStartDate: function(activeView) {
@@ -1267,7 +1275,7 @@ AUI.add(
 						date = DateMath.subtract(date, DateMath.WEEK, 1);
 					}
 
-					return CalendarUtil.toUTC(date);
+					return date;
 				},
 
 				_doRead: function(options, callback) {
