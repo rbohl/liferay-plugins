@@ -371,7 +371,7 @@ for (long otherCalendarId : otherCalendarIds) {
 				var calendarId = A.one('#<portlet:namespace />calendarId').val();
 				var childCalendarIds = A.Object.keys(Liferay.CalendarUtil.availableCalendars);
 
-				A.Array.remove(childCalendarIds, A.Array.indexOf(childCalendarIds, calendarId));
+				A.Array.remove(childCalendarIds, childCalendarIds.indexOf(calendarId));
 
 				A.one('#<portlet:namespace />childCalendarIds').val(childCalendarIds.join(','));
 			</c:if>
@@ -426,7 +426,7 @@ for (long otherCalendarId : otherCalendarIds) {
 				item.set('disabled', true);
 			}
 		);
-	}
+	};
 
 	var calendarsMenu = Liferay.CalendarUtil.getCalendarsMenu(
 		{
@@ -586,8 +586,7 @@ for (long otherCalendarId : otherCalendarIds) {
 	<c:if test="<%= invitable %>">
 		var manageableCalendars = {};
 
-		A.Array.each(
-			<%= CalendarUtil.toCalendarsJSONArray(themeDisplay, manageableCalendars) %>,
+		<%= CalendarUtil.toCalendarsJSONArray(themeDisplay, manageableCalendars) %>.forEach(
 			function(item, index) {
 				manageableCalendars[item.calendarId] = item;
 			}
@@ -600,16 +599,15 @@ for (long otherCalendarId : otherCalendarIds) {
 
 				var calendar = manageableCalendars[calendarId];
 
-				A.Array.each(
-					[
-						<portlet:namespace />calendarListAccepted,
+				[
+					<portlet:namespace />calendarListAccepted,
 
-						<c:if test="<%= calendarBooking != null %>">
-							<portlet:namespace />calendarListDeclined, <portlet:namespace />calendarListMaybe,
-						</c:if>
+					<c:if test="<%= calendarBooking != null %>">
+						<portlet:namespace />calendarListDeclined, <portlet:namespace />calendarListMaybe,
+					</c:if>
 
-						<portlet:namespace />calendarListPending
-					],
+					<portlet:namespace />calendarListPending
+				].forEach(
 					function(calendarList) {
 						calendarList.remove(calendarList.getCalendar(calendarId));
 						calendarList.remove(calendarList.getCalendar(defaultCalendarId));
