@@ -1951,7 +1951,7 @@ Please find a solution that does not require portal-impl.jar.
 								<then>
 									<if>
 										<resourcecount count="0" when="gt">
-											<fileset dir="@{module.dir}/docroot" erroronmissingdir="false" includes="**/*.css" />
+											<fileset dir="@{module.dir}/docroot" erroronmissingdir="false" includes="**/*.css, **/*.scss" />
 										</resourcecount>
 										<then>
 											<build-css
@@ -1963,7 +1963,7 @@ Please find a solution that does not require portal-impl.jar.
 
 									<if>
 										<resourcecount count="0" when="gt">
-											<fileset dir="@{module.dir}/src/META-INF/resources" erroronmissingdir="false" includes="**/*.css" />
+											<fileset dir="@{module.dir}/src/META-INF/resources" erroronmissingdir="false" includes="**/*.css, **/*.scss" />
 										</resourcecount>
 										<then>
 											<build-css
@@ -1983,6 +1983,25 @@ Please find a solution that does not require portal-impl.jar.
 											/>
 										</then>
 									</if>
+
+									<if>
+										<available file="@{module.dir}/bower.json" />
+										<then>
+											<copy
+												file="@{module.dir}/bower.json"
+												overwrite="true"
+												tofile="@{module.dir}/.js-cache/bower.json"
+											/>
+
+											<config-js-modules
+												module.dir="@{module.dir}"
+											/>
+										</then>
+									</if>
+
+									<copy todir="@{module.dir}/classes">
+										<fileset dir="@{module.dir}/.js-cache" erroronmissingdir="false" />
+									</copy>
 
 									<build-wsdl
 										module.dir="@{module.dir}"
