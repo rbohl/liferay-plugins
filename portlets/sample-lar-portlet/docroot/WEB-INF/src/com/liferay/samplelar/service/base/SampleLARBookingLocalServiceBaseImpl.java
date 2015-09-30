@@ -279,13 +279,13 @@ public abstract class SampleLARBookingLocalServiceBaseImpl
 
 					long modelAdditionCount = super.performCount();
 
-					manifestSummary.addModelAdditionCount(stagedModelType.toString(),
+					manifestSummary.addModelAdditionCount(stagedModelType,
 						modelAdditionCount);
 
 					long modelDeletionCount = ExportImportHelperUtil.getModelDeletionCount(portletDataContext,
 							stagedModelType);
 
-					manifestSummary.addModelDeletionCount(stagedModelType.toString(),
+					manifestSummary.addModelDeletionCount(stagedModelType,
 						modelDeletionCount);
 
 					return modelAdditionCount;
@@ -697,7 +697,7 @@ public abstract class SampleLARBookingLocalServiceBaseImpl
 		}
 	}
 
-	@BeanReference(type = SampleLARBookingLocalService.class)
+	@BeanReference(type = com.liferay.samplelar.service.SampleLARBookingLocalService.class)
 	protected SampleLARBookingLocalService sampleLARBookingLocalService;
 	@BeanReference(type = SampleLARBookingPersistence.class)
 	protected SampleLARBookingPersistence sampleLARBookingPersistence;

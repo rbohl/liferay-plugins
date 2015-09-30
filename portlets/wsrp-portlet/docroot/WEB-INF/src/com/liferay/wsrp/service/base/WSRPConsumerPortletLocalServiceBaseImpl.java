@@ -287,13 +287,13 @@ public abstract class WSRPConsumerPortletLocalServiceBaseImpl
 
 					long modelAdditionCount = super.performCount();
 
-					manifestSummary.addModelAdditionCount(stagedModelType.toString(),
+					manifestSummary.addModelAdditionCount(stagedModelType,
 						modelAdditionCount);
 
 					long modelDeletionCount = ExportImportHelperUtil.getModelDeletionCount(portletDataContext,
 							stagedModelType);
 
-					manifestSummary.addModelDeletionCount(stagedModelType.toString(),
+					manifestSummary.addModelDeletionCount(stagedModelType,
 						modelDeletionCount);
 
 					return modelAdditionCount;
@@ -753,7 +753,7 @@ public abstract class WSRPConsumerPortletLocalServiceBaseImpl
 	protected com.liferay.wsrp.service.WSRPConsumerLocalService wsrpConsumerLocalService;
 	@BeanReference(type = WSRPConsumerPersistence.class)
 	protected WSRPConsumerPersistence wsrpConsumerPersistence;
-	@BeanReference(type = WSRPConsumerPortletLocalService.class)
+	@BeanReference(type = com.liferay.wsrp.service.WSRPConsumerPortletLocalService.class)
 	protected WSRPConsumerPortletLocalService wsrpConsumerPortletLocalService;
 	@BeanReference(type = WSRPConsumerPortletPersistence.class)
 	protected WSRPConsumerPortletPersistence wsrpConsumerPortletPersistence;

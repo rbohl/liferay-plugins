@@ -273,13 +273,13 @@ public abstract class GadgetLocalServiceBaseImpl extends BaseLocalServiceImpl
 
 					long modelAdditionCount = super.performCount();
 
-					manifestSummary.addModelAdditionCount(stagedModelType.toString(),
+					manifestSummary.addModelAdditionCount(stagedModelType,
 						modelAdditionCount);
 
 					long modelDeletionCount = ExportImportHelperUtil.getModelDeletionCount(portletDataContext,
 							stagedModelType);
 
-					manifestSummary.addModelDeletionCount(stagedModelType.toString(),
+					manifestSummary.addModelDeletionCount(stagedModelType,
 						modelDeletionCount);
 
 					return modelAdditionCount;
@@ -750,7 +750,7 @@ public abstract class GadgetLocalServiceBaseImpl extends BaseLocalServiceImpl
 		}
 	}
 
-	@BeanReference(type = GadgetLocalService.class)
+	@BeanReference(type = com.liferay.opensocial.service.GadgetLocalService.class)
 	protected GadgetLocalService gadgetLocalService;
 	@BeanReference(type = com.liferay.opensocial.service.GadgetService.class)
 	protected com.liferay.opensocial.service.GadgetService gadgetService;

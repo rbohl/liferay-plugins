@@ -276,13 +276,13 @@ public abstract class KBFolderLocalServiceBaseImpl extends BaseLocalServiceImpl
 
 					long modelAdditionCount = super.performCount();
 
-					manifestSummary.addModelAdditionCount(stagedModelType.toString(),
+					manifestSummary.addModelAdditionCount(stagedModelType,
 						modelAdditionCount);
 
 					long modelDeletionCount = ExportImportHelperUtil.getModelDeletionCount(portletDataContext,
 							stagedModelType);
 
-					manifestSummary.addModelDeletionCount(stagedModelType.toString(),
+					manifestSummary.addModelDeletionCount(stagedModelType,
 						modelDeletionCount);
 
 					return modelAdditionCount;
@@ -914,7 +914,7 @@ public abstract class KBFolderLocalServiceBaseImpl extends BaseLocalServiceImpl
 	protected com.liferay.knowledgebase.service.KBCommentService kbCommentService;
 	@BeanReference(type = KBCommentPersistence.class)
 	protected KBCommentPersistence kbCommentPersistence;
-	@BeanReference(type = KBFolderLocalService.class)
+	@BeanReference(type = com.liferay.knowledgebase.service.KBFolderLocalService.class)
 	protected KBFolderLocalService kbFolderLocalService;
 	@BeanReference(type = com.liferay.knowledgebase.service.KBFolderService.class)
 	protected com.liferay.knowledgebase.service.KBFolderService kbFolderService;
