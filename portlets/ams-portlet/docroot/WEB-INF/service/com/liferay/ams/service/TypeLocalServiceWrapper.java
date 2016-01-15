@@ -183,14 +183,19 @@ public class TypeLocalServiceWrapper implements TypeLocalService,
 		return _typeLocalService.getActionableDynamicQuery();
 	}
 
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _typeLocalService.getIndexableActionableDynamicQuery();
+	}
+
 	/**
-	* Returns the Spring bean ID for this bean.
+	* Returns the OSGi service identifier.
 	*
-	* @return the Spring bean ID for this bean
+	* @return the OSGi service identifier
 	*/
 	@Override
-	public java.lang.String getBeanIdentifier() {
-		return _typeLocalService.getBeanIdentifier();
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _typeLocalService.getOSGiServiceIdentifier();
 	}
 
 	@Override
@@ -248,16 +253,6 @@ public class TypeLocalServiceWrapper implements TypeLocalService,
 	}
 
 	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	@Override
-	public void setBeanIdentifier(java.lang.String beanIdentifier) {
-		_typeLocalService.setBeanIdentifier(beanIdentifier);
-	}
-
-	/**
 	* Updates the type in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
 	* @param type the type
@@ -267,22 +262,6 @@ public class TypeLocalServiceWrapper implements TypeLocalService,
 	public com.liferay.ams.model.Type updateType(
 		com.liferay.ams.model.Type type) {
 		return _typeLocalService.updateType(type);
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
-	 */
-	@Deprecated
-	public TypeLocalService getWrappedTypeLocalService() {
-		return _typeLocalService;
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
-	 */
-	@Deprecated
-	public void setWrappedTypeLocalService(TypeLocalService typeLocalService) {
-		_typeLocalService = typeLocalService;
 	}
 
 	@Override

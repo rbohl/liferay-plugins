@@ -224,14 +224,19 @@ public class AssetLocalServiceWrapper implements AssetLocalService,
 		return _assetLocalService.getAssetsCount();
 	}
 
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _assetLocalService.getIndexableActionableDynamicQuery();
+	}
+
 	/**
-	* Returns the Spring bean ID for this bean.
+	* Returns the OSGi service identifier.
 	*
-	* @return the Spring bean ID for this bean
+	* @return the OSGi service identifier
 	*/
 	@Override
-	public java.lang.String getBeanIdentifier() {
-		return _assetLocalService.getBeanIdentifier();
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _assetLocalService.getOSGiServiceIdentifier();
 	}
 
 	@Override
@@ -249,16 +254,6 @@ public class AssetLocalServiceWrapper implements AssetLocalService,
 	}
 
 	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	@Override
-	public void setBeanIdentifier(java.lang.String beanIdentifier) {
-		_assetLocalService.setBeanIdentifier(beanIdentifier);
-	}
-
-	/**
 	* Updates the asset in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
 	* @param asset the asset
@@ -268,22 +263,6 @@ public class AssetLocalServiceWrapper implements AssetLocalService,
 	public com.liferay.ams.model.Asset updateAsset(
 		com.liferay.ams.model.Asset asset) {
 		return _assetLocalService.updateAsset(asset);
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
-	 */
-	@Deprecated
-	public AssetLocalService getWrappedAssetLocalService() {
-		return _assetLocalService;
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
-	 */
-	@Deprecated
-	public void setWrappedAssetLocalService(AssetLocalService assetLocalService) {
-		_assetLocalService = assetLocalService;
 	}
 
 	@Override

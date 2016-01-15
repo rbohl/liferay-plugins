@@ -133,6 +133,8 @@ public class AdminPortlet extends BaseKBPortlet {
 			UploadPortletRequest uploadPortletRequest =
 				PortalUtil.getUploadPortletRequest(actionRequest);
 
+			checkExceededSizeLimit(actionRequest);
+
 			long parentKBFolderId = ParamUtil.getLong(
 				uploadPortletRequest, "parentKBFolderId",
 				KBFolderConstants.DEFAULT_PARENT_FOLDER_ID);
@@ -156,7 +158,7 @@ public class AdminPortlet extends BaseKBPortlet {
 			int importedKBArticlesCount =
 				KBArticleServiceUtil.addKBArticlesMarkdown(
 					themeDisplay.getScopeGroupId(), parentKBFolderId, fileName,
-				prioritizeByNumericalPrefix, inputStream, serviceContext);
+					prioritizeByNumericalPrefix, inputStream, serviceContext);
 
 			SessionMessages.add(
 				actionRequest, "importedKBArticlesCount",

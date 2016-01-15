@@ -105,16 +105,6 @@ public class SyncDLObjectServiceWrapper implements SyncDLObjectService,
 		return _syncDLObjectService.getAllFolderSyncDLObjects(repositoryId);
 	}
 
-	/**
-	* Returns the Spring bean ID for this bean.
-	*
-	* @return the Spring bean ID for this bean
-	*/
-	@Override
-	public java.lang.String getBeanIdentifier() {
-		return _syncDLObjectService.getBeanIdentifier();
-	}
-
 	@Override
 	public com.liferay.sync.model.SyncDLObject getFileEntrySyncDLObject(
 		long repositoryId, long folderId, java.lang.String title)
@@ -163,6 +153,16 @@ public class SyncDLObjectServiceWrapper implements SyncDLObjectService,
 	@Override
 	public long getLatestModifiedTime() {
 		return _syncDLObjectService.getLatestModifiedTime();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _syncDLObjectService.getOSGiServiceIdentifier();
 	}
 
 	@Override
@@ -267,16 +267,6 @@ public class SyncDLObjectServiceWrapper implements SyncDLObjectService,
 		return _syncDLObjectService.restoreFolderFromTrash(folderId);
 	}
 
-	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	@Override
-	public void setBeanIdentifier(java.lang.String beanIdentifier) {
-		_syncDLObjectService.setBeanIdentifier(beanIdentifier);
-	}
-
 	@Override
 	public java.util.Map<java.lang.String, java.lang.Object> updateFileEntries(
 		java.io.File zipFile)
@@ -304,23 +294,6 @@ public class SyncDLObjectServiceWrapper implements SyncDLObjectService,
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _syncDLObjectService.updateFolder(folderId, name, description,
 			serviceContext);
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
-	 */
-	@Deprecated
-	public SyncDLObjectService getWrappedSyncDLObjectService() {
-		return _syncDLObjectService;
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
-	 */
-	@Deprecated
-	public void setWrappedSyncDLObjectService(
-		SyncDLObjectService syncDLObjectService) {
-		_syncDLObjectService = syncDLObjectService;
 	}
 
 	@Override

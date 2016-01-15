@@ -78,6 +78,11 @@ public class KBArticleAssetRenderer extends BaseJSPAssetRenderer<KBArticle> {
 	}
 
 	@Override
+	public int getStatus() {
+		return _kbArticle.getStatus();
+	}
+
+	@Override
 	public String getSummary(
 		PortletRequest portletRequest, PortletResponse portletResponse) {
 
@@ -169,11 +174,6 @@ public class KBArticleAssetRenderer extends BaseJSPAssetRenderer<KBArticle> {
 	@Override
 	public boolean isPrintable() {
 		return true;
-	}
-
-	@Override
-	protected String getIconPath(ThemeDisplay themeDisplay) {
-		return themeDisplay.getPathThemeImages() + "/trees/page.png";
 	}
 
 	private KBArticle _kbArticle;

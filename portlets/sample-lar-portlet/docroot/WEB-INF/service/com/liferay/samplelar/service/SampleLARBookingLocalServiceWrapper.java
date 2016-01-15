@@ -219,20 +219,25 @@ public class SampleLARBookingLocalServiceWrapper
 		return _sampleLARBookingLocalService.getActionableDynamicQuery();
 	}
 
-	/**
-	* Returns the Spring bean ID for this bean.
-	*
-	* @return the Spring bean ID for this bean
-	*/
-	@Override
-	public java.lang.String getBeanIdentifier() {
-		return _sampleLARBookingLocalService.getBeanIdentifier();
-	}
-
 	@Override
 	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
 		com.liferay.portlet.exportimport.lar.PortletDataContext portletDataContext) {
 		return _sampleLARBookingLocalService.getExportActionableDynamicQuery(portletDataContext);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _sampleLARBookingLocalService.getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _sampleLARBookingLocalService.getOSGiServiceIdentifier();
 	}
 
 	@Override
@@ -352,16 +357,6 @@ public class SampleLARBookingLocalServiceWrapper
 	}
 
 	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	@Override
-	public void setBeanIdentifier(java.lang.String beanIdentifier) {
-		_sampleLARBookingLocalService.setBeanIdentifier(beanIdentifier);
-	}
-
-	/**
 	* Updates the sample l a r booking in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
 	* @param sampleLARBooking the sample l a r booking
@@ -380,23 +375,6 @@ public class SampleLARBookingLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _sampleLARBookingLocalService.updateSampleLARBooking(userId,
 			sampleLARBookingId, bookingNumber, serviceContext);
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
-	 */
-	@Deprecated
-	public SampleLARBookingLocalService getWrappedSampleLARBookingLocalService() {
-		return _sampleLARBookingLocalService;
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
-	 */
-	@Deprecated
-	public void setWrappedSampleLARBookingLocalService(
-		SampleLARBookingLocalService sampleLARBookingLocalService) {
-		_sampleLARBookingLocalService = sampleLARBookingLocalService;
 	}
 
 	@Override

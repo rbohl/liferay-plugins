@@ -23,6 +23,7 @@ import com.liferay.knowledgebase.service.permission.KBArticlePermission;
 import com.liferay.knowledgebase.util.KnowledgeBaseUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -33,8 +34,8 @@ import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
+import com.liferay.portal.kernel.search.IndexWriterHelperUtil;
 import com.liferay.portal.kernel.search.SearchContext;
-import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
@@ -160,7 +161,7 @@ public class KBArticleIndexer extends BaseIndexer<KBArticle> {
 
 	@Override
 	protected void doReindex(KBArticle kbArticle) throws Exception {
-		SearchEngineUtil.updateDocument(
+		IndexWriterHelperUtil.updateDocument(
 			getSearchEngineId(), kbArticle.getCompanyId(),
 			getDocument(kbArticle), isCommitImmediately());
 	}
@@ -214,16 +215,16 @@ public class KBArticleIndexer extends BaseIndexer<KBArticle> {
 			documents.add(getDocument(curKBArticle));
 		}
 
-		SearchEngineUtil.updateDocuments(
+		IndexWriterHelperUtil.updateDocuments(
 			getSearchEngineId(), kbArticle.getCompanyId(), documents,
 			isCommitImmediately());
 	}
 
 	protected void reindexKBArticles(long companyId) throws Exception {
-		final ActionableDynamicQuery actionableDynamicQuery =
-			KBArticleLocalServiceUtil.getActionableDynamicQuery();
+		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
+			KBArticleLocalServiceUtil.getIndexableActionableDynamicQuery();
 
-		actionableDynamicQuery.setAddCriteriaMethod(
+		indexableActionableDynamicQuery.setAddCriteriaMethod(
 			new ActionableDynamicQuery.AddCriteriaMethod() {
 
 				@Override
@@ -235,18 +236,16 @@ public class KBArticleIndexer extends BaseIndexer<KBArticle> {
 				}
 
 			});
-		actionableDynamicQuery.setCompanyId(companyId);
-		actionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod() {
+		indexableActionableDynamicQuery.setCompanyId(companyId);
+		indexableActionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<KBArticle>() {
 
 				@Override
-				public void performAction(Object object) {
-					KBArticle kbArticle = (KBArticle)object;
-
+				public void performAction(KBArticle kbArticle) {
 					try {
 						Document document = getDocument(kbArticle);
 
-						actionableDynamicQuery.addDocument(document);
+						indexableActionableDynamicQuery.addDocuments(document);
 					}
 					catch (PortalException pe) {
 						if (_log.isWarnEnabled()) {
@@ -259,9 +258,9 @@ public class KBArticleIndexer extends BaseIndexer<KBArticle> {
 				}
 
 			});
-		actionableDynamicQuery.setSearchEngineId(getSearchEngineId());
+		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
-		actionableDynamicQuery.performActions();
+		indexableActionableDynamicQuery.performActions();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

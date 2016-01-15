@@ -19,6 +19,8 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
 
+import com.liferay.portlet.exportimport.lar.StagedModelType;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -582,12 +584,9 @@ public class FooWrapper implements Foo, ModelWrapper<Foo> {
 		return false;
 	}
 
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
-	 */
-	@Deprecated
-	public Foo getWrappedFoo() {
-		return _foo;
+	@Override
+	public StagedModelType getStagedModelType() {
+		return _foo.getStagedModelType();
 	}
 
 	@Override

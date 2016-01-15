@@ -221,19 +221,24 @@ public class SyncDLObjectLocalServiceWrapper implements SyncDLObjectLocalService
 		return _syncDLObjectLocalService.getActionableDynamicQuery();
 	}
 
-	/**
-	* Returns the Spring bean ID for this bean.
-	*
-	* @return the Spring bean ID for this bean
-	*/
 	@Override
-	public java.lang.String getBeanIdentifier() {
-		return _syncDLObjectLocalService.getBeanIdentifier();
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _syncDLObjectLocalService.getIndexableActionableDynamicQuery();
 	}
 
 	@Override
 	public long getLatestModifiedTime() {
 		return _syncDLObjectLocalService.getLatestModifiedTime();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _syncDLObjectLocalService.getOSGiServiceIdentifier();
 	}
 
 	@Override
@@ -300,16 +305,6 @@ public class SyncDLObjectLocalServiceWrapper implements SyncDLObjectLocalService
 	}
 
 	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	@Override
-	public void setBeanIdentifier(java.lang.String beanIdentifier) {
-		_syncDLObjectLocalService.setBeanIdentifier(beanIdentifier);
-	}
-
-	/**
 	* Updates the sync d l object in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
 	* @param syncDLObject the sync d l object
@@ -319,23 +314,6 @@ public class SyncDLObjectLocalServiceWrapper implements SyncDLObjectLocalService
 	public com.liferay.sync.model.SyncDLObject updateSyncDLObject(
 		com.liferay.sync.model.SyncDLObject syncDLObject) {
 		return _syncDLObjectLocalService.updateSyncDLObject(syncDLObject);
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
-	 */
-	@Deprecated
-	public SyncDLObjectLocalService getWrappedSyncDLObjectLocalService() {
-		return _syncDLObjectLocalService;
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
-	 */
-	@Deprecated
-	public void setWrappedSyncDLObjectLocalService(
-		SyncDLObjectLocalService syncDLObjectLocalService) {
-		_syncDLObjectLocalService = syncDLObjectLocalService;
 	}
 
 	@Override

@@ -202,14 +202,19 @@ public class ProjectsEntryLocalServiceWrapper
 		return _projectsEntryLocalService.getActionableDynamicQuery();
 	}
 
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _projectsEntryLocalService.getIndexableActionableDynamicQuery();
+	}
+
 	/**
-	* Returns the Spring bean ID for this bean.
+	* Returns the OSGi service identifier.
 	*
-	* @return the Spring bean ID for this bean
+	* @return the OSGi service identifier
 	*/
 	@Override
-	public java.lang.String getBeanIdentifier() {
-		return _projectsEntryLocalService.getBeanIdentifier();
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _projectsEntryLocalService.getOSGiServiceIdentifier();
 	}
 
 	@Override
@@ -280,16 +285,6 @@ public class ProjectsEntryLocalServiceWrapper
 	}
 
 	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	@Override
-	public void setBeanIdentifier(java.lang.String beanIdentifier) {
-		_projectsEntryLocalService.setBeanIdentifier(beanIdentifier);
-	}
-
-	/**
 	* Updates the projects entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
 	* @param projectsEntry the projects entry
@@ -311,23 +306,6 @@ public class ProjectsEntryLocalServiceWrapper
 		return _projectsEntryLocalService.updateProjectsEntry(projectsEntryId,
 			title, description, startDateMonth, startDateDay, startDateYear,
 			endDateMonth, endDateDay, endDateYear, current, data);
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
-	 */
-	@Deprecated
-	public ProjectsEntryLocalService getWrappedProjectsEntryLocalService() {
-		return _projectsEntryLocalService;
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
-	 */
-	@Deprecated
-	public void setWrappedProjectsEntryLocalService(
-		ProjectsEntryLocalService projectsEntryLocalService) {
-		_projectsEntryLocalService = projectsEntryLocalService;
 	}
 
 	@Override

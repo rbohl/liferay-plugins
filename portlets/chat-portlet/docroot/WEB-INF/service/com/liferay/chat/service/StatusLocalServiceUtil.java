@@ -187,21 +187,25 @@ public class StatusLocalServiceUtil {
 				   .getAllStatuses(companyId, userId, modifiedDate, start, end);
 	}
 
-	/**
-	* Returns the Spring bean ID for this bean.
-	*
-	* @return the Spring bean ID for this bean
-	*/
-	public static java.lang.String getBeanIdentifier() {
-		return getService().getBeanIdentifier();
-	}
-
 	public static java.util.List<java.lang.Object[]> getGroupStatuses(
 		long userId, long modifiedDate, java.lang.String[] groupNames,
 		int start, int end) {
 		return getService()
 				   .getGroupStatuses(userId, modifiedDate, groupNames, start,
 			end);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static com.liferay.portal.model.PersistedModel getPersistedModel(
@@ -270,15 +274,6 @@ public class StatusLocalServiceUtil {
 	}
 
 	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	public static void setBeanIdentifier(java.lang.String beanIdentifier) {
-		getService().setBeanIdentifier(beanIdentifier);
-	}
-
-	/**
 	* Updates the status in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
 	* @param status the status
@@ -323,13 +318,6 @@ public class StatusLocalServiceUtil {
 		}
 
 		return _service;
-	}
-
-	/**
-	 * @deprecated As of 6.2.0
-	 */
-	@Deprecated
-	public void setService(StatusLocalService service) {
 	}
 
 	private static StatusLocalService _service;

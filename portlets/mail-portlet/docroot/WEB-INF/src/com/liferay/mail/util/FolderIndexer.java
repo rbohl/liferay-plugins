@@ -16,8 +16,8 @@ package com.liferay.mail.util;
 
 import com.liferay.mail.model.Folder;
 import com.liferay.mail.service.FolderLocalServiceUtil;
-import com.liferay.mail.service.persistence.FolderActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -27,8 +27,9 @@ import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
+import com.liferay.portal.kernel.search.IndexSearcherHelperUtil;
+import com.liferay.portal.kernel.search.IndexWriterHelperUtil;
 import com.liferay.portal.kernel.search.SearchContext;
-import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.search.SortFactoryUtil;
 import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
@@ -71,7 +72,7 @@ public class FolderIndexer extends BaseIndexer<Folder> {
 
 		booleanQuery.addRequiredTerm("folderId", folder.getFolderId());
 
-		Hits hits = SearchEngineUtil.search(searchContext, booleanQuery);
+		Hits hits = IndexSearcherHelperUtil.search(searchContext, booleanQuery);
 
 		List<String> uids = new ArrayList<>(hits.getLength());
 
@@ -81,7 +82,7 @@ public class FolderIndexer extends BaseIndexer<Folder> {
 			uids.add(document.get(Field.UID));
 		}
 
-		SearchEngineUtil.deleteDocuments(
+		IndexWriterHelperUtil.deleteDocuments(
 			getSearchEngineId(), folder.getCompanyId(), uids,
 			isCommitImmediately());
 	}
@@ -114,7 +115,7 @@ public class FolderIndexer extends BaseIndexer<Folder> {
 	protected void doReindex(Folder folder) throws Exception {
 		Document document = getDocument(folder);
 
-		SearchEngineUtil.updateDocument(
+		IndexWriterHelperUtil.updateDocument(
 			getSearchEngineId(), folder.getCompanyId(), document,
 			isCommitImmediately());
 	}
@@ -134,33 +135,36 @@ public class FolderIndexer extends BaseIndexer<Folder> {
 	}
 
 	protected void reindexMessages(long companyId) throws PortalException {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new FolderActionableDynamicQuery() {
+		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
+			FolderLocalServiceUtil.getIndexableActionableDynamicQuery();
 
-			@Override
-			protected void performAction(Object object) {
-				Folder folder = (Folder)object;
+		indexableActionableDynamicQuery.setCompanyId(companyId);
+		indexableActionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<Folder>() {
 
-				try {
-					Document document = getDocument(folder);
+				@Override
+				public void performAction(Folder folder)
+					throws PortalException {
 
-					addDocument(document);
-				}
-				catch (PortalException pe) {
-					if (_log.isWarnEnabled()) {
-						_log.warn(
-							"Unable to index folder " + folder.getFolderId(),
-							pe);
+					try {
+						Document document = getDocument(folder);
+
+						indexableActionableDynamicQuery.addDocuments(document);
+					}
+					catch (PortalException pe) {
+						if (_log.isWarnEnabled()) {
+							_log.warn(
+								"Unable to index folder " +
+									folder.getFolderId(),
+								pe);
+						}
 					}
 				}
-			}
 
-		};
+			});
+		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
-		actionableDynamicQuery.setCompanyId(companyId);
-		actionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		actionableDynamicQuery.performActions();
+		indexableActionableDynamicQuery.performActions();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(FolderIndexer.class);

@@ -95,16 +95,6 @@ public class KBArticleServiceWrapper implements KBArticleService,
 		return _kbArticleService.fetchLatestKBArticle(resourcePrimKey, status);
 	}
 
-	/**
-	* Returns the Spring bean ID for this bean.
-	*
-	* @return the Spring bean ID for this bean
-	*/
-	@Override
-	public java.lang.String getBeanIdentifier() {
-		return _kbArticleService.getBeanIdentifier();
-	}
-
 	@Override
 	public java.util.List<com.liferay.knowledgebase.model.KBArticle> getGroupKBArticles(
 		long groupId, int status, int start, int end,
@@ -239,6 +229,16 @@ public class KBArticleServiceWrapper implements KBArticleService,
 		return _kbArticleService.getLatestKBArticle(resourcePrimKey, status);
 	}
 
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _kbArticleService.getOSGiServiceIdentifier();
+	}
+
 	@Override
 	public java.util.List<com.liferay.knowledgebase.model.KBArticle> getSectionsKBArticles(
 		long groupId, java.lang.String[] sections, int status, int start,
@@ -314,16 +314,6 @@ public class KBArticleServiceWrapper implements KBArticleService,
 			serviceContext);
 	}
 
-	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	@Override
-	public void setBeanIdentifier(java.lang.String beanIdentifier) {
-		_kbArticleService.setBeanIdentifier(beanIdentifier);
-	}
-
 	@Override
 	public void subscribeGroupKBArticles(long groupId,
 		java.lang.String portletId)
@@ -369,22 +359,6 @@ public class KBArticleServiceWrapper implements KBArticleService,
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_kbArticleService.updateKBArticlesPriorities(groupId,
 			resourcePrimKeyToPriorityMap);
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
-	 */
-	@Deprecated
-	public KBArticleService getWrappedKBArticleService() {
-		return _kbArticleService;
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
-	 */
-	@Deprecated
-	public void setWrappedKBArticleService(KBArticleService kbArticleService) {
-		_kbArticleService = kbArticleService;
 	}
 
 	@Override

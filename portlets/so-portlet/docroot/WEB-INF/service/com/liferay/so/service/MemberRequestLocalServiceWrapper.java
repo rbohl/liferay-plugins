@@ -221,14 +221,9 @@ public class MemberRequestLocalServiceWrapper
 		return _memberRequestLocalService.getActionableDynamicQuery();
 	}
 
-	/**
-	* Returns the Spring bean ID for this bean.
-	*
-	* @return the Spring bean ID for this bean
-	*/
 	@Override
-	public java.lang.String getBeanIdentifier() {
-		return _memberRequestLocalService.getBeanIdentifier();
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _memberRequestLocalService.getIndexableActionableDynamicQuery();
 	}
 
 	@Override
@@ -280,6 +275,16 @@ public class MemberRequestLocalServiceWrapper
 		return _memberRequestLocalService.getMemberRequestsCount();
 	}
 
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _memberRequestLocalService.getOSGiServiceIdentifier();
+	}
+
 	@Override
 	public com.liferay.portal.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
@@ -327,16 +332,6 @@ public class MemberRequestLocalServiceWrapper
 			arguments);
 	}
 
-	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	@Override
-	public void setBeanIdentifier(java.lang.String beanIdentifier) {
-		_memberRequestLocalService.setBeanIdentifier(beanIdentifier);
-	}
-
 	@Override
 	public com.liferay.so.model.MemberRequest updateMemberRequest(
 		java.lang.String key, long receiverUserId)
@@ -362,23 +357,6 @@ public class MemberRequestLocalServiceWrapper
 		long memberRequestId, int status) throws java.lang.Exception {
 		return _memberRequestLocalService.updateMemberRequest(userId,
 			memberRequestId, status);
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
-	 */
-	@Deprecated
-	public MemberRequestLocalService getWrappedMemberRequestLocalService() {
-		return _memberRequestLocalService;
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
-	 */
-	@Deprecated
-	public void setWrappedMemberRequestLocalService(
-		MemberRequestLocalService memberRequestLocalService) {
-		_memberRequestLocalService = memberRequestLocalService;
 	}
 
 	@Override

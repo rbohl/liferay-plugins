@@ -257,14 +257,19 @@ public class BarLocalServiceWrapper implements BarLocalService,
 		return _barLocalService.getBarsCount();
 	}
 
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _barLocalService.getIndexableActionableDynamicQuery();
+	}
+
 	/**
-	* Returns the Spring bean ID for this bean.
+	* Returns the OSGi service identifier.
 	*
-	* @return the Spring bean ID for this bean
+	* @return the OSGi service identifier
 	*/
 	@Override
-	public java.lang.String getBeanIdentifier() {
-		return _barLocalService.getBeanIdentifier();
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _barLocalService.getOSGiServiceIdentifier();
 	}
 
 	@Override
@@ -291,16 +296,6 @@ public class BarLocalServiceWrapper implements BarLocalService,
 		return _barLocalService.invokeMethod(name, parameterTypes, arguments);
 	}
 
-	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	@Override
-	public void setBeanIdentifier(java.lang.String beanIdentifier) {
-		_barLocalService.setBeanIdentifier(beanIdentifier);
-	}
-
 	@Override
 	public void testAddClassNameAndBar_Success(java.lang.String text) {
 		_barLocalService.testAddClassNameAndBar_Success(text);
@@ -316,22 +311,6 @@ public class BarLocalServiceWrapper implements BarLocalService,
 	public com.liferay.testtransaction.model.Bar updateBar(
 		com.liferay.testtransaction.model.Bar bar) {
 		return _barLocalService.updateBar(bar);
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
-	 */
-	@Deprecated
-	public BarLocalService getWrappedBarLocalService() {
-		return _barLocalService;
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
-	 */
-	@Deprecated
-	public void setWrappedBarLocalService(BarLocalService barLocalService) {
-		_barLocalService = barLocalService;
 	}
 
 	@Override

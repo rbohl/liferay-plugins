@@ -33,13 +33,13 @@ public class SocialOfficeServiceWrapper implements SocialOfficeService,
 	}
 
 	/**
-	* Returns the Spring bean ID for this bean.
+	* Returns the OSGi service identifier.
 	*
-	* @return the Spring bean ID for this bean
+	* @return the OSGi service identifier
 	*/
 	@Override
-	public java.lang.String getBeanIdentifier() {
-		return _socialOfficeService.getBeanIdentifier();
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _socialOfficeService.getOSGiServiceIdentifier();
 	}
 
 	@Override
@@ -59,33 +59,6 @@ public class SocialOfficeServiceWrapper implements SocialOfficeService,
 	public boolean isSocialOfficeGroup(long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _socialOfficeService.isSocialOfficeGroup(groupId);
-	}
-
-	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	@Override
-	public void setBeanIdentifier(java.lang.String beanIdentifier) {
-		_socialOfficeService.setBeanIdentifier(beanIdentifier);
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
-	 */
-	@Deprecated
-	public SocialOfficeService getWrappedSocialOfficeService() {
-		return _socialOfficeService;
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
-	 */
-	@Deprecated
-	public void setWrappedSocialOfficeService(
-		SocialOfficeService socialOfficeService) {
-		_socialOfficeService = socialOfficeService;
 	}
 
 	@Override

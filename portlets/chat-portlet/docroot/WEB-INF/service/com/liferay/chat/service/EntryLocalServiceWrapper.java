@@ -203,16 +203,6 @@ public class EntryLocalServiceWrapper implements EntryLocalService,
 	}
 
 	/**
-	* Returns the Spring bean ID for this bean.
-	*
-	* @return the Spring bean ID for this bean
-	*/
-	@Override
-	public java.lang.String getBeanIdentifier() {
-		return _entryLocalService.getBeanIdentifier();
-	}
-
-	/**
 	* Returns a range of all the entries.
 	*
 	* <p>
@@ -253,9 +243,24 @@ public class EntryLocalServiceWrapper implements EntryLocalService,
 	}
 
 	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _entryLocalService.getIndexableActionableDynamicQuery();
+	}
+
+	@Override
 	public java.util.List<com.liferay.chat.model.Entry> getNewEntries(
 		long userId, long createDate, int start, int end) {
 		return _entryLocalService.getNewEntries(userId, createDate, start, end);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _entryLocalService.getOSGiServiceIdentifier();
 	}
 
 	@Override
@@ -279,16 +284,6 @@ public class EntryLocalServiceWrapper implements EntryLocalService,
 	}
 
 	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	@Override
-	public void setBeanIdentifier(java.lang.String beanIdentifier) {
-		_entryLocalService.setBeanIdentifier(beanIdentifier);
-	}
-
-	/**
 	* Updates the entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
 	* @param entry the entry
@@ -298,22 +293,6 @@ public class EntryLocalServiceWrapper implements EntryLocalService,
 	public com.liferay.chat.model.Entry updateEntry(
 		com.liferay.chat.model.Entry entry) {
 		return _entryLocalService.updateEntry(entry);
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
-	 */
-	@Deprecated
-	public EntryLocalService getWrappedEntryLocalService() {
-		return _entryLocalService;
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
-	 */
-	@Deprecated
-	public void setWrappedEntryLocalService(EntryLocalService entryLocalService) {
-		_entryLocalService = entryLocalService;
 	}
 
 	@Override

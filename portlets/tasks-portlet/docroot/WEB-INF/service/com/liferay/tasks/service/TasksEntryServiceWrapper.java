@@ -45,13 +45,13 @@ public class TasksEntryServiceWrapper implements TasksEntryService,
 	}
 
 	/**
-	* Returns the Spring bean ID for this bean.
+	* Returns the OSGi service identifier.
 	*
-	* @return the Spring bean ID for this bean
+	* @return the OSGi service identifier
 	*/
 	@Override
-	public java.lang.String getBeanIdentifier() {
-		return _tasksEntryService.getBeanIdentifier();
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _tasksEntryService.getOSGiServiceIdentifier();
 	}
 
 	@Override
@@ -67,16 +67,6 @@ public class TasksEntryServiceWrapper implements TasksEntryService,
 		return _tasksEntryService.invokeMethod(name, parameterTypes, arguments);
 	}
 
-	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	@Override
-	public void setBeanIdentifier(java.lang.String beanIdentifier) {
-		_tasksEntryService.setBeanIdentifier(beanIdentifier);
-	}
-
 	@Override
 	public com.liferay.tasks.model.TasksEntry updateTasksEntry(
 		long tasksEntryId, java.lang.String title, int priority,
@@ -89,22 +79,6 @@ public class TasksEntryServiceWrapper implements TasksEntryService,
 			priority, assigneeUserId, resolverUserId, dueDateMonth, dueDateDay,
 			dueDateYear, dueDateHour, dueDateMinute, neverDue, status,
 			serviceContext);
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
-	 */
-	@Deprecated
-	public TasksEntryService getWrappedTasksEntryService() {
-		return _tasksEntryService;
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
-	 */
-	@Deprecated
-	public void setWrappedTasksEntryService(TasksEntryService tasksEntryService) {
-		_tasksEntryService = tasksEntryService;
 	}
 
 	@Override

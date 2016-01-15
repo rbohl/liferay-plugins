@@ -186,16 +186,6 @@ public class CheckoutLocalServiceWrapper implements CheckoutLocalService,
 	}
 
 	/**
-	* Returns the Spring bean ID for this bean.
-	*
-	* @return the Spring bean ID for this bean
-	*/
-	@Override
-	public java.lang.String getBeanIdentifier() {
-		return _checkoutLocalService.getBeanIdentifier();
-	}
-
-	/**
 	* Returns the checkout with the primary key.
 	*
 	* @param checkoutId the primary key of the checkout
@@ -236,6 +226,21 @@ public class CheckoutLocalServiceWrapper implements CheckoutLocalService,
 	}
 
 	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _checkoutLocalService.getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _checkoutLocalService.getOSGiServiceIdentifier();
+	}
+
+	@Override
 	public com.liferay.portal.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -251,16 +256,6 @@ public class CheckoutLocalServiceWrapper implements CheckoutLocalService,
 	}
 
 	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	@Override
-	public void setBeanIdentifier(java.lang.String beanIdentifier) {
-		_checkoutLocalService.setBeanIdentifier(beanIdentifier);
-	}
-
-	/**
 	* Updates the checkout in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
 	* @param checkout the checkout
@@ -270,23 +265,6 @@ public class CheckoutLocalServiceWrapper implements CheckoutLocalService,
 	public com.liferay.ams.model.Checkout updateCheckout(
 		com.liferay.ams.model.Checkout checkout) {
 		return _checkoutLocalService.updateCheckout(checkout);
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
-	 */
-	@Deprecated
-	public CheckoutLocalService getWrappedCheckoutLocalService() {
-		return _checkoutLocalService;
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
-	 */
-	@Deprecated
-	public void setWrappedCheckoutLocalService(
-		CheckoutLocalService checkoutLocalService) {
-		_checkoutLocalService = checkoutLocalService;
 	}
 
 	@Override

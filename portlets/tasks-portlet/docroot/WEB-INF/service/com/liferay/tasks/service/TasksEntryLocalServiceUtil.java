@@ -207,15 +207,6 @@ public class TasksEntryLocalServiceUtil {
 		return getService().getAssigneeTasksEntriesCount(assigneeUserId);
 	}
 
-	/**
-	* Returns the Spring bean ID for this bean.
-	*
-	* @return the Spring bean ID for this bean
-	*/
-	public static java.lang.String getBeanIdentifier() {
-		return getService().getBeanIdentifier();
-	}
-
 	public static java.util.List<com.liferay.tasks.model.TasksEntry> getGroupAssigneeTasksEntries(
 		long groupId, long assigneeUserId, int start, int end) {
 		return getService()
@@ -249,6 +240,19 @@ public class TasksEntryLocalServiceUtil {
 
 	public static int getGroupUserTasksEntriesCount(long groupId, long userId) {
 		return getService().getGroupUserTasksEntriesCount(groupId, userId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static com.liferay.portal.model.PersistedModel getPersistedModel(
@@ -345,15 +349,6 @@ public class TasksEntryLocalServiceUtil {
 		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
-	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	public static void setBeanIdentifier(java.lang.String beanIdentifier) {
-		getService().setBeanIdentifier(beanIdentifier);
-	}
-
 	public static void updateAsset(long userId,
 		com.liferay.tasks.model.TasksEntry tasksEntry, long[] assetCategoryIds,
 		java.lang.String[] assetTagNames)
@@ -417,13 +412,6 @@ public class TasksEntryLocalServiceUtil {
 		}
 
 		return _service;
-	}
-
-	/**
-	 * @deprecated As of 6.2.0
-	 */
-	@Deprecated
-	public void setService(TasksEntryLocalService service) {
 	}
 
 	private static TasksEntryLocalService _service;

@@ -344,16 +344,6 @@ public class KBArticleLocalServiceWrapper implements KBArticleLocalService,
 			status, orderByComparator);
 	}
 
-	/**
-	* Returns the Spring bean ID for this bean.
-	*
-	* @return the Spring bean ID for this bean
-	*/
-	@Override
-	public java.lang.String getBeanIdentifier() {
-		return _kbArticleLocalService.getBeanIdentifier();
-	}
-
 	@Override
 	public java.util.List<com.liferay.knowledgebase.model.KBArticle> getCompanyKBArticles(
 		long companyId, int status, int start, int end,
@@ -385,6 +375,11 @@ public class KBArticleLocalServiceWrapper implements KBArticleLocalService,
 	@Override
 	public int getGroupKBArticlesCount(long groupId, int status) {
 		return _kbArticleLocalService.getGroupKBArticlesCount(groupId, status);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _kbArticleLocalService.getIndexableActionableDynamicQuery();
 	}
 
 	/**
@@ -581,6 +576,16 @@ public class KBArticleLocalServiceWrapper implements KBArticleLocalService,
 			kbFolderId, urlTitle, status);
 	}
 
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _kbArticleLocalService.getOSGiServiceIdentifier();
+	}
+
 	@Override
 	public com.liferay.portal.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
@@ -682,16 +687,6 @@ public class KBArticleLocalServiceWrapper implements KBArticleLocalService,
 			startDate, endDate, andOperator, start, end, orderByComparator);
 	}
 
-	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	@Override
-	public void setBeanIdentifier(java.lang.String beanIdentifier) {
-		_kbArticleLocalService.setBeanIdentifier(beanIdentifier);
-	}
-
 	@Override
 	public void subscribeGroupKBArticles(long userId, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -788,23 +783,6 @@ public class KBArticleLocalServiceWrapper implements KBArticleLocalService,
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_kbArticleLocalService.updateViewCount(userId, resourcePrimKey,
 			viewCount);
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
-	 */
-	@Deprecated
-	public KBArticleLocalService getWrappedKBArticleLocalService() {
-		return _kbArticleLocalService;
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
-	 */
-	@Deprecated
-	public void setWrappedKBArticleLocalService(
-		KBArticleLocalService kbArticleLocalService) {
-		_kbArticleLocalService = kbArticleLocalService;
 	}
 
 	@Override

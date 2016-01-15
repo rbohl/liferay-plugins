@@ -237,20 +237,25 @@ public class UserThreadLocalServiceWrapper implements UserThreadLocalService,
 		return _userThreadLocalService.getActionableDynamicQuery();
 	}
 
-	/**
-	* Returns the Spring bean ID for this bean.
-	*
-	* @return the Spring bean ID for this bean
-	*/
 	@Override
-	public java.lang.String getBeanIdentifier() {
-		return _userThreadLocalService.getBeanIdentifier();
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _userThreadLocalService.getIndexableActionableDynamicQuery();
 	}
 
 	@Override
 	public java.util.List<com.liferay.privatemessaging.model.UserThread> getMBThreadUserThreads(
 		long mbThreadId) {
 		return _userThreadLocalService.getMBThreadUserThreads(mbThreadId);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _userThreadLocalService.getOSGiServiceIdentifier();
 	}
 
 	@Override
@@ -358,16 +363,6 @@ public class UserThreadLocalServiceWrapper implements UserThreadLocalService,
 		_userThreadLocalService.markUserThreadAsUnread(userId, mbThreadId);
 	}
 
-	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	@Override
-	public void setBeanIdentifier(java.lang.String beanIdentifier) {
-		_userThreadLocalService.setBeanIdentifier(beanIdentifier);
-	}
-
 	@Override
 	public void updateUserName(com.liferay.portal.model.User user) {
 		_userThreadLocalService.updateUserName(user);
@@ -383,23 +378,6 @@ public class UserThreadLocalServiceWrapper implements UserThreadLocalService,
 	public com.liferay.privatemessaging.model.UserThread updateUserThread(
 		com.liferay.privatemessaging.model.UserThread userThread) {
 		return _userThreadLocalService.updateUserThread(userThread);
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
-	 */
-	@Deprecated
-	public UserThreadLocalService getWrappedUserThreadLocalService() {
-		return _userThreadLocalService;
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
-	 */
-	@Deprecated
-	public void setWrappedUserThreadLocalService(
-		UserThreadLocalService userThreadLocalService) {
-		_userThreadLocalService = userThreadLocalService;
 	}
 
 	@Override

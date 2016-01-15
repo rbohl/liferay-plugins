@@ -231,20 +231,25 @@ public class WSRPProducerLocalServiceWrapper implements WSRPProducerLocalService
 		return _wsrpProducerLocalService.getActionableDynamicQuery();
 	}
 
-	/**
-	* Returns the Spring bean ID for this bean.
-	*
-	* @return the Spring bean ID for this bean
-	*/
-	@Override
-	public java.lang.String getBeanIdentifier() {
-		return _wsrpProducerLocalService.getBeanIdentifier();
-	}
-
 	@Override
 	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
 		com.liferay.portlet.exportimport.lar.PortletDataContext portletDataContext) {
 		return _wsrpProducerLocalService.getExportActionableDynamicQuery(portletDataContext);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _wsrpProducerLocalService.getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _wsrpProducerLocalService.getOSGiServiceIdentifier();
 	}
 
 	@Override
@@ -370,16 +375,6 @@ public class WSRPProducerLocalServiceWrapper implements WSRPProducerLocalService
 	}
 
 	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	@Override
-	public void setBeanIdentifier(java.lang.String beanIdentifier) {
-		_wsrpProducerLocalService.setBeanIdentifier(beanIdentifier);
-	}
-
-	/**
 	* Updates the w s r p producer in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
 	* @param wsrpProducer the w s r p producer
@@ -398,23 +393,6 @@ public class WSRPProducerLocalServiceWrapper implements WSRPProducerLocalService
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _wsrpProducerLocalService.updateWSRPProducer(wsrpProducerId,
 			name, version, portletIds);
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
-	 */
-	@Deprecated
-	public WSRPProducerLocalService getWrappedWSRPProducerLocalService() {
-		return _wsrpProducerLocalService;
-	}
-
-	/**
-	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
-	 */
-	@Deprecated
-	public void setWrappedWSRPProducerLocalService(
-		WSRPProducerLocalService wsrpProducerLocalService) {
-		_wsrpProducerLocalService = wsrpProducerLocalService;
 	}
 
 	@Override

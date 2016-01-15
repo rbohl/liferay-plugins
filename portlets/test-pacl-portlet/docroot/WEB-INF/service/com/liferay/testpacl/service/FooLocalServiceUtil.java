@@ -181,15 +181,6 @@ public class FooLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
-	/**
-	* Returns the Spring bean ID for this bean.
-	*
-	* @return the Spring bean ID for this bean
-	*/
-	public static java.lang.String getBeanIdentifier() {
-		return getService().getBeanIdentifier();
-	}
-
 	public static com.liferay.portal.model.Company getCompanyPersistence_FindByPrimaryKey(
 		long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -262,6 +253,19 @@ public class FooLocalServiceUtil {
 		return getService().getGroupUtil_FindByPrimaryKey(groupId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
 	public static com.liferay.portal.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -324,15 +328,6 @@ public class FooLocalServiceUtil {
 	}
 
 	/**
-	* Sets the Spring bean ID for this bean.
-	*
-	* @param beanIdentifier the Spring bean ID for this bean
-	*/
-	public static void setBeanIdentifier(java.lang.String beanIdentifier) {
-		getService().setBeanIdentifier(beanIdentifier);
-	}
-
-	/**
 	* Updates the foo in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
 	* @param foo the foo
@@ -364,13 +359,6 @@ public class FooLocalServiceUtil {
 		}
 
 		return _service;
-	}
-
-	/**
-	 * @deprecated As of 6.2.0
-	 */
-	@Deprecated
-	public void setService(FooLocalService service) {
 	}
 
 	private static FooLocalService _service;
