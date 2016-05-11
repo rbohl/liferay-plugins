@@ -1057,6 +1057,16 @@ Error-Prone was automatically installed. Please rerun your task.
 										/>
 									</then>
 								</elseif>
+								<elseif>
+									<available file="@{module.dir}/../@{plugin.required.context}/docroot/WEB-INF/lib/@{plugin.required.context}-service.jar" />
+									<then>
+										<copy
+											file="@{module.dir}/../@{plugin.required.context}/docroot/WEB-INF/lib/@{plugin.required.context}-service.jar"
+											todir="@{module.dir}/docroot/WEB-INF/lib"
+											overwrite="true"
+										/>
+									</then>
+								</elseif>
 							</if>
 						</sequential>
 					</for>
@@ -2212,7 +2222,7 @@ Please find a solution that does not require portal-impl.jar.
 					for (moduleDir in moduleDirs) {
 						File buildXml = new File(moduleDir + "/build.xml")
 
-						if (buildXml.exists()) {
+						if (buildXml.exists() && (moduleDir != "")) {
 							String buildXmlContent = buildXml.text
 
 							ant."set-module-properties"("module.dir": moduleDir)
@@ -2225,7 +2235,12 @@ Please find a solution that does not require portal-impl.jar.
 							}
 						}
 						else {
-							println "Skipping " + moduleDir + " because it does not have a build.xml file."
+							if (moduleDir == "") {
+								continue
+							}
+							else {
+								println "Skipping " + moduleDir + " because it does not have a build.xml file."
+							}
 						}
 					}
 				]]>
@@ -2967,8 +2982,8 @@ Please find a solution that does not require portal-impl.jar.
 
 <%@ include file="init.jsp" %>
 
-<%@ page import="com.liferay.portal.model.Portlet" %>
-<%@ page import="com.liferay.portal.service.PortletLocalServiceUtil" %>
+<%@ page import="com.liferay.portal.kernel.model.Portlet" %>
+<%@ page import="com.liferay.portal.kernel.service.PortletLocalServiceUtil" %>
 
 <%@ page import="java.util.Set" %>
 
@@ -3449,6 +3464,7 @@ for (String path : paths) {
 			newenvironment="true"
 		>
 			<jvmarg value="-Xmx512m" />
+			<arg value="javadoc.generate.xml=${generate.xml}" />
 			<arg value="javadoc.init=${init}" />
 			<arg value="javadoc.input.dir=${input.dir}" />
 			<arg value="javadoc.limit=${limit}" />

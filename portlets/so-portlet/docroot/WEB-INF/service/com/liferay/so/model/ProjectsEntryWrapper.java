@@ -16,8 +16,13 @@ package com.liferay.so.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
+
+import com.liferay.portal.kernel.model.ModelWrapper;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.ModelWrapper;
+
+import java.io.Serializable;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -138,8 +143,38 @@ public class ProjectsEntryWrapper implements ProjectsEntry,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new ProjectsEntryWrapper((ProjectsEntry)_projectsEntry.clone());
+	public boolean isCachedModel() {
+		return _projectsEntry.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _projectsEntry.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _projectsEntry.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _projectsEntry.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.so.model.ProjectsEntry> toCacheModel() {
+		return _projectsEntry.toCacheModel();
+	}
+
+	@Override
+	public com.liferay.so.model.ProjectsEntry toEscapedModel() {
+		return new ProjectsEntryWrapper(_projectsEntry.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.so.model.ProjectsEntry toUnescapedModel() {
+		return new ProjectsEntryWrapper(_projectsEntry.toUnescapedModel());
 	}
 
 	@Override
@@ -147,24 +182,19 @@ public class ProjectsEntryWrapper implements ProjectsEntry,
 		return _projectsEntry.compareTo(projectsEntry);
 	}
 
-	/**
-	* Returns the company ID of this projects entry.
-	*
-	* @return the company ID of this projects entry
-	*/
 	@Override
-	public long getCompanyId() {
-		return _projectsEntry.getCompanyId();
+	public int hashCode() {
+		return _projectsEntry.hashCode();
 	}
 
-	/**
-	* Returns the create date of this projects entry.
-	*
-	* @return the create date of this projects entry
-	*/
 	@Override
-	public Date getCreateDate() {
-		return _projectsEntry.getCreateDate();
+	public Serializable getPrimaryKeyObj() {
+		return _projectsEntry.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new ProjectsEntryWrapper((ProjectsEntry)_projectsEntry.clone());
 	}
 
 	/**
@@ -188,66 +218,6 @@ public class ProjectsEntryWrapper implements ProjectsEntry,
 	}
 
 	/**
-	* Returns the end date of this projects entry.
-	*
-	* @return the end date of this projects entry
-	*/
-	@Override
-	public Date getEndDate() {
-		return _projectsEntry.getEndDate();
-	}
-
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
-		return _projectsEntry.getExpandoBridge();
-	}
-
-	/**
-	* Returns the modified date of this projects entry.
-	*
-	* @return the modified date of this projects entry
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _projectsEntry.getModifiedDate();
-	}
-
-	/**
-	* Returns the primary key of this projects entry.
-	*
-	* @return the primary key of this projects entry
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _projectsEntry.getPrimaryKey();
-	}
-
-	@Override
-	public java.io.Serializable getPrimaryKeyObj() {
-		return _projectsEntry.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the projects entry ID of this projects entry.
-	*
-	* @return the projects entry ID of this projects entry
-	*/
-	@Override
-	public long getProjectsEntryId() {
-		return _projectsEntry.getProjectsEntryId();
-	}
-
-	/**
-	* Returns the start date of this projects entry.
-	*
-	* @return the start date of this projects entry
-	*/
-	@Override
-	public Date getStartDate() {
-		return _projectsEntry.getStartDate();
-	}
-
-	/**
 	* Returns the title of this projects entry.
 	*
 	* @return the title of this projects entry
@@ -255,16 +225,6 @@ public class ProjectsEntryWrapper implements ProjectsEntry,
 	@Override
 	public java.lang.String getTitle() {
 		return _projectsEntry.getTitle();
-	}
-
-	/**
-	* Returns the user ID of this projects entry.
-	*
-	* @return the user ID of this projects entry
-	*/
-	@Override
-	public long getUserId() {
-		return _projectsEntry.getUserId();
 	}
 
 	/**
@@ -288,23 +248,93 @@ public class ProjectsEntryWrapper implements ProjectsEntry,
 	}
 
 	@Override
-	public int hashCode() {
-		return _projectsEntry.hashCode();
+	public java.lang.String toString() {
+		return _projectsEntry.toString();
 	}
 
 	@Override
-	public boolean isCachedModel() {
-		return _projectsEntry.isCachedModel();
+	public java.lang.String toXmlString() {
+		return _projectsEntry.toXmlString();
 	}
 
+	/**
+	* Returns the create date of this projects entry.
+	*
+	* @return the create date of this projects entry
+	*/
 	@Override
-	public boolean isEscapedModel() {
-		return _projectsEntry.isEscapedModel();
+	public Date getCreateDate() {
+		return _projectsEntry.getCreateDate();
 	}
 
+	/**
+	* Returns the end date of this projects entry.
+	*
+	* @return the end date of this projects entry
+	*/
 	@Override
-	public boolean isNew() {
-		return _projectsEntry.isNew();
+	public Date getEndDate() {
+		return _projectsEntry.getEndDate();
+	}
+
+	/**
+	* Returns the modified date of this projects entry.
+	*
+	* @return the modified date of this projects entry
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _projectsEntry.getModifiedDate();
+	}
+
+	/**
+	* Returns the start date of this projects entry.
+	*
+	* @return the start date of this projects entry
+	*/
+	@Override
+	public Date getStartDate() {
+		return _projectsEntry.getStartDate();
+	}
+
+	/**
+	* Returns the company ID of this projects entry.
+	*
+	* @return the company ID of this projects entry
+	*/
+	@Override
+	public long getCompanyId() {
+		return _projectsEntry.getCompanyId();
+	}
+
+	/**
+	* Returns the primary key of this projects entry.
+	*
+	* @return the primary key of this projects entry
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _projectsEntry.getPrimaryKey();
+	}
+
+	/**
+	* Returns the projects entry ID of this projects entry.
+	*
+	* @return the projects entry ID of this projects entry
+	*/
+	@Override
+	public long getProjectsEntryId() {
+		return _projectsEntry.getProjectsEntryId();
+	}
+
+	/**
+	* Returns the user ID of this projects entry.
+	*
+	* @return the user ID of this projects entry
+	*/
+	@Override
+	public long getUserId() {
+		return _projectsEntry.getUserId();
 	}
 
 	@Override
@@ -368,20 +398,18 @@ public class ProjectsEntryWrapper implements ProjectsEntry,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.model.BaseModel<?> baseModel) {
-		_projectsEntry.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
 		_projectsEntry.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
 	public void setExpandoBridgeAttributes(
-		com.liferay.portal.service.ServiceContext serviceContext) {
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_projectsEntry.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_projectsEntry.setExpandoBridgeAttributes(serviceContext);
 	}
 
@@ -411,7 +439,7 @@ public class ProjectsEntryWrapper implements ProjectsEntry,
 	}
 
 	@Override
-	public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
+	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		_projectsEntry.setPrimaryKeyObj(primaryKeyObj);
 	}
 
@@ -473,31 +501,6 @@ public class ProjectsEntryWrapper implements ProjectsEntry,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_projectsEntry.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.model.CacheModel<com.liferay.so.model.ProjectsEntry> toCacheModel() {
-		return _projectsEntry.toCacheModel();
-	}
-
-	@Override
-	public com.liferay.so.model.ProjectsEntry toEscapedModel() {
-		return new ProjectsEntryWrapper(_projectsEntry.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _projectsEntry.toString();
-	}
-
-	@Override
-	public com.liferay.so.model.ProjectsEntry toUnescapedModel() {
-		return new ProjectsEntryWrapper(_projectsEntry.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _projectsEntry.toXmlString();
 	}
 
 	@Override

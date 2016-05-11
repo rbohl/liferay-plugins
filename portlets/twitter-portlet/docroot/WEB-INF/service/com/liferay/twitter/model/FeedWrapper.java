@@ -16,8 +16,13 @@ package com.liferay.twitter.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
+
+import com.liferay.portal.kernel.model.ModelWrapper;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.ModelWrapper;
+
+import java.io.Serializable;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -123,8 +128,38 @@ public class FeedWrapper implements Feed, ModelWrapper<Feed> {
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new FeedWrapper((Feed)_feed.clone());
+	public boolean isCachedModel() {
+		return _feed.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _feed.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _feed.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _feed.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.twitter.model.Feed> toCacheModel() {
+		return _feed.toCacheModel();
+	}
+
+	@Override
+	public com.liferay.twitter.model.Feed toEscapedModel() {
+		return new FeedWrapper(_feed.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.twitter.model.Feed toUnescapedModel() {
+		return new FeedWrapper(_feed.toUnescapedModel());
 	}
 
 	@Override
@@ -132,74 +167,19 @@ public class FeedWrapper implements Feed, ModelWrapper<Feed> {
 		return _feed.compareTo(feed);
 	}
 
-	/**
-	* Returns the company ID of this feed.
-	*
-	* @return the company ID of this feed
-	*/
 	@Override
-	public long getCompanyId() {
-		return _feed.getCompanyId();
-	}
-
-	/**
-	* Returns the create date of this feed.
-	*
-	* @return the create date of this feed
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _feed.getCreateDate();
+	public int hashCode() {
+		return _feed.hashCode();
 	}
 
 	@Override
-	public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
-		return _feed.getExpandoBridge();
-	}
-
-	/**
-	* Returns the feed ID of this feed.
-	*
-	* @return the feed ID of this feed
-	*/
-	@Override
-	public long getFeedId() {
-		return _feed.getFeedId();
-	}
-
-	/**
-	* Returns the last status ID of this feed.
-	*
-	* @return the last status ID of this feed
-	*/
-	@Override
-	public long getLastStatusId() {
-		return _feed.getLastStatusId();
-	}
-
-	/**
-	* Returns the modified date of this feed.
-	*
-	* @return the modified date of this feed
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _feed.getModifiedDate();
-	}
-
-	/**
-	* Returns the primary key of this feed.
-	*
-	* @return the primary key of this feed
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _feed.getPrimaryKey();
-	}
-
-	@Override
-	public java.io.Serializable getPrimaryKeyObj() {
+	public Serializable getPrimaryKeyObj() {
 		return _feed.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new FeedWrapper((Feed)_feed.clone());
 	}
 
 	/**
@@ -213,16 +193,6 @@ public class FeedWrapper implements Feed, ModelWrapper<Feed> {
 	}
 
 	/**
-	* Returns the twitter user ID of this feed.
-	*
-	* @return the twitter user ID of this feed
-	*/
-	@Override
-	public long getTwitterUserId() {
-		return _feed.getTwitterUserId();
-	}
-
-	/**
 	* Returns the twitter user uuid of this feed.
 	*
 	* @return the twitter user uuid of this feed
@@ -230,16 +200,6 @@ public class FeedWrapper implements Feed, ModelWrapper<Feed> {
 	@Override
 	public java.lang.String getTwitterUserUuid() {
 		return _feed.getTwitterUserUuid();
-	}
-
-	/**
-	* Returns the user ID of this feed.
-	*
-	* @return the user ID of this feed
-	*/
-	@Override
-	public long getUserId() {
-		return _feed.getUserId();
 	}
 
 	/**
@@ -263,23 +223,93 @@ public class FeedWrapper implements Feed, ModelWrapper<Feed> {
 	}
 
 	@Override
-	public int hashCode() {
-		return _feed.hashCode();
+	public java.lang.String toString() {
+		return _feed.toString();
 	}
 
 	@Override
-	public boolean isCachedModel() {
-		return _feed.isCachedModel();
+	public java.lang.String toXmlString() {
+		return _feed.toXmlString();
 	}
 
+	/**
+	* Returns the create date of this feed.
+	*
+	* @return the create date of this feed
+	*/
 	@Override
-	public boolean isEscapedModel() {
-		return _feed.isEscapedModel();
+	public Date getCreateDate() {
+		return _feed.getCreateDate();
 	}
 
+	/**
+	* Returns the modified date of this feed.
+	*
+	* @return the modified date of this feed
+	*/
 	@Override
-	public boolean isNew() {
-		return _feed.isNew();
+	public Date getModifiedDate() {
+		return _feed.getModifiedDate();
+	}
+
+	/**
+	* Returns the company ID of this feed.
+	*
+	* @return the company ID of this feed
+	*/
+	@Override
+	public long getCompanyId() {
+		return _feed.getCompanyId();
+	}
+
+	/**
+	* Returns the feed ID of this feed.
+	*
+	* @return the feed ID of this feed
+	*/
+	@Override
+	public long getFeedId() {
+		return _feed.getFeedId();
+	}
+
+	/**
+	* Returns the last status ID of this feed.
+	*
+	* @return the last status ID of this feed
+	*/
+	@Override
+	public long getLastStatusId() {
+		return _feed.getLastStatusId();
+	}
+
+	/**
+	* Returns the primary key of this feed.
+	*
+	* @return the primary key of this feed
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _feed.getPrimaryKey();
+	}
+
+	/**
+	* Returns the twitter user ID of this feed.
+	*
+	* @return the twitter user ID of this feed
+	*/
+	@Override
+	public long getTwitterUserId() {
+		return _feed.getTwitterUserId();
+	}
+
+	/**
+	* Returns the user ID of this feed.
+	*
+	* @return the user ID of this feed
+	*/
+	@Override
+	public long getUserId() {
+		return _feed.getUserId();
 	}
 
 	@Override
@@ -313,20 +343,18 @@ public class FeedWrapper implements Feed, ModelWrapper<Feed> {
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.model.BaseModel<?> baseModel) {
-		_feed.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
 		_feed.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
 	public void setExpandoBridgeAttributes(
-		com.liferay.portal.service.ServiceContext serviceContext) {
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_feed.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_feed.setExpandoBridgeAttributes(serviceContext);
 	}
 
@@ -376,7 +404,7 @@ public class FeedWrapper implements Feed, ModelWrapper<Feed> {
 	}
 
 	@Override
-	public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
+	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		_feed.setPrimaryKeyObj(primaryKeyObj);
 	}
 
@@ -438,31 +466,6 @@ public class FeedWrapper implements Feed, ModelWrapper<Feed> {
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_feed.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.model.CacheModel<com.liferay.twitter.model.Feed> toCacheModel() {
-		return _feed.toCacheModel();
-	}
-
-	@Override
-	public com.liferay.twitter.model.Feed toEscapedModel() {
-		return new FeedWrapper(_feed.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _feed.toString();
-	}
-
-	@Override
-	public com.liferay.twitter.model.Feed toUnescapedModel() {
-		return new FeedWrapper(_feed.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _feed.toXmlString();
 	}
 
 	@Override

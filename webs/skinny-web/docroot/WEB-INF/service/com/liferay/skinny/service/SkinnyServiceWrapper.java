@@ -16,7 +16,7 @@ package com.liferay.skinny.service;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
  * Provides a wrapper for {@link SkinnyService}.
@@ -30,6 +30,13 @@ public class SkinnyServiceWrapper implements SkinnyService,
 	ServiceWrapper<SkinnyService> {
 	public SkinnyServiceWrapper(SkinnyService skinnyService) {
 		_skinnyService = skinnyService;
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _skinnyService.invokeMethod(name, parameterTypes, arguments);
 	}
 
 	/**
@@ -54,13 +61,6 @@ public class SkinnyServiceWrapper implements SkinnyService,
 		java.lang.String locale) throws java.lang.Exception {
 		return _skinnyService.getSkinnyJournalArticles(companyId, groupName,
 			ddmStructureId, locale);
-	}
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _skinnyService.invokeMethod(name, parameterTypes, arguments);
 	}
 
 	@Override

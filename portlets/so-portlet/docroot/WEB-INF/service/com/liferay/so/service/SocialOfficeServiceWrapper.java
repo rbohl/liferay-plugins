@@ -16,7 +16,7 @@ package com.liferay.so.service;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
  * Provides a wrapper for {@link SocialOfficeService}.
@@ -30,6 +30,19 @@ public class SocialOfficeServiceWrapper implements SocialOfficeService,
 	ServiceWrapper<SocialOfficeService> {
 	public SocialOfficeServiceWrapper(SocialOfficeService socialOfficeService) {
 		_socialOfficeService = socialOfficeService;
+	}
+
+	@Override
+	public boolean isSocialOfficeGroup(long groupId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _socialOfficeService.isSocialOfficeGroup(groupId);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _socialOfficeService.invokeMethod(name, parameterTypes, arguments);
 	}
 
 	/**
@@ -46,19 +59,6 @@ public class SocialOfficeServiceWrapper implements SocialOfficeService,
 	public long[] getUserSocialOfficeGroupIds()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _socialOfficeService.getUserSocialOfficeGroupIds();
-	}
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _socialOfficeService.invokeMethod(name, parameterTypes, arguments);
-	}
-
-	@Override
-	public boolean isSocialOfficeGroup(long groupId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _socialOfficeService.isSocialOfficeGroup(groupId);
 	}
 
 	@Override

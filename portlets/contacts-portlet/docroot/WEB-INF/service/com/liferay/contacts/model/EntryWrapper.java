@@ -16,8 +16,13 @@ package com.liferay.contacts.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
+
+import com.liferay.portal.kernel.model.ModelWrapper;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.ModelWrapper;
+
+import java.io.Serializable;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -130,13 +135,58 @@ public class EntryWrapper implements Entry, ModelWrapper<Entry> {
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new EntryWrapper((Entry)_entry.clone());
+	public boolean isCachedModel() {
+		return _entry.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _entry.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _entry.isNew();
+	}
+
+	@Override
+	public com.liferay.contacts.model.Entry toEscapedModel() {
+		return new EntryWrapper(_entry.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.contacts.model.Entry toUnescapedModel() {
+		return new EntryWrapper(_entry.toUnescapedModel());
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _entry.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.contacts.model.Entry> toCacheModel() {
+		return _entry.toCacheModel();
 	}
 
 	@Override
 	public int compareTo(com.liferay.contacts.model.Entry entry) {
 		return _entry.compareTo(entry);
+	}
+
+	@Override
+	public int hashCode() {
+		return _entry.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _entry.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new EntryWrapper((Entry)_entry.clone());
 	}
 
 	/**
@@ -150,26 +200,6 @@ public class EntryWrapper implements Entry, ModelWrapper<Entry> {
 	}
 
 	/**
-	* Returns the company ID of this entry.
-	*
-	* @return the company ID of this entry
-	*/
-	@Override
-	public long getCompanyId() {
-		return _entry.getCompanyId();
-	}
-
-	/**
-	* Returns the create date of this entry.
-	*
-	* @return the create date of this entry
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _entry.getCreateDate();
-	}
-
-	/**
 	* Returns the email address of this entry.
 	*
 	* @return the email address of this entry
@@ -180,21 +210,6 @@ public class EntryWrapper implements Entry, ModelWrapper<Entry> {
 	}
 
 	/**
-	* Returns the entry ID of this entry.
-	*
-	* @return the entry ID of this entry
-	*/
-	@Override
-	public long getEntryId() {
-		return _entry.getEntryId();
-	}
-
-	@Override
-	public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
-		return _entry.getExpandoBridge();
-	}
-
-	/**
 	* Returns the full name of this entry.
 	*
 	* @return the full name of this entry
@@ -202,51 +217,6 @@ public class EntryWrapper implements Entry, ModelWrapper<Entry> {
 	@Override
 	public java.lang.String getFullName() {
 		return _entry.getFullName();
-	}
-
-	/**
-	* Returns the group ID of this entry.
-	*
-	* @return the group ID of this entry
-	*/
-	@Override
-	public long getGroupId() {
-		return _entry.getGroupId();
-	}
-
-	/**
-	* Returns the modified date of this entry.
-	*
-	* @return the modified date of this entry
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _entry.getModifiedDate();
-	}
-
-	/**
-	* Returns the primary key of this entry.
-	*
-	* @return the primary key of this entry
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _entry.getPrimaryKey();
-	}
-
-	@Override
-	public java.io.Serializable getPrimaryKeyObj() {
-		return _entry.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the user ID of this entry.
-	*
-	* @return the user ID of this entry
-	*/
-	@Override
-	public long getUserId() {
-		return _entry.getUserId();
 	}
 
 	/**
@@ -270,23 +240,83 @@ public class EntryWrapper implements Entry, ModelWrapper<Entry> {
 	}
 
 	@Override
-	public int hashCode() {
-		return _entry.hashCode();
+	public java.lang.String toString() {
+		return _entry.toString();
 	}
 
 	@Override
-	public boolean isCachedModel() {
-		return _entry.isCachedModel();
+	public java.lang.String toXmlString() {
+		return _entry.toXmlString();
 	}
 
+	/**
+	* Returns the create date of this entry.
+	*
+	* @return the create date of this entry
+	*/
 	@Override
-	public boolean isEscapedModel() {
-		return _entry.isEscapedModel();
+	public Date getCreateDate() {
+		return _entry.getCreateDate();
 	}
 
+	/**
+	* Returns the modified date of this entry.
+	*
+	* @return the modified date of this entry
+	*/
 	@Override
-	public boolean isNew() {
-		return _entry.isNew();
+	public Date getModifiedDate() {
+		return _entry.getModifiedDate();
+	}
+
+	/**
+	* Returns the company ID of this entry.
+	*
+	* @return the company ID of this entry
+	*/
+	@Override
+	public long getCompanyId() {
+		return _entry.getCompanyId();
+	}
+
+	/**
+	* Returns the entry ID of this entry.
+	*
+	* @return the entry ID of this entry
+	*/
+	@Override
+	public long getEntryId() {
+		return _entry.getEntryId();
+	}
+
+	/**
+	* Returns the group ID of this entry.
+	*
+	* @return the group ID of this entry
+	*/
+	@Override
+	public long getGroupId() {
+		return _entry.getGroupId();
+	}
+
+	/**
+	* Returns the primary key of this entry.
+	*
+	* @return the primary key of this entry
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _entry.getPrimaryKey();
+	}
+
+	/**
+	* Returns the user ID of this entry.
+	*
+	* @return the user ID of this entry
+	*/
+	@Override
+	public long getUserId() {
+		return _entry.getUserId();
 	}
 
 	@Override
@@ -350,20 +380,18 @@ public class EntryWrapper implements Entry, ModelWrapper<Entry> {
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.model.BaseModel<?> baseModel) {
-		_entry.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
 		_entry.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
 	public void setExpandoBridgeAttributes(
-		com.liferay.portal.service.ServiceContext serviceContext) {
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_entry.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_entry.setExpandoBridgeAttributes(serviceContext);
 	}
 
@@ -413,7 +441,7 @@ public class EntryWrapper implements Entry, ModelWrapper<Entry> {
 	}
 
 	@Override
-	public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
+	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		_entry.setPrimaryKeyObj(primaryKeyObj);
 	}
 
@@ -445,31 +473,6 @@ public class EntryWrapper implements Entry, ModelWrapper<Entry> {
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_entry.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.model.CacheModel<com.liferay.contacts.model.Entry> toCacheModel() {
-		return _entry.toCacheModel();
-	}
-
-	@Override
-	public com.liferay.contacts.model.Entry toEscapedModel() {
-		return new EntryWrapper(_entry.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _entry.toString();
-	}
-
-	@Override
-	public com.liferay.contacts.model.Entry toUnescapedModel() {
-		return new EntryWrapper(_entry.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _entry.toXmlString();
 	}
 
 	@Override

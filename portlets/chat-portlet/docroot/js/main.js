@@ -70,7 +70,7 @@ AUI().use(
 				var defaultColor = instance._defaultColor;
 
 				if (!defaultColor) {
-					var bgColorNode = A.one('#chatBar .panel-trigger');
+					var bgColorNode = A.one('#chatBar .chat-panel-trigger');
 
 					if (bgColorNode) {
 						defaultColor = bgColorNode.getStyle('backgroundColor');
@@ -270,14 +270,14 @@ AUI().use(
 				}
 
 				instance._popup = panel.one('.chat-panel');
-				instance._popupTitle = panel.one('.panel-title');
-				instance._popupTrigger = panel.one('.panel-trigger');
+				instance._popupTitle = panel.one('.chat-panel-title');
+				instance._popupTrigger = panel.one('.chat-panel-trigger');
 				instance._textBox = panel.one('textarea');
 
 				instance._popupTrigger.on('click', instance.toggle, instance);
 				instance._popupTrigger.on('keyup', instance._keyup, instance);
 
-				panel.all('.panel-button').on(
+				panel.all('.chat-panel-button').on(
 					'click',
 					function(event) {
 						var target = event.currentTarget;
@@ -314,14 +314,14 @@ AUI().use(
 				var instance = this;
 
 				if (!html) {
-					html = '<li class="panel">' +
-						'<div class="panel-trigger" tabindex="0"><span class="trigger-name"></span></div>' +
+					html = '<li class="chat-panel-container">' +
+						'<div class="chat-panel-trigger" tabindex="0"><span class="trigger-name"></span></div>' +
 						'<div class="chat-panel">' +
-							'<div class="panel-window">' +
-								'<div class="minimize panel-button "></div>' +
-								'<div class="panel-title"></div>' +
+							'<div class="chat-panel-window">' +
+								'<div class="minimize chat-panel-button "></div>' +
+								'<div class="chat-panel-title"></div>' +
 								'<div class="search-buddies"><input class="search-buddies" type="text" /></div>' +
-								'<div class="panel-content"></div>' +
+								'<div class="chat-panel-content"></div>' +
 							'</div>' +
 						'</div>' +
 					'</li>';
@@ -340,9 +340,9 @@ AUI().use(
 
 			var panel = instance._panel;
 
-			instance._chatInput = panel.one('.panel-input textarea');
-			instance._chatOutput = panel.one('.panel-output');
-			instance._statusMessage = panel.one('.panel-profile');
+			instance._chatInput = panel.one('.chat-panel-input textarea');
+			instance._chatOutput = panel.one('.chat-panel-output');
+			instance._statusMessage = panel.one('.chat-panel-profile');
 
 			instance._lastMessageTime = 0;
 			instance._lastTypedTime = 0;
@@ -544,8 +544,6 @@ AUI().use(
 						heightMonitor.setStyle('width', instance._chatInputWidth);
 					}
 
-					var chatInputEl = chatInput.getDOM();
-
 					var content = LString.escapeHTML(chatInput.val());
 					var textNode = DOC.createTextNode(content);
 
@@ -662,19 +660,19 @@ AUI().use(
 					var userImagePath = Liferay.Chat.Util.getUserImagePath(instance._panelIcon);
 
 					var html = '<li class="user user_' + panelId + '" panelId="' + panelId + '">' +
-							'<div class="panel-trigger" tabindex="0">' +
+							'<div class="chat-panel-trigger" tabindex="0">' +
 								'<span class="trigger-name"></span>' +
 								'<div class="typing-status"></div>' +
 							'</div>' +
 							'<div class="chat-panel">' +
-								'<div class="panel-window">' +
-									'<div class="minimize panel-button "></div>' +
-									'<div class="close panel-button"></div>' +
-									'<img alt="' + panelTitle + '" class="panel-icon" src="' + userImagePath + '" />' +
-									'<div class="panel-title">' + panelTitle + '</div>' +
-									'<div class="panel-profile">...</div>' +
-									'<div class="panel-output"></div>' +
-									'<div class="panel-input">' +
+								'<div class="chat-panel-window">' +
+									'<div class="minimize chat-panel-button "></div>' +
+									'<div class="close chat-panel-button"></div>' +
+									'<img alt="' + panelTitle + '" class="chat-panel-icon" src="' + userImagePath + '" />' +
+									'<div class="chat-panel-title">' + panelTitle + '</div>' +
+									'<div class="chat-panel-profile">...</div>' +
+									'<div class="chat-panel-output"></div>' +
+									'<div class="chat-panel-input">' +
 										'<textarea class="message-input"></textarea>' +
 									'</div>' +
 								'</div>' +
@@ -786,12 +784,31 @@ AUI().use(
 
 				AUI.Env.add(window, 'storage', storageFn);
 
-				A.getWin().on(
-					'beforeunload',
-					function(event) {
-						AUI.Env.remove(window, 'storage', storageFn);
+				var clearStorage = function() {
+					AUI.Env.remove(window, 'storage', storageFn);
 
-						localStorage.setItem('liferay.chat.messages', null);
+					localStorage.setItem('liferay.chat.messages', null);
+				};
+
+				var beforeUnload = A.getWin().on('beforeunload', clearStorage);
+
+				Liferay.on(
+					'screenLoad',
+					function() {
+						beforeUnload.detach();
+
+						clearStorage();
+
+						Liferay.Poller.removeListener(instance._portletId);
+					}
+				);
+
+				Liferay.Chat.Manager.registerBuddyService(
+					{
+						iconHTML: function(userDetails) {
+							return Lang.sub('<a href="{displayURL}">' + Liferay.Util.getLexiconIconTpl('user') + '</a>', userDetails);
+						},
+						name: 'chat-user-dashboard-service'
 					}
 				);
 			},
@@ -851,26 +868,27 @@ AUI().use(
 			registerBuddyService: function(options) {
 				var instance = this;
 
-				var fn = options.fn;
 				var icon = options.icon;
 				var name = options.name;
 
-				instance._buddyServices[name] = fn;
+				instance._buddyServices[name] = options;
 
-				var styleSheet = instance._styleSheet;
+				if (icon) {
+					var styleSheet = instance._styleSheet;
 
-				if (!styleSheet) {
-					styleSheet = new A.StyleSheet();
+					if (!styleSheet) {
+						styleSheet = new A.StyleSheet();
 
-					instance._styleSheet = styleSheet;
-				}
-
-				styleSheet.set(
-					'.chat-bar .buddy-services .' + name,
-					{
-						backgroundImage: 'url("' + icon + '")'
+						instance._styleSheet = styleSheet;
 					}
-				);
+
+					styleSheet.set(
+						'.chat-bar .buddy-services .' + name,
+						{
+							backgroundImage: 'url("' + icon + '")'
+						}
+					);
+				}
 			},
 
 			send: function(options, id) {
@@ -972,7 +990,7 @@ AUI().use(
 					function(event) {
 						buddyListPanel.hide();
 
-						var panelTrigger = buddyListNode.one('.panel-trigger');
+						var panelTrigger = buddyListNode.one('.chat-panel-trigger');
 
 						if (panelTrigger) {
 							panelTrigger.focus();
@@ -989,13 +1007,17 @@ AUI().use(
 							var target = event.currentTarget;
 
 							if (target.ancestor('.buddy-services')) {
-								event.stopPropagation();
-
 								var serviceName = target.getAttribute('class');
 
-								instance._buddyServices[serviceName](target.ancestor('li.user'));
+								var buddyService = instance._buddyServices[serviceName];
+
+								if (buddyService && buddyService.fn) {
+									buddyService.fn(target.ancestor('li.user'), event);
+								}
+
+								event._liferayChatBuddyService = true;
 							}
-							else {
+							else if (!event._liferayChatBuddyService) {
 								instance._createChatFromUser(target);
 							}
 						},
@@ -1170,7 +1192,7 @@ AUI().use(
 					function(event) {
 						settings.hide();
 
-						var panelTrigger = settingsPanel.one('.panel-trigger');
+						var panelTrigger = settingsPanel.one('.chat-panel-trigger');
 
 						if (panelTrigger) {
 							panelTrigger.focus();
@@ -1447,7 +1469,7 @@ AUI().use(
 					var userImagePath = Liferay.Chat.Util.getUserImagePath(buddy.portraitURL);
 
 					buffer.push(
-						'<li class="active user" data-groupId="' + buddy.groupId + '" data-userId="' + buddy.userId + '">' +
+						'<li class="active user" data-displayURL="' + buddy.displayURL + '" data-groupId="' + buddy.groupId + '" data-userId="' + buddy.userId + '">' +
 							'<img alt="' + fullName + '" src="' + userImagePath + '" />' +
 							'<div class="name">' + fullName + '</div>' +
 							'<div class="buddy-services">'
@@ -1456,7 +1478,13 @@ AUI().use(
 					var serviceNames = instance._buddyServices;
 
 					for (var serviceName in serviceNames) {
-						buffer.push('<div class="' + serviceName + '"></div>');
+						var iconHTML = serviceNames[serviceName].iconHTML || '';
+
+						if (Lang.isFunction(iconHTML)) {
+							iconHTML = iconHTML(buddy);
+						}
+
+						buffer.push('<div class="' + serviceName + '">' + iconHTML + '</div>');
 					}
 
 					buffer.push(
@@ -1667,16 +1695,10 @@ AUI().use(
 		Liferay.publish(
 			'chatPortletReady',
 			{
-				defaultFn: A.bind('init', Liferay.Chat.Manager),
-				fireOnce: true
+				defaultFn: A.bind('init', Liferay.Chat.Manager)
 			}
 		);
 
-		A.on(
-			'domready',
-			function() {
-				Liferay.fire('chatPortletReady');
-			}
-		);
+		Liferay.fire('chatPortletReady');
 	}
 );

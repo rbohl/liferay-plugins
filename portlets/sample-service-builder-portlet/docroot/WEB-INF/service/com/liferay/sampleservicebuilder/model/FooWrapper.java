@@ -16,10 +16,15 @@ package com.liferay.sampleservicebuilder.model;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.ModelWrapper;
+import com.liferay.expando.kernel.model.ExpandoBridge;
 
-import com.liferay.portlet.exportimport.lar.StagedModelType;
+import com.liferay.exportimport.kernel.lar.StagedModelType;
+
+import com.liferay.portal.kernel.model.ModelWrapper;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
+
+import java.io.Serializable;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -152,9 +157,59 @@ public class FooWrapper implements Foo, ModelWrapper<Foo> {
 		}
 	}
 
+	/**
+	* Returns the field2 of this foo.
+	*
+	* @return the field2 of this foo
+	*/
 	@Override
-	public java.lang.Object clone() {
-		return new FooWrapper((Foo)_foo.clone());
+	public boolean getField2() {
+		return _foo.getField2();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _foo.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _foo.isEscapedModel();
+	}
+
+	/**
+	* Returns <code>true</code> if this foo is field2.
+	*
+	* @return <code>true</code> if this foo is field2; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isField2() {
+		return _foo.isField2();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _foo.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _foo.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.sampleservicebuilder.model.Foo> toCacheModel() {
+		return _foo.toCacheModel();
+	}
+
+	@Override
+	public com.liferay.sampleservicebuilder.model.Foo toEscapedModel() {
+		return new FooWrapper(_foo.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.sampleservicebuilder.model.Foo toUnescapedModel() {
+		return new FooWrapper(_foo.toUnescapedModel());
 	}
 
 	@Override
@@ -163,28 +218,28 @@ public class FooWrapper implements Foo, ModelWrapper<Foo> {
 	}
 
 	/**
-	* Returns the company ID of this foo.
+	* Returns the field3 of this foo.
 	*
-	* @return the company ID of this foo
+	* @return the field3 of this foo
 	*/
 	@Override
-	public long getCompanyId() {
-		return _foo.getCompanyId();
-	}
-
-	/**
-	* Returns the create date of this foo.
-	*
-	* @return the create date of this foo
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _foo.getCreateDate();
+	public int getField3() {
+		return _foo.getField3();
 	}
 
 	@Override
-	public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
-		return _foo.getExpandoBridge();
+	public int hashCode() {
+		return _foo.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _foo.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new FooWrapper((Foo)_foo.clone());
 	}
 
 	/**
@@ -198,36 +253,6 @@ public class FooWrapper implements Foo, ModelWrapper<Foo> {
 	}
 
 	/**
-	* Returns the field2 of this foo.
-	*
-	* @return the field2 of this foo
-	*/
-	@Override
-	public boolean getField2() {
-		return _foo.getField2();
-	}
-
-	/**
-	* Returns the field3 of this foo.
-	*
-	* @return the field3 of this foo
-	*/
-	@Override
-	public int getField3() {
-		return _foo.getField3();
-	}
-
-	/**
-	* Returns the field4 of this foo.
-	*
-	* @return the field4 of this foo
-	*/
-	@Override
-	public Date getField4() {
-		return _foo.getField4();
-	}
-
-	/**
 	* Returns the field5 of this foo.
 	*
 	* @return the field5 of this foo
@@ -235,61 +260,6 @@ public class FooWrapper implements Foo, ModelWrapper<Foo> {
 	@Override
 	public java.lang.String getField5() {
 		return _foo.getField5();
-	}
-
-	/**
-	* Returns the foo ID of this foo.
-	*
-	* @return the foo ID of this foo
-	*/
-	@Override
-	public long getFooId() {
-		return _foo.getFooId();
-	}
-
-	/**
-	* Returns the group ID of this foo.
-	*
-	* @return the group ID of this foo
-	*/
-	@Override
-	public long getGroupId() {
-		return _foo.getGroupId();
-	}
-
-	/**
-	* Returns the modified date of this foo.
-	*
-	* @return the modified date of this foo
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _foo.getModifiedDate();
-	}
-
-	/**
-	* Returns the primary key of this foo.
-	*
-	* @return the primary key of this foo
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _foo.getPrimaryKey();
-	}
-
-	@Override
-	public java.io.Serializable getPrimaryKeyObj() {
-		return _foo.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the user ID of this foo.
-	*
-	* @return the user ID of this foo
-	*/
-	@Override
-	public long getUserId() {
-		return _foo.getUserId();
 	}
 
 	/**
@@ -323,33 +293,93 @@ public class FooWrapper implements Foo, ModelWrapper<Foo> {
 	}
 
 	@Override
-	public int hashCode() {
-		return _foo.hashCode();
+	public java.lang.String toString() {
+		return _foo.toString();
 	}
 
 	@Override
-	public boolean isCachedModel() {
-		return _foo.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _foo.isEscapedModel();
+	public java.lang.String toXmlString() {
+		return _foo.toXmlString();
 	}
 
 	/**
-	* Returns <code>true</code> if this foo is field2.
+	* Returns the create date of this foo.
 	*
-	* @return <code>true</code> if this foo is field2; <code>false</code> otherwise
+	* @return the create date of this foo
 	*/
 	@Override
-	public boolean isField2() {
-		return _foo.isField2();
+	public Date getCreateDate() {
+		return _foo.getCreateDate();
 	}
 
+	/**
+	* Returns the field4 of this foo.
+	*
+	* @return the field4 of this foo
+	*/
 	@Override
-	public boolean isNew() {
-		return _foo.isNew();
+	public Date getField4() {
+		return _foo.getField4();
+	}
+
+	/**
+	* Returns the modified date of this foo.
+	*
+	* @return the modified date of this foo
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _foo.getModifiedDate();
+	}
+
+	/**
+	* Returns the company ID of this foo.
+	*
+	* @return the company ID of this foo
+	*/
+	@Override
+	public long getCompanyId() {
+		return _foo.getCompanyId();
+	}
+
+	/**
+	* Returns the foo ID of this foo.
+	*
+	* @return the foo ID of this foo
+	*/
+	@Override
+	public long getFooId() {
+		return _foo.getFooId();
+	}
+
+	/**
+	* Returns the group ID of this foo.
+	*
+	* @return the group ID of this foo
+	*/
+	@Override
+	public long getGroupId() {
+		return _foo.getGroupId();
+	}
+
+	/**
+	* Returns the primary key of this foo.
+	*
+	* @return the primary key of this foo
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _foo.getPrimaryKey();
+	}
+
+	/**
+	* Returns the user ID of this foo.
+	*
+	* @return the user ID of this foo
+	*/
+	@Override
+	public long getUserId() {
+		return _foo.getUserId();
 	}
 
 	@Override
@@ -383,20 +413,18 @@ public class FooWrapper implements Foo, ModelWrapper<Foo> {
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.model.BaseModel<?> baseModel) {
-		_foo.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
 		_foo.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
 	public void setExpandoBridgeAttributes(
-		com.liferay.portal.service.ServiceContext serviceContext) {
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_foo.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_foo.setExpandoBridgeAttributes(serviceContext);
 	}
 
@@ -496,7 +524,7 @@ public class FooWrapper implements Foo, ModelWrapper<Foo> {
 	}
 
 	@Override
-	public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
+	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		_foo.setPrimaryKeyObj(primaryKeyObj);
 	}
 
@@ -538,31 +566,6 @@ public class FooWrapper implements Foo, ModelWrapper<Foo> {
 	@Override
 	public void setUuid(java.lang.String uuid) {
 		_foo.setUuid(uuid);
-	}
-
-	@Override
-	public com.liferay.portal.model.CacheModel<com.liferay.sampleservicebuilder.model.Foo> toCacheModel() {
-		return _foo.toCacheModel();
-	}
-
-	@Override
-	public com.liferay.sampleservicebuilder.model.Foo toEscapedModel() {
-		return new FooWrapper(_foo.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _foo.toString();
-	}
-
-	@Override
-	public com.liferay.sampleservicebuilder.model.Foo toUnescapedModel() {
-		return new FooWrapper(_foo.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _foo.toXmlString();
 	}
 
 	@Override

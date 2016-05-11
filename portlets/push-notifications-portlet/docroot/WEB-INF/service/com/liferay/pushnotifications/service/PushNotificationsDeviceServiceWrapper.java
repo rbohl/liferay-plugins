@@ -16,7 +16,7 @@ package com.liferay.pushnotifications.service;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
  * Provides a wrapper for {@link PushNotificationsDeviceService}.
@@ -49,6 +49,14 @@ public class PushNotificationsDeviceServiceWrapper
 		return _pushNotificationsDeviceService.deletePushNotificationsDevice(token);
 	}
 
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _pushNotificationsDeviceService.invokeMethod(name,
+			parameterTypes, arguments);
+	}
+
 	/**
 	* Returns the OSGi service identifier.
 	*
@@ -57,14 +65,6 @@ public class PushNotificationsDeviceServiceWrapper
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _pushNotificationsDeviceService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _pushNotificationsDeviceService.invokeMethod(name,
-			parameterTypes, arguments);
 	}
 
 	@Override

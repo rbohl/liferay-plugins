@@ -16,7 +16,7 @@ package com.liferay.microblogs.service;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
  * Provides a wrapper for {@link MicroblogsEntryService}.
@@ -37,7 +37,7 @@ public class MicroblogsEntryServiceWrapper implements MicroblogsEntryService,
 	public com.liferay.microblogs.model.MicroblogsEntry addMicroblogsEntry(
 		long userId, java.lang.String content, int type,
 		long parentMicroblogsEntryId, int socialRelationType,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _microblogsEntryService.addMicroblogsEntry(userId, content,
 			type, parentMicroblogsEntryId, socialRelationType, serviceContext);
@@ -51,18 +51,20 @@ public class MicroblogsEntryServiceWrapper implements MicroblogsEntryService,
 	}
 
 	@Override
-	public java.util.List<com.liferay.microblogs.model.MicroblogsEntry> getMicroblogsEntries(
-		java.lang.String assetTagName, int start, int end)
+	public com.liferay.microblogs.model.MicroblogsEntry getMicroblogsEntry(
+		long microblogsEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _microblogsEntryService.getMicroblogsEntries(assetTagName,
-			start, end);
+		return _microblogsEntryService.getMicroblogsEntry(microblogsEntryId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.microblogs.model.MicroblogsEntry> getMicroblogsEntries(
-		int start, int end)
+	public com.liferay.microblogs.model.MicroblogsEntry updateMicroblogsEntry(
+		long microblogsEntryId, java.lang.String content,
+		int socialRelationType,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _microblogsEntryService.getMicroblogsEntries(start, end);
+		return _microblogsEntryService.updateMicroblogsEntry(microblogsEntryId,
+			content, socialRelationType, serviceContext);
 	}
 
 	@Override
@@ -75,39 +77,6 @@ public class MicroblogsEntryServiceWrapper implements MicroblogsEntryService,
 	public int getMicroblogsEntriesCount(java.lang.String assetTagName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _microblogsEntryService.getMicroblogsEntriesCount(assetTagName);
-	}
-
-	@Override
-	public com.liferay.microblogs.model.MicroblogsEntry getMicroblogsEntry(
-		long microblogsEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _microblogsEntryService.getMicroblogsEntry(microblogsEntryId);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _microblogsEntryService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public java.util.List<com.liferay.microblogs.model.MicroblogsEntry> getUserMicroblogsEntries(
-		long microblogsEntryUserId, int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _microblogsEntryService.getUserMicroblogsEntries(microblogsEntryUserId,
-			start, end);
-	}
-
-	@Override
-	public java.util.List<com.liferay.microblogs.model.MicroblogsEntry> getUserMicroblogsEntries(
-		long microblogsEntryUserId, int type, int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _microblogsEntryService.getUserMicroblogsEntries(microblogsEntryUserId,
-			type, start, end);
 	}
 
 	@Override
@@ -131,14 +100,45 @@ public class MicroblogsEntryServiceWrapper implements MicroblogsEntryService,
 			arguments);
 	}
 
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
 	@Override
-	public com.liferay.microblogs.model.MicroblogsEntry updateMicroblogsEntry(
-		long microblogsEntryId, java.lang.String content,
-		int socialRelationType,
-		com.liferay.portal.service.ServiceContext serviceContext)
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _microblogsEntryService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public java.util.List<com.liferay.microblogs.model.MicroblogsEntry> getMicroblogsEntries(
+		int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _microblogsEntryService.updateMicroblogsEntry(microblogsEntryId,
-			content, socialRelationType, serviceContext);
+		return _microblogsEntryService.getMicroblogsEntries(start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.microblogs.model.MicroblogsEntry> getMicroblogsEntries(
+		java.lang.String assetTagName, int start, int end)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _microblogsEntryService.getMicroblogsEntries(assetTagName,
+			start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.microblogs.model.MicroblogsEntry> getUserMicroblogsEntries(
+		long microblogsEntryUserId, int start, int end)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _microblogsEntryService.getUserMicroblogsEntries(microblogsEntryUserId,
+			start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.microblogs.model.MicroblogsEntry> getUserMicroblogsEntries(
+		long microblogsEntryUserId, int type, int start, int end)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _microblogsEntryService.getUserMicroblogsEntries(microblogsEntryUserId,
+			type, start, end);
 	}
 
 	@Override
